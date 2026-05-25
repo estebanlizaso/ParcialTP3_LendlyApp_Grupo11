@@ -6,10 +6,10 @@ Aplicación móvil desarrollada en Android Studio.
 
 ## 👥 Grupo 11
 
-- Máximo Agustín Domínguez
-- Esteban Ariel Lizaso
-- Jonathan Ruiz Mallorca
-- Federico Villanueva
+- Máximo Agustín Domínguez - maximoagustindominguez@gmail.com
+- Esteban Ariel Lizaso - estebanlizaso@gmail.com
+- Jonathan Ruiz Mallorca - ruiz.jonathan2018@gmail.com
+- Federico Villanueva - fedevillanueva23@gmail.com
 
 ---
 
