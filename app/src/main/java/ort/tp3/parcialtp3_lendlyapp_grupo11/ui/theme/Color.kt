@@ -25,3 +25,10 @@ val GreenLight2 = Color(0xFFB1D18A)
 val GreenDark2 = Color(0xFFE5F5EA)
 
 val GreenLight3 = Color(0xFFFCF8F8)
+
+
+//Colores de texto
+
+val BlackFont = Color(0xFF102000);
+
+val GrayColor = Color(0xFF6A6C6A);
