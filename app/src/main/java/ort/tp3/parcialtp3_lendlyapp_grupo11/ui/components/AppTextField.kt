@@ -31,18 +31,18 @@ fun AppTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     trailingIcon: @Composable (() -> Unit)? = null
 ) {
-    // fuentes
     val interMedium = FontFamily(Font(R.font.intermedium, FontWeight.Medium))
     val interRegular = FontFamily(Font(R.font.interregular, FontWeight.Normal))
 
     Column(modifier = modifier) {
-        // si tiene label le damos texto
-        if (labelText != null) {
+        if (labelText != null) { // si tiene label le damos texto
             Text(
                 text = labelText,
                 fontFamily = interMedium,
                 fontSize = 14.sp,
-                color = Color.DarkGray,
+                lineHeight = 20.sp, // Sacado del inspector de Figma
+                letterSpacing = 0.1.sp, // Sacado del inspector de Figma
+                color = Color(0xFF454745), // Color hex exacto de Figma
                 modifier = Modifier.padding(bottom = 8.dp)
             )
         }
@@ -61,7 +61,7 @@ fun AppTextField(
             trailingIcon = trailingIcon,
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color(0xFF4ADE80),
-                unfocusedBorderColor = Color.LightGray
+                unfocusedBorderColor = Color(0xFF6A6C6A)
             )
         )
     }

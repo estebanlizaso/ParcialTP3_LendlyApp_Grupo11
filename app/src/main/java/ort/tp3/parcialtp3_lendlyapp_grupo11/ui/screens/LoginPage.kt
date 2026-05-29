@@ -79,7 +79,7 @@ fun LoginScreen(
                     text = "JD",
                     fontFamily = interBold,
                     color = Color.Black,
-                    fontSize = 22.sp
+                    fontSize = 18.sp
                 )
             }
 
@@ -112,9 +112,24 @@ fun LoginScreen(
             modifier = Modifier.padding(horizontal = 24.dp),
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
-                val image = if (passwordVisible) Icons.Outlined.Visibility else Icons.Outlined.VisibilityOff
                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                    Icon(imageVector = image, contentDescription = "Toggle password visibility", tint = Color.Gray)
+                    if (passwordVisible) {
+                        // ON: icono de Material
+                        Icon(
+                            imageVector = Icons.Outlined.Visibility,
+                            contentDescription = "Hide password",
+                            tint = Color(0xFF454745),
+                            modifier = Modifier.size(20.dp)
+                        )
+                    } else {
+                        // OFF: icono SVG de Figma
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_visibility_off),
+                            contentDescription = "Show password",
+                            tint = Color(0xFF454745),
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
                 }
             }
         )
