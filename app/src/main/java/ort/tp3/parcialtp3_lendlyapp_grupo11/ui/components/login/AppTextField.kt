@@ -1,11 +1,10 @@
-package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components
+package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -21,28 +20,32 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 
+// ... (imports)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    labelText: String? = null, // label opcional
+    labelText: String? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    trailingIcon: @Composable (() -> Unit)? = null
+    trailingIcon: @Composable (() -> Unit)? = null,
+    // parametro seleccionar color del input
+    textColor: Color = Color.Black
 ) {
     val interMedium = FontFamily(Font(R.font.intermedium, FontWeight.Medium))
     val interRegular = FontFamily(Font(R.font.interregular, FontWeight.Normal))
 
     Column(modifier = modifier) {
-        if (labelText != null) { // si tiene label le damos texto
+        if (labelText != null) {
             Text(
                 text = labelText,
                 fontFamily = interMedium,
                 fontSize = 14.sp,
-                lineHeight = 20.sp, // Sacado del inspector de Figma
-                letterSpacing = 0.1.sp, // Sacado del inspector de Figma
-                color = Color(0xFF454745), // Color hex exacto de Figma
+                lineHeight = 20.sp,
+                letterSpacing = 0.1.sp,
+                color = Color(0xFF454745),
                 modifier = Modifier.padding(bottom = 8.dp)
             )
         }
@@ -55,7 +58,7 @@ fun AppTextField(
             textStyle = TextStyle(
                 fontFamily = interRegular,
                 fontSize = 16.sp,
-                color = Color.Black
+                color = textColor
             ),
             visualTransformation = visualTransformation,
             trailingIcon = trailingIcon,

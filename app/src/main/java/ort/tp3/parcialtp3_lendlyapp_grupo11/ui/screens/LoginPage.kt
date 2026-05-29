@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Visibility
-import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -26,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTextField
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppTextField
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,7 +36,6 @@ fun LoginScreen(
     var passwordVisible by remember { mutableStateOf(false) }
 
     val interBold = FontFamily(Font(R.font.interbold, FontWeight.Bold))
-    val interMedium = FontFamily(Font(R.font.intermedium, FontWeight.Medium))
     val interRegular = FontFamily(Font(R.font.interregular, FontWeight.Normal))
     val interSemiBold = FontFamily(Font(R.font.intersemibold, FontWeight.SemiBold))
 
