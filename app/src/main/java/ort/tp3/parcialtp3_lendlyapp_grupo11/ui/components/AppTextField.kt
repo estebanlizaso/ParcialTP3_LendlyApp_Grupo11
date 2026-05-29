@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -20,8 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 
-// ... (imports)
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTextField(
@@ -31,8 +30,10 @@ fun AppTextField(
     labelText: String? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     trailingIcon: @Composable (() -> Unit)? = null,
-    // parametro seleccionar color del input
-    textColor: Color = Color.Black
+    textColor: Color = Color.Black,
+    //incluir ambas variantes de color de label
+    labelColor: Color = Color(0xFF454745),
+    unfocusedBorderColor: Color = Color(0xFF6A6C6A)
 ) {
     val interMedium = FontFamily(Font(R.font.intermedium, FontWeight.Medium))
     val interRegular = FontFamily(Font(R.font.interregular, FontWeight.Normal))
@@ -45,7 +46,7 @@ fun AppTextField(
                 fontSize = 14.sp,
                 lineHeight = 20.sp,
                 letterSpacing = 0.1.sp,
-                color = Color(0xFF454745),
+                color = labelColor,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
         }
@@ -64,7 +65,7 @@ fun AppTextField(
             trailingIcon = trailingIcon,
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color(0xFF4ADE80),
-                unfocusedBorderColor = Color(0xFF6A6C6A)
+                unfocusedBorderColor = unfocusedBorderColor
             )
         )
     }
