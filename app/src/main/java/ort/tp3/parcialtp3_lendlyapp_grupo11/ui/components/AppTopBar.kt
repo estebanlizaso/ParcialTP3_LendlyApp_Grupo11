@@ -1,4 +1,4 @@
-package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login
+package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource

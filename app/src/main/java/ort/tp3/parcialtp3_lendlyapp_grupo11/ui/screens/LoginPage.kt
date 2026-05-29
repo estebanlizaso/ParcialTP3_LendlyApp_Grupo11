@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppTextField
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTextField
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -1,4 +1,4 @@
-package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login
+package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

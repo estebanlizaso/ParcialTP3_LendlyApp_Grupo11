@@ -14,9 +14,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppBottomBar
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppTextField
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppTopBar
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppBottomBar
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTextField
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,7 +46,7 @@ fun VerifyPhoneNumber(
             )
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(40.dp))
 
 
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {

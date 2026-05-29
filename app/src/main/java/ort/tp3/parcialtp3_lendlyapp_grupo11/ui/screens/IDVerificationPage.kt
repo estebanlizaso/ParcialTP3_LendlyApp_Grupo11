@@ -16,11 +16,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppBottomBar
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
 
 @Composable
-fun FaceRecognitionPage(
+fun IDVerificationPage(
     onBackClick: () -> Unit,
     onNextClick: () -> Unit
 ) {
@@ -44,7 +44,7 @@ fun FaceRecognitionPage(
 
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Text(
-                text = "Put your face in the\nframe",
+                text = "Let’s scan your ID",
                 fontFamily = montserratSemiBold,
                 fontSize = 28.sp,
                 color = Color(0xFF171D1E),
@@ -54,7 +54,7 @@ fun FaceRecognitionPage(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Follow these instructions, and let us get\nyou onboarded.",
+                text = "Always keep your phone in portrait mode,\nand here are some more tips.",
                 fontFamily = interRegular,
                 fontSize = 16.sp,
                 color = Color(0xFF454745),
@@ -64,18 +64,17 @@ fun FaceRecognitionPage(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // imagen reconocimiento facial (sin padding para que vaya de borde a borde)
         Image(
-            painter = painterResource(id = R.drawable.face_recognition),
-            contentDescription = "Face recognition frame",
+            painter = painterResource(id = R.drawable.id_scan),
+            contentDescription = "ID Scan frame",
             modifier = Modifier
                 .fillMaxWidth(),
                 //.height(320.dp), se le puede dar altura fija de esta forma
-            contentScale = ContentScale.Crop // asegura que la imagen llene el ancho sin deformarse
+            contentScale = ContentScale.Crop
         )
 
         Spacer(modifier = Modifier.weight(1f))
-
+        
         Box(modifier = Modifier.padding(horizontal = 24.dp)) {
             AppBottomBar(
                 buttonText = "Next",
@@ -87,8 +86,8 @@ fun FaceRecognitionPage(
 
 @Preview(showBackground = true)
 @Composable
-fun FaceRecognitionPagePreview() {
-    FaceRecognitionPage(
+fun IDVerificationPagePreview() {
+    IDVerificationPage(
         onBackClick = {},
         onNextClick = {}
     )
