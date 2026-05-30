@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">ParcialTP3_LendlyApp_Grupo11</string>
+
+    <!-- Onboarding1 -->
+    <string name="onboarding1_title">QUICK LOANS</string>
+    <string name="onboarding1_subtitle">Trusted for easy, fast loan approvals.</string>
+    <string name="onboarding1_get_started_button">Get Started</string>
+
+    <!-- Onboarding2 -->
+    <string name="onboarding2_title">LOAN PRODUCT IN-APP</string>
+    <string name="onboarding2_subtitle">Many products to loan.</string>
+    <string name="onboarding2_get_started_button">Get Started</string>
+
+    <!-- Onboarding3 -->
+    <string name="onboarding3_title">TRACK &amp; PAY EASILY</string>
+    <string name="onboarding3_login_button">Log In</string>
+    <string name="onboarding3_register_button">Sign up for free</string>
+
+
+
 </resources>
