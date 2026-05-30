@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
@@ -27,9 +28,11 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
 @Composable
 fun OptionListItem(
     title: String,
-    subtitle: String,
+    subtitle: String = "",
     iconText: String,
     modifier: Modifier = Modifier,
+    iconBackgroundColor: Color = GreenDark2,
+    iconTextColor: Color = BlackFont,
     onClick: () -> Unit = {}
 ) {
     Row(
@@ -43,15 +46,16 @@ fun OptionListItem(
             modifier = Modifier
                 .size(36.dp)
                 .clip(CircleShape)
-                .background(GreenDark2),
+                .background(iconBackgroundColor),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = iconText,
-                color = BlackFont,
-                fontSize = 14.sp,
+                color = iconTextColor,
+                fontSize = if (iconText.length > 2) 9.sp else 14.sp,
                 fontWeight = FontWeight.SemiBold,
-                fontFamily = interSemiBold
+                fontFamily = interSemiBold,
+                textAlign = TextAlign.Center
             )
         }
 
@@ -65,12 +69,14 @@ fun OptionListItem(
                 fontWeight = FontWeight.SemiBold,
                 fontFamily = interSemiBold
             )
-            Text(
-                text = subtitle,
-                color = GrayColor,
-                fontSize = 11.sp,
-                fontFamily = interSemiBold
-            )
+            if (subtitle.isNotEmpty()) {
+                Text(
+                    text = subtitle,
+                    color = GrayColor,
+                    fontSize = 11.sp,
+                    fontFamily = interSemiBold
+                )
+            }
         }
 
         Text(
