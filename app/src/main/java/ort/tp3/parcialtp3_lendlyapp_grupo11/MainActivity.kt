@@ -15,7 +15,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppLabel
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.CashInOptionsScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.HomeScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
+
+private enum class AppScreen {
+    HOME,
+    CASH_IN_OPTIONS
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,8 +30,20 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ParcialTP3_LendlyApp_Grupo11Theme {
+                var currentScreen by remember { mutableStateOf(AppScreen.HOME) }
+
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    LoginScreen(modifier = Modifier.padding(innerPadding))
+                    when (currentScreen) {
+                        AppScreen.HOME -> HomeScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            onCashInClick = { currentScreen = AppScreen.CASH_IN_OPTIONS }
+                        )
+
+                        AppScreen.CASH_IN_OPTIONS -> CashInOptionsScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            onBackClick = { currentScreen = AppScreen.HOME }
+                        )
+                    }
                 }
             }
         }
