@@ -1,4 +1,4 @@
-package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens
+package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll

@@ -15,15 +15,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppLabel
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.CashInOptionsScreen
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.HomeScreen
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.OnlineCashInOptionsScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.cashin.CashInAmountScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.cashin.CashInOptionsScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.cashin.CashInSuccessScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.cashin.OnlineCashInOptionsScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.cashin.OverTheCounterPartnersScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home.HomeScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
 
 private enum class AppScreen {
     HOME,
     CASH_IN_OPTIONS,
-    ONLINE_CASH_IN_OPTIONS
+    ONLINE_CASH_IN_OPTIONS,
+    OVER_THE_COUNTER_PARTNERS,
+    CASH_IN_AMOUNT,
+    CASH_IN_SUCCESS
 }
 
 class MainActivity : ComponentActivity() {
@@ -33,6 +39,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             ParcialTP3_LendlyApp_Grupo11Theme {
                 var currentScreen by remember { mutableStateOf(AppScreen.HOME) }
+                var previousScreen by remember { mutableStateOf(AppScreen.CASH_IN_OPTIONS) }
+                var cashInSource by remember { mutableStateOf("BPI") }
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     when (currentScreen) {
@@ -44,12 +52,41 @@ class MainActivity : ComponentActivity() {
                         AppScreen.CASH_IN_OPTIONS -> CashInOptionsScreen(
                             modifier = Modifier.padding(innerPadding),
                             onBackClick = { currentScreen = AppScreen.HOME },
-                            onOnlineBankingClick = { currentScreen = AppScreen.ONLINE_CASH_IN_OPTIONS }
+                            onOnlineBankingClick = { currentScreen = AppScreen.ONLINE_CASH_IN_OPTIONS },
+                            onOverTheCounterClick = { currentScreen = AppScreen.OVER_THE_COUNTER_PARTNERS }
                         )
 
                         AppScreen.ONLINE_CASH_IN_OPTIONS -> OnlineCashInOptionsScreen(
                             modifier = Modifier.padding(innerPadding),
-                            onBackClick = { currentScreen = AppScreen.CASH_IN_OPTIONS }
+                            onBackClick = { currentScreen = AppScreen.CASH_IN_OPTIONS },
+                            onOptionClick = { source ->
+                                cashInSource = source
+                                previousScreen = AppScreen.ONLINE_CASH_IN_OPTIONS
+                                currentScreen = AppScreen.CASH_IN_AMOUNT
+                            }
+                        )
+
+                        AppScreen.OVER_THE_COUNTER_PARTNERS -> OverTheCounterPartnersScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            onBackClick = { currentScreen = AppScreen.CASH_IN_OPTIONS },
+                            onPartnerClick = { source ->
+                                cashInSource = source
+                                previousScreen = AppScreen.OVER_THE_COUNTER_PARTNERS
+                                currentScreen = AppScreen.CASH_IN_AMOUNT
+                            }
+                        )
+
+                        AppScreen.CASH_IN_AMOUNT -> CashInAmountScreen(
+                            sourceName = cashInSource,
+                            modifier = Modifier.padding(innerPadding),
+                            onBackClick = { currentScreen = previousScreen },
+                            onNextClick = { currentScreen = AppScreen.CASH_IN_SUCCESS }
+                        )
+
+                        AppScreen.CASH_IN_SUCCESS -> CashInSuccessScreen(
+                            sourceName = cashInSource,
+                            modifier = Modifier.padding(innerPadding),
+                            onDoneClick = { currentScreen = AppScreen.HOME }
                         )
                     }
                 }
