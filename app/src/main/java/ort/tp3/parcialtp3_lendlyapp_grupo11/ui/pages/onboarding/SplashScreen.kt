@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import ort.tp3.parcialtp3_lendlyapp_grupo11.Greeting
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
 
@@ -31,7 +30,7 @@ fun SplashScreen() {
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun SplashScreenPreview() {
     ParcialTP3_LendlyApp_Grupo11Theme {
         SplashScreen()
     }
