@@ -19,17 +19,17 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenDark2
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
 
 @Composable
 fun HomeTopBar(
+    avatarUrl: String,
     modifier: Modifier = Modifier,
     onNotificationClick: () -> Unit = {}
 ) {
@@ -41,7 +41,7 @@ fun HomeTopBar(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            RoundTextIcon(text = "U")
+            UserAvatar(avatarUrl = avatarUrl)
             Spacer(modifier = Modifier.weight(1f))
             NotificationBellButton(onClick = onNotificationClick)
         }
@@ -50,6 +50,24 @@ fun HomeTopBar(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "Lendly logo",
             modifier = Modifier.size(width = 54.dp, height = 28.dp)
+        )
+    }
+}
+
+@Composable
+private fun UserAvatar(avatarUrl: String) {
+    Box(
+        modifier = Modifier
+            .size(32.dp)
+            .clip(CircleShape)
+            .background(GreenDark2),
+        contentAlignment = Alignment.Center
+    ) {
+        AsyncImage(
+            model = avatarUrl,
+            contentDescription = "User avatar",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.size(32.dp)
         )
     }
 }
@@ -101,28 +119,5 @@ private fun NotificationBellButton(onClick: () -> Unit) {
                 center = Offset(size.width * 0.50f, size.height * 0.86f)
             )
         }
-    }
-}
-
-@Composable
-private fun RoundTextIcon(
-    text: String,
-    onClick: () -> Unit = {}
-) {
-    Box(
-        modifier = Modifier
-            .size(32.dp)
-            .clip(CircleShape)
-            .background(GreenDark2)
-            .clickable { onClick() },
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = text,
-            color = BlackFont,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.SemiBold,
-            fontFamily = interSemiBold
-        )
     }
 }

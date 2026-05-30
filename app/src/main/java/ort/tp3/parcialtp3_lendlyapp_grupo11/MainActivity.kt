@@ -23,7 +23,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.cashin.CashInOptionsScree
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.cashin.CashInSuccessScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.cashin.OnlineCashInOptionsScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.cashin.OverTheCounterPartnersScreen
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home.HomeScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home.HomeRoute
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home.NotificationScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
 
@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding)
                     ) {
                         composable(AppRoute.HOME) {
-                            HomeScreen(
+                            HomeRoute(
                                 onCashInClick = { navController.navigate(AppRoute.CASH_IN_OPTIONS) },
                                 onNotificationClick = { navController.navigate(AppRoute.NOTIFICATIONS) }
                             )

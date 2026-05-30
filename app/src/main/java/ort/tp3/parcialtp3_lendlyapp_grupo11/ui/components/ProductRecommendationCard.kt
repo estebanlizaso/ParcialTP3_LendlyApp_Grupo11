@@ -15,11 +15,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenDark2
@@ -29,10 +29,10 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
 @Composable
 fun ProductRecommendationCard(
     title: String,
+    imageUrl: String,
     price: String,
     term: String,
-    modifier: Modifier = Modifier,
-    productInitial: String = title.take(1)
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
@@ -54,12 +54,11 @@ fun ProductRecommendationCard(
                     .background(GreenDark2),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = productInitial,
-                    color = BlackFont,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    fontFamily = interSemiBold
+                AsyncImage(
+                    model = imageUrl,
+                    contentDescription = title,
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier.size(44.dp)
                 )
             }
         }
