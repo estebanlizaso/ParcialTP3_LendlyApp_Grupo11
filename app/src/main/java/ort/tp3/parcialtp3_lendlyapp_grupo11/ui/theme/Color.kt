@@ -26,3 +26,7 @@ val GreenLight2 = Color(0xFFB1D18A)
 val SplashScreenGreen = Color(0xFFE5F5EA)
 
 val GreenLight3 = Color(0xFFFCF8F8)
+
+val GreenText = Color(0xFFB1D18A)
+
+val LightGreenText = Color(0xFFE5F5EA)
