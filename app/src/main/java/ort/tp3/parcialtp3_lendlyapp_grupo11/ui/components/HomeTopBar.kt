@@ -1,7 +1,9 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,7 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -25,7 +30,8 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
 
 @Composable
 fun HomeTopBar(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNotificationClick: () -> Unit = {}
 ) {
     Box(
         modifier = modifier.fillMaxWidth(),
@@ -37,7 +43,7 @@ fun HomeTopBar(
         ) {
             RoundTextIcon(text = "U")
             Spacer(modifier = Modifier.weight(1f))
-            RoundTextIcon(text = "!")
+            NotificationBellButton(onClick = onNotificationClick)
         }
 
         Image(
@@ -49,12 +55,66 @@ fun HomeTopBar(
 }
 
 @Composable
-private fun RoundTextIcon(text: String) {
+private fun NotificationBellButton(onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .size(32.dp)
             .clip(CircleShape)
-            .background(GreenDark2),
+            .background(GreenDark2)
+            .clickable { onClick() },
+        contentAlignment = Alignment.Center
+    ) {
+        Canvas(modifier = Modifier.size(17.dp)) {
+            val strokeWidth = 1.6.dp.toPx()
+            val bell = Path().apply {
+                moveTo(size.width * 0.26f, size.height * 0.70f)
+                cubicTo(
+                    size.width * 0.30f, size.height * 0.58f,
+                    size.width * 0.30f, size.height * 0.36f,
+                    size.width * 0.50f, size.height * 0.28f
+                )
+                cubicTo(
+                    size.width * 0.70f, size.height * 0.36f,
+                    size.width * 0.70f, size.height * 0.58f,
+                    size.width * 0.74f, size.height * 0.70f
+                )
+                lineTo(size.width * 0.82f, size.height * 0.78f)
+                lineTo(size.width * 0.18f, size.height * 0.78f)
+                close()
+            }
+
+            drawPath(
+                path = bell,
+                color = BlackFont,
+                style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
+            )
+            drawLine(
+                color = BlackFont,
+                start = Offset(size.width * 0.44f, size.height * 0.22f),
+                end = Offset(size.width * 0.56f, size.height * 0.22f),
+                strokeWidth = strokeWidth,
+                cap = StrokeCap.Round
+            )
+            drawCircle(
+                color = BlackFont,
+                radius = 1.4.dp.toPx(),
+                center = Offset(size.width * 0.50f, size.height * 0.86f)
+            )
+        }
+    }
+}
+
+@Composable
+private fun RoundTextIcon(
+    text: String,
+    onClick: () -> Unit = {}
+) {
+    Box(
+        modifier = Modifier
+            .size(32.dp)
+            .clip(CircleShape)
+            .background(GreenDark2)
+            .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
         Text(

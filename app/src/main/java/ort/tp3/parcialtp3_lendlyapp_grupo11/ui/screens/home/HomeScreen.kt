@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AccountBalanceCard
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppBottomNavigationBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.BottomNavItem
@@ -33,7 +34,8 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    onCashInClick: () -> Unit = {}
+    onCashInClick: () -> Unit = {},
+    onNotificationClick: () -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -42,7 +44,7 @@ fun HomeScreen(
             .padding(horizontal = 24.dp)
     ) {
         Spacer(modifier = Modifier.height(24.dp))
-        HomeTopBar()
+        HomeTopBar(onNotificationClick = onNotificationClick)
 
         Spacer(modifier = Modifier.height(34.dp))
         Text(
@@ -68,13 +70,13 @@ fun HomeScreen(
                 brandName = "Nike Inc.",
                 amount = "P400.00",
                 feeLabel = "Fees of February",
-                brandInitial = "N"
+                imageRes = R.drawable.logo_nike
             )
             LoanListItem(
                 brandName = "Apple Inc.",
                 amount = "P1500.00",
                 feeLabel = "Fees of March",
-                brandInitial = "A"
+                imageRes = R.drawable.logo_apple
             )
         }
 

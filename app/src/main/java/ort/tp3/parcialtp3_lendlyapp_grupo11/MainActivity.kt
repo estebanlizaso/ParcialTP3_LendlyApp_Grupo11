@@ -13,6 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppLabel
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.cashin.CashInAmountScreen
@@ -21,15 +24,17 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.cashin.CashInSuccessScree
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.cashin.OnlineCashInOptionsScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.cashin.OverTheCounterPartnersScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home.HomeScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home.NotificationScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
 
-private enum class AppScreen {
-    HOME,
-    CASH_IN_OPTIONS,
-    ONLINE_CASH_IN_OPTIONS,
-    OVER_THE_COUNTER_PARTNERS,
-    CASH_IN_AMOUNT,
-    CASH_IN_SUCCESS
+private object AppRoute {
+    const val HOME = "home"
+    const val NOTIFICATIONS = "notifications"
+    const val CASH_IN_OPTIONS = "cash_in_options"
+    const val ONLINE_CASH_IN_OPTIONS = "online_cash_in_options"
+    const val OVER_THE_COUNTER_PARTNERS = "over_the_counter_partners"
+    const val CASH_IN_AMOUNT = "cash_in_amount"
+    const val CASH_IN_SUCCESS = "cash_in_success"
 }
 
 class MainActivity : ComponentActivity() {
@@ -38,56 +43,73 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ParcialTP3_LendlyApp_Grupo11Theme {
-                var currentScreen by remember { mutableStateOf(AppScreen.HOME) }
-                var previousScreen by remember { mutableStateOf(AppScreen.CASH_IN_OPTIONS) }
+                val navController = rememberNavController()
                 var cashInSource by remember { mutableStateOf("BPI") }
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    when (currentScreen) {
-                        AppScreen.HOME -> HomeScreen(
-                            modifier = Modifier.padding(innerPadding),
-                            onCashInClick = { currentScreen = AppScreen.CASH_IN_OPTIONS }
-                        )
+                    NavHost(
+                        navController = navController,
+                        startDestination = AppRoute.HOME,
+                        modifier = Modifier.padding(innerPadding)
+                    ) {
+                        composable(AppRoute.HOME) {
+                            HomeScreen(
+                                onCashInClick = { navController.navigate(AppRoute.CASH_IN_OPTIONS) },
+                                onNotificationClick = { navController.navigate(AppRoute.NOTIFICATIONS) }
+                            )
+                        }
 
-                        AppScreen.CASH_IN_OPTIONS -> CashInOptionsScreen(
-                            modifier = Modifier.padding(innerPadding),
-                            onBackClick = { currentScreen = AppScreen.HOME },
-                            onOnlineBankingClick = { currentScreen = AppScreen.ONLINE_CASH_IN_OPTIONS },
-                            onOverTheCounterClick = { currentScreen = AppScreen.OVER_THE_COUNTER_PARTNERS }
-                        )
+                        composable(AppRoute.NOTIFICATIONS) {
+                            NotificationScreen(onBackClick = { navController.popBackStack() })
+                        }
 
-                        AppScreen.ONLINE_CASH_IN_OPTIONS -> OnlineCashInOptionsScreen(
-                            modifier = Modifier.padding(innerPadding),
-                            onBackClick = { currentScreen = AppScreen.CASH_IN_OPTIONS },
-                            onOptionClick = { source ->
-                                cashInSource = source
-                                previousScreen = AppScreen.ONLINE_CASH_IN_OPTIONS
-                                currentScreen = AppScreen.CASH_IN_AMOUNT
-                            }
-                        )
+                        composable(AppRoute.CASH_IN_OPTIONS) {
+                            CashInOptionsScreen(
+                                onBackClick = { navController.popBackStack() },
+                                onOnlineBankingClick = { navController.navigate(AppRoute.ONLINE_CASH_IN_OPTIONS) },
+                                onOverTheCounterClick = { navController.navigate(AppRoute.OVER_THE_COUNTER_PARTNERS) }
+                            )
+                        }
 
-                        AppScreen.OVER_THE_COUNTER_PARTNERS -> OverTheCounterPartnersScreen(
-                            modifier = Modifier.padding(innerPadding),
-                            onBackClick = { currentScreen = AppScreen.CASH_IN_OPTIONS },
-                            onPartnerClick = { source ->
-                                cashInSource = source
-                                previousScreen = AppScreen.OVER_THE_COUNTER_PARTNERS
-                                currentScreen = AppScreen.CASH_IN_AMOUNT
-                            }
-                        )
+                        composable(AppRoute.ONLINE_CASH_IN_OPTIONS) {
+                            OnlineCashInOptionsScreen(
+                                onBackClick = { navController.popBackStack() },
+                                onOptionClick = { source ->
+                                    cashInSource = source
+                                    navController.navigate(AppRoute.CASH_IN_AMOUNT)
+                                }
+                            )
+                        }
 
-                        AppScreen.CASH_IN_AMOUNT -> CashInAmountScreen(
-                            sourceName = cashInSource,
-                            modifier = Modifier.padding(innerPadding),
-                            onBackClick = { currentScreen = previousScreen },
-                            onNextClick = { currentScreen = AppScreen.CASH_IN_SUCCESS }
-                        )
+                        composable(AppRoute.OVER_THE_COUNTER_PARTNERS) {
+                            OverTheCounterPartnersScreen(
+                                onBackClick = { navController.popBackStack() },
+                                onPartnerClick = { source ->
+                                    cashInSource = source
+                                    navController.navigate(AppRoute.CASH_IN_AMOUNT)
+                                }
+                            )
+                        }
 
-                        AppScreen.CASH_IN_SUCCESS -> CashInSuccessScreen(
-                            sourceName = cashInSource,
-                            modifier = Modifier.padding(innerPadding),
-                            onDoneClick = { currentScreen = AppScreen.HOME }
-                        )
+                        composable(AppRoute.CASH_IN_AMOUNT) {
+                            CashInAmountScreen(
+                                sourceName = cashInSource,
+                                onBackClick = { navController.popBackStack() },
+                                onNextClick = { navController.navigate(AppRoute.CASH_IN_SUCCESS) }
+                            )
+                        }
+
+                        composable(AppRoute.CASH_IN_SUCCESS) {
+                            CashInSuccessScreen(
+                                sourceName = cashInSource,
+                                onDoneClick = {
+                                    navController.navigate(AppRoute.HOME) {
+                                        popUpTo(AppRoute.HOME)
+                                        launchSingleTop = true
+                                    }
+                                }
+                            )
+                        }
                     }
                 }
             }
