@@ -1,6 +1,7 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.pages.onboarding
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.component.Logo
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.DarkGreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenText
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.LightGreenText
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
@@ -34,9 +36,16 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.montserratFonts
 
 @Composable
-fun Onboarding1() {
+fun Onboarding1(
+    modifier: Modifier = Modifier,
+    onGetStarted: () -> Unit = {},
+    //TODO: Seguir revisando que agregar acá
+    //TODO: Primero traerme los botones desde main así puedo ir armando la navegación.
+) {
     Column (
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(DarkGreen),
         horizontalAlignment = CenterHorizontally
     ) {
         Row(
@@ -92,7 +101,7 @@ TODO: Revisar creación del botón para usarlo en esta página
     }
 }
 
-@Preview(showBackground = false )
+@Preview(showBackground = false)
 @Composable
 fun Onboarding1Preview() {
     ParcialTP3_LendlyApp_Grupo11Theme {
