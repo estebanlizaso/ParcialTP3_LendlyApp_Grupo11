@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -24,16 +25,30 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
+import ort.tp3.parcialtp3_lendlyapp_grupo11.SessionManager
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppTextField
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.LoginUiState
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.LoginViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(
+fun LoginPage(
+    modifier: Modifier = Modifier,
     onLoginSuccess: () -> Unit
 ) {
+    // contexto y SessionManager
+    val context = LocalContext.current
+    val sessionManager = remember { SessionManager(context) }
+    // instanciamos ViewModel
+    val viewModel: LoginViewModel = remember { LoginViewModel(sessionManager = sessionManager) }
+    // estado de la UI
+    val uiState by viewModel.uiState.collectAsState()
+
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
+    // numero hardcodeado de figma ya que no hay pantalla de login con telefono
+    val phoneValue = "+63923456790"
 
     val interBold = FontFamily(Font(R.font.interbold, FontWeight.Bold))
     val interRegular = FontFamily(Font(R.font.interregular, FontWeight.Normal))
@@ -43,6 +58,24 @@ fun LoginScreen(
 
     // sacar el fondo gris del click
     val interactionSource = remember { MutableInteractionSource() }
+
+    when (val state = uiState) {
+        is LoginUiState.Success -> {
+            LaunchedEffect(Unit) {
+                onLoginSuccess()
+                viewModel.resetState()
+            }
+        }
+        is LoginUiState.Error -> {
+            // muestra un error
+            Text(
+                text = state.message,
+                color = Color.Red,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+        else -> {}
+    }
 
     Column(
         modifier = Modifier
@@ -161,21 +194,21 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(12.dp))
 
         AppButton(
-            text = "Log In",
+            text = if (uiState is LoginUiState.Loading) "Loading..." else "Log In",
+            onClick = { viewModel.login(phone = phoneValue, password = password) },
+            enabled = uiState !is LoginUiState.Loading,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp),
-            onClick = {
-                onLoginSuccess()
-            }
+                .padding(horizontal = 24.dp)
+                .navigationBarsPadding() // separar de los botones de android
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun LoginScreenPreview() {
-    LoginScreen(
+fun LoginPagePreview() {
+    LoginPage(
         onLoginSuccess = { }
     )
 }
