@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -28,9 +29,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.component.Logo
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.PagerIndicator
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.DarkGreen
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenText
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.LightGreenText
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenLight2
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.SplashScreenGreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.montserratFonts
@@ -39,62 +43,73 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.montserratFonts
 fun Onboarding1(
     modifier: Modifier = Modifier,
     onGetStarted: () -> Unit = {},
-    //TODO: Seguir revisando que agregar acá
-    //TODO: Primero traerme los botones desde main así puedo ir armando la navegación.
 ) {
     Column (
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
-            .background(DarkGreen),
-        horizontalAlignment = CenterHorizontally
+            .background(DarkGreen)
+            .padding(bottom = 32.dp),
+        horizontalAlignment = CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        )  {
+        Column(horizontalAlignment = CenterHorizontally) {
+            Spacer(Modifier.height(16.dp))
             Logo()
-        }
+            
+            Spacer(Modifier.height(32.dp))
 
+            Image(
+                painter = painterResource(id = R.drawable.onboarding_quick_loans),
+                contentDescription = "Onboarding Image",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(350.dp),
+                contentScale = ContentScale.Fit
+            )
 
+            Spacer(Modifier.height(48.dp))
 
-        Spacer(Modifier.height(24.dp))
-
-        Image(
-            painter = painterResource(id = R.drawable.onboarding_quick_loans),
-            contentDescription = "Logo",
-            modifier = Modifier.fillMaxWidth().padding(start = 16.dp),
-            contentScale = ContentScale.Fit
-        )
-
-        Spacer(Modifier.height(32.dp))
-
-        Column(
-            modifier = Modifier.padding(16.dp),
-        ) {
             Text(
                 text = stringResource(R.string.onboarding1_title),
                 fontFamily = montserratFonts,
                 fontSize = 32.sp,
-                fontWeight = FontWeight.ExtraBold,
+                fontWeight = FontWeight.Bold,
                 lineHeight = 40.sp,
                 textAlign = TextAlign.Center,
-                color = GreenText,
-                modifier = Modifier.fillMaxWidth()
+                color = GreenLight2,
+                modifier = Modifier.padding(horizontal = 24.dp)
             )
 
-            Spacer(Modifier.height(32.dp))
-/*
-TODO: Revisar alineación del texto
-TODO: Revisar creación del botón para usarlo en esta página
-*/
+            Spacer(Modifier.height(24.dp))
+
             Text(
                 text = stringResource(R.string.onboarding1_subtitle),
                 fontFamily = interFonts,
-                fontSize = 22.sp,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Normal,
                 lineHeight = 28.sp,
                 textAlign = TextAlign.Center,
-                color = LightGreenText,
+                color = SplashScreenGreen,
+                modifier = Modifier.padding(horizontal = 32.dp)
+            )
+        }
+
+        Column(
+            horizontalAlignment = CenterHorizontally,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp)
+        ) {
+            PagerIndicator(
+                count = 3,
+                selectedIndex = 0,
+                selectedColor = Green,
+                unselectedColor = Color(0xFF1B3B1D)
+            )
+
+            Spacer(Modifier.height(48.dp))
+
+            AppButton(
+                text = "Get Started",
+                onClick = onGetStarted,
                 modifier = Modifier.fillMaxWidth()
             )
         }
