@@ -67,7 +67,7 @@ fun Onboarding1(
 
             Image(
                 painter = painterResource(id = R.drawable.onboarding_quick_loans),
-                contentDescription = "Onboarding Image",
+                contentDescription = R.string.onboarding1_title.toString(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(350.dp),

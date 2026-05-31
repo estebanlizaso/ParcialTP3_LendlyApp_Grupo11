@@ -9,12 +9,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenLight2
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenSubtitleText
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenTitleText
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.montserratFonts
 
@@ -36,21 +38,24 @@ fun OnboardingText(
             fontWeight = FontWeight.Bold,
             lineHeight = 40.sp,
             textAlign = TextAlign.Center,
-            color = GreenLight2,
+            color = GreenTitleText,
             modifier = Modifier.padding(horizontal = 24.dp)
         )
 
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(16.dp))
 
         Text(
             text = subtitle,
-            fontFamily = interFonts,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Normal,
-            lineHeight = 28.sp,
-            textAlign = TextAlign.Center,
+            style = TextStyle(
+                fontFamily = interFonts,
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Normal,
+                lineHeight = 28.sp,
+                textAlign = TextAlign.Center,
+                lineBreak = LineBreak.Heading
+            ),
             color = GreenSubtitleText,
-            modifier = Modifier.padding(horizontal = 85.dp)
+            modifier = Modifier.padding(horizontal = 48.dp)
         )
     }
 }
