@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
@@ -68,4 +69,14 @@ fun AppTextField(
             )
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AppTextFieldPreview() {
+    AppTextField(
+        value = "Texto de ejemplo",
+        onValueChange = {},
+        labelText = "Etiqueta"
+    )
 }

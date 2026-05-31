@@ -6,6 +6,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
 
@@ -33,4 +34,13 @@ fun AppBottomBar(
             onClick = onClick
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AppBottomBarPreview() {
+    AppBottomBar(
+        buttonText = "Continuar",
+        onClick = {}
+    )
 }
