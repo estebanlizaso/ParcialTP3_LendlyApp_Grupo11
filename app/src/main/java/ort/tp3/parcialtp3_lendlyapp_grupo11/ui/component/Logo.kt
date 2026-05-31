@@ -21,7 +21,7 @@ fun Logo(
     Image(
         painter = painterResource(id = R.drawable.logo),
         contentDescription = "Logo",
-        modifier = modifier.aspectRatio(1f),
+        modifier = modifier.aspectRatio(117f / 40f),
         contentScale = ContentScale.Fit
     )
 }
