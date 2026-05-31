@@ -2,6 +2,7 @@ package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -15,17 +16,12 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 
 @Composable
 fun Logo(
-
+    modifier: Modifier = Modifier
 ) {
-    Box(
-        modifier = Modifier.size(100.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = "Logo",
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Fit
-        )
-    }
+    Image(
+        painter = painterResource(id = R.drawable.logo),
+        contentDescription = "Logo",
+        modifier = modifier.aspectRatio(1f),
+        contentScale = ContentScale.Fit
+    )
 }

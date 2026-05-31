@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -59,7 +60,7 @@ fun Onboarding1(
     ) {
         Column(horizontalAlignment = CenterHorizontally) {
             Spacer(Modifier.height(16.dp))
-            Logo()
+            Logo(modifier = Modifier.width(117.dp))
             
             Spacer(Modifier.height(32.dp))
 

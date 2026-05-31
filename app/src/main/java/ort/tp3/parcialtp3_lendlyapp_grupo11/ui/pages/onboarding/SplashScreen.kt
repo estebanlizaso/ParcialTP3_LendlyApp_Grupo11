@@ -14,6 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.component.Logo
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.SplashScreenGreen
 
@@ -32,11 +33,8 @@ fun SplashScreen(onTimeout: () -> Unit = {}) {
             .background(SplashScreenGreen),
         contentAlignment = Alignment.Center
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = "Logo",
-            modifier = Modifier.fillMaxWidth(0.62f),
-            contentScale = ContentScale.Fit
+        Logo(
+            modifier = Modifier.size(242.dp)
         )
     }
 }
