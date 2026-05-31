@@ -13,14 +13,14 @@ import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
     primary = SplashScreenGreen,
-    secondary = GreenText,
+    secondary = GreenTitleText,
     tertiary = LightGreenText,
     background = DarkGreen
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = SplashScreenGreen,
-    secondary = GreenText,
+    secondary = GreenTitleText,
     tertiary = LightGreenText
 
     /* Other default colors to override
