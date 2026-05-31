@@ -16,7 +16,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
+
 
 enum class ButtonType {
     FILLED,
@@ -85,7 +86,7 @@ fun AppButton(
                 text = text,
                 color = finalTextColor,
                 fontWeight = FontWeight.SemiBold,
-                fontFamily = interSemiBold
+                fontFamily = interFonts
             )
         }
     }
