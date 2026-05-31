@@ -7,10 +7,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -44,10 +46,13 @@ fun Onboarding1(
     modifier: Modifier = Modifier,
     onGetStarted: () -> Unit = {},
 ) {
+    val systemBarsPadding = androidx.compose.foundation.layout.WindowInsets.systemBars.asPaddingValues()
+
     Column (
         modifier = modifier
             .fillMaxSize()
             .background(DarkGreen)
+            .padding(systemBarsPadding)
             .padding(bottom = 32.dp),
         horizontalAlignment = CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween

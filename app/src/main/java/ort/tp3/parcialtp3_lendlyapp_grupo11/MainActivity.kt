@@ -28,15 +28,12 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
 
                 Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    containerColor = SplashScreenGreen
+                    modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->
-                    val layoutDirection = LocalLayoutDirection.current
                     NavHost(
                         navController = navController,
                         startDestination = Screen.Splash.route,
-                        modifier = Modifier.padding(innerPadding
-                        )
+                        modifier = Modifier.fillMaxSize()
                     ) {
                         composable(Screen.Splash.route) {
                             SplashScreen(

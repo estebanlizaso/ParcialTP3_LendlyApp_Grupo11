@@ -1,6 +1,7 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.pages.onboarding
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.SplashScreenGreen
 
 import androidx.compose.runtime.LaunchedEffect
 import kotlinx.coroutines.delay
@@ -25,7 +27,9 @@ fun SplashScreen(onTimeout: () -> Unit = {}) {
         onTimeout()
     }
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(SplashScreenGreen),
         contentAlignment = Alignment.Center
     ) {
         Image(
