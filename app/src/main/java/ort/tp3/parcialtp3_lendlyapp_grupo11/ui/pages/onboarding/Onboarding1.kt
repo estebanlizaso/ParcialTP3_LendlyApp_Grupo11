@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.component.Logo
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.OnboardingText
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.PagerIndicator
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.DarkGreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
@@ -59,7 +60,7 @@ fun Onboarding1(
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column(horizontalAlignment = CenterHorizontally) {
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(32.dp))
             Logo(modifier = Modifier.width(117.dp))
             
             Spacer(Modifier.height(32.dp))
@@ -73,30 +74,11 @@ fun Onboarding1(
                 contentScale = ContentScale.Fit
             )
 
-            Spacer(Modifier.height(48.dp))
+            Spacer(Modifier.height(32.dp))
 
-            Text(
-                text = stringResource(R.string.onboarding1_title),
-                fontFamily = montserratFonts,
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold,
-                lineHeight = 40.sp,
-                textAlign = TextAlign.Center,
-                color = GreenLight2,
-                modifier = Modifier.padding(horizontal = 24.dp)
-            )
-
-            Spacer(Modifier.height(24.dp))
-
-            Text(
-                text = stringResource(R.string.onboarding1_subtitle),
-                fontFamily = interFonts,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Normal,
-                lineHeight = 28.sp,
-                textAlign = TextAlign.Center,
-                color = SplashScreenGreen,
-                modifier = Modifier.padding(horizontal = 32.dp)
+            OnboardingText(
+                title = stringResource(R.string.onboarding1_title),
+                subtitle = stringResource(R.string.onboarding1_subtitle)
             )
         }
 
@@ -111,7 +93,7 @@ fun Onboarding1(
                 unselectedColor = Color(0xFF1B3B1D)
             )
 
-            Spacer(Modifier.height(48.dp))
+            Spacer(Modifier.height(32.dp))
 
             AppButton(
                 text = "Get Started",
