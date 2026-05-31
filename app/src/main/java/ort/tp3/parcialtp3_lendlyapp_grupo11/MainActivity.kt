@@ -4,23 +4,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.navigation.Screen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.pages.onboarding.Onboarding1
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.pages.onboarding.SplashScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.SplashScreenGreen
@@ -31,20 +25,40 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ParcialTP3_LendlyApp_Grupo11Theme {
-                Scaffold( modifier = Modifier.fillMaxSize(),
+                val navController = rememberNavController()
+
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
                     containerColor = SplashScreenGreen
-                    ) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                ) { innerPadding ->
+                    val layoutDirection = LocalLayoutDirection.current
+                    NavHost(
+                        navController = navController,
+                        startDestination = Screen.Splash.route,
+                        modifier = Modifier.padding(innerPadding
+                        )
+                    ) {
+                        composable(Screen.Splash.route) {
+                            SplashScreen(
+                                onTimeout = {
+                                    navController.navigate(Screen.Onboarding1.route) {
+                                        popUpTo(Screen.Splash.route) { inclusive = true }
+                                    }
+                                }
+                            )
+                        }
+                        composable(Screen.Onboarding1.route) {
+                            Onboarding1(
+                                onGetStarted = {
+                                    // TODO: navegar a Onboarding2
+                                    // navController.navigate(Screen.Onboarding2.route)
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    SplashScreen()
-}
