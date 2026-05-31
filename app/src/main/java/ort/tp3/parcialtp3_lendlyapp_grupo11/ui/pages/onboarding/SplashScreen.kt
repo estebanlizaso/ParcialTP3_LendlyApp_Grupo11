@@ -15,8 +15,15 @@ import androidx.compose.ui.unit.dp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
 
+import androidx.compose.runtime.LaunchedEffect
+import kotlinx.coroutines.delay
+
 @Composable
-fun SplashScreen() {
+fun SplashScreen(onTimeout: () -> Unit = {}) {
+    LaunchedEffect(Unit) {
+        delay(2000) // 2 seconds delay
+        onTimeout()
+    }
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
