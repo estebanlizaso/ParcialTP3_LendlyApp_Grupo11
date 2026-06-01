@@ -2,7 +2,6 @@ package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.pages.onboarding
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
@@ -16,9 +15,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.OnboardingPage
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.OnboardingText
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.PagerIndicator
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.onboarding.OnboardingPage
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.onboarding.OnboardingText
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.onboarding.PagerIndicator
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
 

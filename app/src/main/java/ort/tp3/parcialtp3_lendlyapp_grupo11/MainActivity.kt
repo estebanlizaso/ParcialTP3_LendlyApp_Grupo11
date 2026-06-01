@@ -6,10 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -27,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -38,17 +35,13 @@ import kotlinx.coroutines.launch
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.component.Logo
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.ButtonType
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.OnboardingText
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.PagerIndicator
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.onboarding.OnboardingText
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.onboarding.PagerIndicator
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.navigation.Screen
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.pages.onboarding.Onboarding1
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.pages.onboarding.Onboarding2
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.pages.onboarding.Onboarding3
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.pages.onboarding.SplashScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.DarkGreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.SplashScreenGreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
