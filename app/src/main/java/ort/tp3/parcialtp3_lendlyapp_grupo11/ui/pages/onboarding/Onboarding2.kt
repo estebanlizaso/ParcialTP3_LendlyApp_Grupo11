@@ -54,7 +54,7 @@ fun Onboarding2(
             Spacer(Modifier.height(32.dp))
 
             AppButton(
-                text = "Get Started",
+                text = stringResource(R.string.onboarding2_get_started_button),
                 onClick = onGetStarted,
                 modifier = Modifier.fillMaxWidth()
             )

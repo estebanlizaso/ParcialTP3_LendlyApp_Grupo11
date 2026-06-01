@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.ButtonType
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.OnboardingPage
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.OnboardingText
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.PagerIndicator
@@ -54,8 +55,19 @@ fun Onboarding3(
             Spacer(Modifier.height(32.dp))
 
             AppButton(
-                text = "Get Started",
-                onClick = onGetStarted,
+                text = stringResource(R.string.onboarding3_login_button),
+                onClick = { /* TODO: Log In */ },
+                type = ButtonType.OUTLINED,
+                borderColor = Color.White,
+                textColor = Color.White,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(Modifier.height(16.dp))
+
+            AppButton(
+                text = stringResource(R.string.onboarding3_register_button),
+                onClick = { /* TODO: Sign Up */ },
                 modifier = Modifier.fillMaxWidth()
             )
         }
