@@ -20,6 +20,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +30,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -42,6 +45,20 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.pages.onboarding.SplashScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.DarkGreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
+
+@Composable
+fun PlaceholderScreen(title: String, onBack: () -> Unit) {
+    Box(
+        modifier = Modifier.fillMaxSize().background(DarkGreen),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(text = title, color = Color.White, fontSize = 24.sp)
+            Spacer(modifier = Modifier.height(16.dp))
+            AppButton(text = "Go Back", onClick = onBack)
+        }
+    }
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,8 +79,17 @@ class MainActivity : ComponentActivity() {
                         composable(Screen.Splash.route) {
                             SplashScreen(
                                 onTimeout = {
-                                    navController.navigate("onboarding_flow") {
-                                        popUpTo(Screen.Splash.route) { inclusive = true }
+                                    // Placeholder para lógica de login persistente
+                                    val isUserLoggedIn = false // Cambiar a true para probar navegación a Home
+
+                                    if (isUserLoggedIn) {
+                                        navController.navigate(Screen.Home.route) {
+                                            popUpTo(Screen.Splash.route) { inclusive = true }
+                                        }
+                                    } else {
+                                        navController.navigate("onboarding_flow") {
+                                            popUpTo(Screen.Splash.route) { inclusive = true }
+                                        }
                                     }
                                 }
                             )
@@ -171,7 +197,9 @@ class MainActivity : ComponentActivity() {
                                     } else {
                                         AppButton(
                                             text = stringResource(R.string.onboarding3_login_button),
-                                            onClick = { /* TODO: Log In */ },
+                                            onClick = { 
+                                                navController.navigate(Screen.Login.route)
+                                            },
                                             type = ButtonType.OUTLINED,
                                             borderColor = Color.White,
                                             textColor = Color.White,
@@ -182,12 +210,25 @@ class MainActivity : ComponentActivity() {
 
                                         AppButton(
                                             text = stringResource(R.string.onboarding3_register_button),
-                                            onClick = { /* TODO: Sign Up */ },
+                                            onClick = { 
+                                                navController.navigate(Screen.Signup.route)
+                                            },
                                             modifier = Modifier.fillMaxWidth()
                                         )
                                     }
                                 }
                             }
+                        }
+
+                        // PLACEHOLDERS PARA FUTURAS PANTALLAS
+                        composable(Screen.Login.route) {
+                            PlaceholderScreen(title = "Login Screen", onBack = { navController.popBackStack() })
+                        }
+                        composable(Screen.Signup.route) {
+                            PlaceholderScreen(title = "Sign-up Screen", onBack = { navController.popBackStack() })
+                        }
+                        composable(Screen.Home.route) {
+                            PlaceholderScreen(title = "Home Screen", onBack = { navController.popBackStack() })
                         }
                     }
                 }
