@@ -23,8 +23,8 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.montserratFonts
 @Composable
 fun OnboardingText(
     title: String,
-    subtitle: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    subtitle: String = ""
 ) {
     Column(
         modifier = modifier
@@ -42,20 +42,22 @@ fun OnboardingText(
             modifier = Modifier.padding(horizontal = 24.dp)
         )
 
-        Spacer(Modifier.height(16.dp))
+        if (subtitle.isNotEmpty()) {
+            Spacer(Modifier.height(20.dp))
 
-        Text(
-            text = subtitle,
-            style = TextStyle(
-                fontFamily = interFonts,
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Normal,
-                lineHeight = 28.sp,
-                textAlign = TextAlign.Center,
-                lineBreak = LineBreak.Heading
-            ),
-            color = GreenSubtitleText,
-            modifier = Modifier.padding(horizontal = 48.dp)
-        )
+            Text(
+                text = subtitle,
+                style = TextStyle(
+                    fontFamily = interFonts,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Normal,
+                    lineHeight = 28.sp,
+                    textAlign = TextAlign.Center,
+                    lineBreak = LineBreak.Heading
+                ),
+                color = GreenSubtitleText,
+                modifier = Modifier.padding(horizontal = 48.dp)
+            )
+        }
     }
 }
