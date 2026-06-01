@@ -1,6 +1,5 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

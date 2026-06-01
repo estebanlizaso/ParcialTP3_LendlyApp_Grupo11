@@ -71,7 +71,7 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize()
-                ) { _ ->
+                ) { innerPadding ->
                     NavHost(
                         navController = navController,
                         startDestination = Screen.Splash.route,
