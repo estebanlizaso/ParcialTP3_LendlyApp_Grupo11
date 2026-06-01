@@ -1,38 +1,28 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme
 
-import android.window.SplashScreen
 import androidx.compose.ui.graphics.Color
-import java.util.stream.Gatherer
 
-//Colores de Splash Screen y Onboarding
+// Colores de Splash Screen y Onboarding
 
-//Texto
+// Texto
 val GreenTitleText = Color(0xFFB1D18A)
 val GreenSubtitleText = Color(0xFFE5F5EA)
 
-//Background
+// Background
 val SplashScreenGreen = Color(0xFFE5F5EA)
 val DarkGreen = Color(0xFF002203)
 
-
-val Green = Color(0xFF7BF179)
-
-
-
+// PageIndicator
 val GreenLight = Color(0xFFEADDFF)
 
 
-//Colores de Home
-val GreenLight2 = Color(0xFFB1D18A)
+// Globales
+val Green = Color(0xFF7BF179)
+val White = Color.White
 
-
-
-val GreenLight3 = Color(0xFFFCF8F8)
-
-val GreenText = Color(0xFFB1D18A)
-
+// Colores de Home
 val LightGreenText = Color(0xFFE5F5EA)
 
-
-//Colores de texto
+// Colores de texto
 val BlackFont = Color(0xFF102000)
+

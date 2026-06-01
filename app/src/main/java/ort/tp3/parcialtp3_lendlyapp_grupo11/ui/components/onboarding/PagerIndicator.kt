@@ -11,14 +11,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenLight
 
 @Composable
 fun PagerIndicator(
     count: Int,
     selectedIndex: Int,
     modifier: Modifier = Modifier,
-    selectedColor: Color = Color(0xFF7BF179),//TODO:revisar color
-    unselectedColor: Color = Color(0xFF2E4D31)//TODO:revisar color
+    selectedColor: Color = Green,
+    unselectedColor: Color = GreenLight,
+    unselectedAlpha: Float = 0.16f
 ) {
     Row(
         modifier = modifier,
@@ -29,7 +32,10 @@ fun PagerIndicator(
                 modifier = Modifier
                     .size(10.dp)
                     .clip(CircleShape)
-                    .background(if (index == selectedIndex) selectedColor else unselectedColor)
+                    .background(
+                        if (index == selectedIndex) selectedColor
+                        else unselectedColor.copy(alpha = unselectedAlpha)
+                    )
             )
         }
     }

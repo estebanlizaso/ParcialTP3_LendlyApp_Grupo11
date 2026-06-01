@@ -44,7 +44,9 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.navigation.Screen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.pages.onboarding.SplashScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.DarkGreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenLight
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.White
 
 @Composable
 fun PlaceholderScreen(title: String, onBack: () -> Unit) {
@@ -53,7 +55,7 @@ fun PlaceholderScreen(title: String, onBack: () -> Unit) {
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = title, color = Color.White, fontSize = 24.sp)
+            Text(text = title, color = White, fontSize = 24.sp)
             Spacer(modifier = Modifier.height(16.dp))
             AppButton(text = "Go Back", onClick = onBack)
         }
@@ -176,7 +178,7 @@ class MainActivity : ComponentActivity() {
                                         count = 3,
                                         selectedIndex = pagerState.currentPage,
                                         selectedColor = Green,
-                                        unselectedColor = Color(0xFF1B3B1D)
+                                        unselectedColor = GreenLight
                                     )
 
                                     Spacer(Modifier.height(32.dp))
@@ -201,8 +203,8 @@ class MainActivity : ComponentActivity() {
                                                 navController.navigate(Screen.Login.route)
                                             },
                                             type = ButtonType.OUTLINED,
-                                            borderColor = Color.White,
-                                            textColor = Color.White,
+                                            borderColor = White,
+                                            textColor = White,
                                             modifier = Modifier.fillMaxWidth()
                                         )
 
