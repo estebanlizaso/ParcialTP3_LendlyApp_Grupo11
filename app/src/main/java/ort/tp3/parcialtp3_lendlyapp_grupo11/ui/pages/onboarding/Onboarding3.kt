@@ -41,7 +41,7 @@ fun Onboarding3(
         textContent = {
             OnboardingText(
                 title = stringResource(R.string.onboarding3_title)
-                // Subtitle is omitted, but illustration will keep the same space
+                // Este no tiene subtítulo
             )
         },
         footerContent = {

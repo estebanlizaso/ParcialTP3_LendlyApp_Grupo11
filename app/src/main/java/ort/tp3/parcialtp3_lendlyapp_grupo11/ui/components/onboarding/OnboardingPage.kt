@@ -35,13 +35,13 @@ fun OnboardingPage(
             .background(DarkGreen),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Logo Section (with Top Safe Area)
+        // Sección del logo
         Spacer(Modifier.height(systemBarsPadding.calculateTopPadding() + 32.dp))
         Logo(modifier = Modifier.width(117.dp))
         
         Spacer(Modifier.height(32.dp))
 
-        // Illustration Section (Centered with left padding)
+        // Sección de la imagen (centrada y con padding izquierdo)
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -53,7 +53,7 @@ fun OnboardingPage(
 
         Spacer(Modifier.height(32.dp))
 
-        // Content Section (Title, Subtitle, Pager, Button - with Safe Area)
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -63,7 +63,7 @@ fun OnboardingPage(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            // Text Group
+            // Texto (Título y subtítulo)
             Box(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
@@ -71,7 +71,7 @@ fun OnboardingPage(
                 textContent()
             }
 
-            // Footer (Pager + Button)
+            // Footer (Pager + Botones)
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally

@@ -113,7 +113,7 @@ class MainActivity : ComponentActivity() {
                                 
                                 Spacer(Modifier.height(32.dp))
 
-                                // ANIMATED CONTENT (Pager)
+                                // Pager
                                 HorizontalPager(
                                     state = pagerState,
                                     modifier = Modifier.weight(1f)
@@ -122,7 +122,7 @@ class MainActivity : ComponentActivity() {
                                         modifier = Modifier.fillMaxSize(),
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
-                                        // Illustration
+                                        // Imagen
                                         Box(
                                             modifier = Modifier
                                                 .fillMaxWidth()
@@ -146,7 +146,7 @@ class MainActivity : ComponentActivity() {
 
                                         Spacer(Modifier.height(32.dp))
 
-                                        // Text Group
+                                        // Texto
                                         OnboardingText(
                                             title = stringResource(
                                                 id = when (page) {
@@ -155,17 +155,16 @@ class MainActivity : ComponentActivity() {
                                                     else -> R.string.onboarding3_title
                                                 }
                                             ),
-                                            subtitle = if (page < 2) stringResource(
-                                                id = when (page) {
-                                                    0 -> R.string.onboarding1_subtitle
-                                                    else -> R.string.onboarding2_subtitle
-                                                }
-                                            ) else ""
+                                            subtitle = when (page) {
+                                                0 -> stringResource(R.string.onboarding1_subtitle)
+                                                1 -> stringResource(R.string.onboarding2_subtitle)
+                                                else -> ""
+                                            }
                                         )
                                     }
                                 }
 
-                                // STATIC FOOTER (Indicator + Buttons)
+                                // Indicador + Botones
                                 Column(
                                     modifier = Modifier
                                         .fillMaxWidth()

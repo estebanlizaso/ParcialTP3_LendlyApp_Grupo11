@@ -14,11 +14,13 @@ val DarkGreen = Color(0xFF002203)
 
 // PageIndicator
 val GreenLight = Color(0xFFEADDFF)
-
+//-------------------------------------------------------
 
 // Globales
 val Green = Color(0xFF7BF179)
 val White = Color.White
+
+//-------------------------------------------------------
 
 // Colores de Home
 val LightGreenText = Color(0xFFE5F5EA)
