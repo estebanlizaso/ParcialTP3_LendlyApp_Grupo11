@@ -1,8 +1,6 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.cashin
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,14 +9,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,11 +22,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.ButtonType
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.CircleTextButton
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.TransactionDetailRow
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.TransactionIconBadge
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.TransactionIconType
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenDark2
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenLight3
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
@@ -67,15 +63,12 @@ fun CashInSuccessScreen(
             }
 
             Spacer(modifier = Modifier.height(34.dp))
-            Box(
-                modifier = Modifier
-                    .size(64.dp)
-                    .clip(CircleShape)
-                    .background(Green),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "+", color = BlackFont, fontSize = 30.sp)
-            }
+            TransactionIconBadge(
+                type = TransactionIconType.ADD,
+                badgeSize = 64.dp,
+                iconSize = 30.dp,
+                highlighted = true
+            )
 
             Spacer(modifier = Modifier.height(14.dp))
             Text(
@@ -150,28 +143,6 @@ fun CashInSuccessScreen(
             onClick = onDoneClick
         )
         Spacer(modifier = Modifier.height(16.dp))
-    }
-}
-
-@Composable
-private fun CircleTextButton(
-    text: String,
-    onClick: () -> Unit
-) {
-    Box(
-        modifier = Modifier
-            .size(44.dp)
-            .clip(RoundedCornerShape(100.dp))
-            .background(GreenDark2)
-            .clickable { onClick() },
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = text,
-            color = BlackFont,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.SemiBold
-        )
     }
 }
 

@@ -1,6 +1,7 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,14 +23,16 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
 
 data class BottomNavItem(
     val label: String,
-    val iconText: String
+    val iconText: String,
+    val route: String? = null
 )
 
 @Composable
 fun AppBottomNavigationBar(
     items: List<BottomNavItem>,
     selectedIndex: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onItemClick: (Int) -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -46,6 +49,7 @@ fun AppBottomNavigationBar(
                 modifier = Modifier
                     .clip(RoundedCornerShape(24.dp))
                     .background(if (isSelected) GreenDark2 else androidx.compose.ui.graphics.Color.Transparent)
+                    .clickable { onItemClick(index) }
                     .padding(horizontal = 12.dp, vertical = 6.dp)
             ) {
                 Text(

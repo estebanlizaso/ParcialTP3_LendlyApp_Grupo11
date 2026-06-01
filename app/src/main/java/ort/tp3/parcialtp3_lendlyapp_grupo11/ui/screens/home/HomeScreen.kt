@@ -20,8 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AccountBalanceCard
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppBottomNavigationBar
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.BottomNavItem
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.HomeTopBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.LoanListItem
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.ProductRecommendationCard
@@ -120,17 +118,6 @@ fun HomeScreen(
         }
 
         Spacer(modifier = Modifier.weight(1f))
-        AppBottomNavigationBar(
-            selectedIndex = 0,
-            items = listOf(
-                BottomNavItem(label = "Home", iconText = "H"),
-                BottomNavItem(label = "Loan", iconText = "L"),
-                BottomNavItem(label = "Shop", iconText = "S"),
-                BottomNavItem(label = "History", iconText = "R"),
-                BottomNavItem(label = "Manage", iconText = "M")
-            )
-        )
-        Spacer(modifier = Modifier.height(10.dp))
     }
 }
 
