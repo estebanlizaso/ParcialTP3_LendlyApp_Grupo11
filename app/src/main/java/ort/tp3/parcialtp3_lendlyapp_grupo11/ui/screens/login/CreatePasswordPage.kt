@@ -8,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -21,22 +22,39 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
+import ort.tp3.parcialtp3_lendlyapp_grupo11.SessionManager
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppBottomBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppTextField
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppTopBar
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.RegisterUiState
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.RegisterViewModel
 
 @Composable
 fun CreatePasswordPage(
+    modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     onNextClick: () -> Unit
 ) {
+    // instanciar ViewModel y SessionManager
+    val context = LocalContext.current
+    val sessionManager = remember { SessionManager(context) }
+    val viewModel: RegisterViewModel =
+        remember { RegisterViewModel(sessionManager = sessionManager) }
+    val uiState by viewModel.uiState.collectAsState()
+
+    // registro en API exitoso
+    LaunchedEffect(uiState) {
+        if (uiState is RegisterUiState.Success) {
+            onNextClick()
+            viewModel.resetState()
+        }
+    }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
 
     val montserratSemiBold = FontFamily(Font(R.font.montserratsemibold, FontWeight.SemiBold))
     val interRegular = FontFamily(Font(R.font.interregular, FontWeight.Normal))
     val interBold = FontFamily(Font(R.font.interbold, FontWeight.Bold))
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -117,10 +135,32 @@ fun CreatePasswordPage(
         }
 
         Spacer(modifier = Modifier.weight(1f))
-        Box(modifier = Modifier.padding(horizontal = 24.dp)) {
+        Box(
+            modifier = Modifier
+                .padding(horizontal = 24.dp)
+                .navigationBarsPadding() //evitar superposición con barra android
+                .padding(bottom = 8.dp)
+        ) {
             AppBottomBar(
-                buttonText = "Next",
-                onClick = onNextClick
+                buttonText = if (uiState is RegisterUiState.Loading) "Loading..." else "Next",
+                onClick = {
+                    if (uiState !is RegisterUiState.Loading) {
+                        // API con datos hardcodeados basados en Figma + la password real
+                        viewModel.register(
+                            firstName = "John D.",
+                            lastName = "Doe",
+                            day = "08",
+                            month = "12",
+                            year = "1997",
+                            address = "Somewhere IN BLOCK 12",
+                            city = "Davao City",
+                            postalCode = "8000",
+                            countryCode = "+65",
+                            phone = "991251255",
+                            password = password
+                        )
+                    }
+                }
             )
         }
     }
