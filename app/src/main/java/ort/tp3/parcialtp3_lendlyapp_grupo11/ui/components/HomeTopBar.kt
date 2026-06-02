@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenDark2
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.LightGreenText
 
 @Composable
 fun HomeTopBar(
@@ -60,7 +60,7 @@ private fun UserAvatar(avatarUrl: String) {
         modifier = Modifier
             .size(32.dp)
             .clip(CircleShape)
-            .background(GreenDark2),
+            .background(LightGreenText),
         contentAlignment = Alignment.Center
     ) {
         AsyncImage(
@@ -78,7 +78,7 @@ private fun NotificationBellButton(onClick: () -> Unit) {
         modifier = Modifier
             .size(32.dp)
             .clip(CircleShape)
-            .background(GreenDark2)
+            .background(LightGreenText)
             .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
