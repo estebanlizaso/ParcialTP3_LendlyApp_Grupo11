@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.navigation.AppNavigation
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.foundation.text.KeyboardOptions
@@ -54,6 +56,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ParcialTP3_LendlyApp_Grupo11Theme {
+                //AppNavigation()
                 val context = LocalContext.current
                 val sessionManager = remember { SessionManager(context) }
                 val navController = rememberNavController()

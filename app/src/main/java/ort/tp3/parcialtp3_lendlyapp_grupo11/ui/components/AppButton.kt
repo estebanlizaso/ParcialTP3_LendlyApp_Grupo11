@@ -45,7 +45,6 @@ fun AppButton(
 ) {
     val shape = RoundedCornerShape(cornerRadius)
     
-    // Colores ajustados por estado enabled
     val finalBackgroundColor = if (enabled) {
         if (type == ButtonType.FILLED) backgroundColor else Color.Transparent
     } else {
@@ -100,32 +99,11 @@ fun ButtonPreview() {
         modifier = Modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Estilo exacto de la imagen (Filled, 48dp, 100px radio, 24px padding)
+        AppButton(text = "Standard Button")
         AppButton(
-            text = "Log In",
-            type = ButtonType.FILLED
-        )
-
-        // Botón deshabilitado
-        AppButton(
-            text = "Disabled Button",
-            enabled = false
-        )
-
-        // Botón con Icono (Show Icon = True)
-        AppButton(
-            text = "Send Code",
-            icon = { 
-                // Ejemplo de icono simple
-                Box(Modifier.size(18.dp).background(Color.Black, RoundedCornerShape(4.dp))) 
-            }
-        )
-        
-        // Botón Outlined
-        AppButton(
-            text = "Outlined Button",
-            type = ButtonType.OUTLINED,
-            borderColor = Color.Black
+            text = "Figma Style",
+            cornerRadius = 100.dp,
+            height = 48.dp
         )
     }
 }
