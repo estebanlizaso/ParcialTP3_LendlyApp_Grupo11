@@ -14,9 +14,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
+
 
 enum class ButtonType {
     FILLED,
@@ -38,12 +41,15 @@ fun AppButton(
     cornerRadius: Dp = 100.dp,
     height: Dp = 48.dp,
     horizontalPadding: Dp = 24.dp,
+    fillMaxWidth: Boolean = true,
+    fontSize: TextUnit = 16.sp,
+    lineHeight: TextUnit = TextUnit.Unspecified,
+    letterSpacing: TextUnit = TextUnit.Unspecified,
     icon: (@Composable () -> Unit)? = null,
     iconSpacing: Dp = 8.dp
 ) {
     val shape = RoundedCornerShape(cornerRadius)
     
-    // Colores ajustados por estado enabled
     val finalBackgroundColor = if (enabled) {
         if (type == ButtonType.FILLED) backgroundColor else Color.Transparent
     } else {
@@ -54,7 +60,7 @@ fun AppButton(
     val finalBorderColor = if (enabled) (borderColor ?: backgroundColor) else Color.Gray
 
     val finalModifier = modifier
-        .fillMaxWidth()
+        .then(if (fillMaxWidth) Modifier.fillMaxWidth() else Modifier)
         .height(height)
         .clip(shape)
         .then(
@@ -85,7 +91,10 @@ fun AppButton(
                 text = text,
                 color = finalTextColor,
                 fontWeight = FontWeight.SemiBold,
-                fontFamily = interSemiBold
+                fontFamily = interFonts,
+                fontSize = fontSize,
+                lineHeight = lineHeight,
+                letterSpacing = letterSpacing
             )
         }
     }
@@ -98,32 +107,11 @@ fun ButtonPreview() {
         modifier = Modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Estilo exacto de la imagen (Filled, 48dp, 100px radio, 24px padding)
+        AppButton(text = "Standard Button")
         AppButton(
-            text = "Log In",
-            type = ButtonType.FILLED
-        )
-
-        // Botón deshabilitado
-        AppButton(
-            text = "Disabled Button",
-            enabled = false
-        )
-
-        // Botón con Icono (Show Icon = True)
-        AppButton(
-            text = "Send Code",
-            icon = { 
-                // Ejemplo de icono simple
-                Box(Modifier.size(18.dp).background(Color.Black, RoundedCornerShape(4.dp))) 
-            }
-        )
-        
-        // Botón Outlined
-        AppButton(
-            text = "Outlined Button",
-            type = ButtonType.OUTLINED,
-            borderColor = Color.Black
+            text = "Figma Style",
+            cornerRadius = 100.dp,
+            height = 48.dp
         )
     }
 }
