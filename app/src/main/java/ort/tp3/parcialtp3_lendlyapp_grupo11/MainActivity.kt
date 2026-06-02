@@ -225,6 +225,6 @@ fun LoginScreen(modifier: Modifier = Modifier) {
             onClick = {
                 println("Iniciando sesión con: $countryCode $phoneNumber")
             }
-        }
+        )
     }
 }
