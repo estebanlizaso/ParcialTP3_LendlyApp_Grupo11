@@ -35,6 +35,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.*
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.shop.viewmodel.ShopViewModel
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.montserratFonts
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.utils.ImageHelper
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.utils.PriceHelper
 
@@ -209,45 +210,54 @@ fun PromoBanner() {
         Box(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
+                .width(234.dp)
                 .fillMaxHeight()
-                .width(220.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.rectangle_green),
+                painter = painterResource(id = R.drawable.zapatillas),
                 contentDescription = null,
                 modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .offset(y = 45.dp)
-                    .size(160.dp),
-                contentScale = ContentScale.Fit
-            )
-            Image(
-                painter = painterResource(id = R.drawable.shoes_unsplash),
-                contentDescription = null,
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .offset(x = 10.dp, y = 35.dp)
-                    .size(220.dp),
-                contentScale = ContentScale.Fit
+                    .fillMaxSize(),
+                contentScale = ContentScale.Fit,
+                alignment = Alignment.BottomEnd
             )
         }
 
         Column(
             modifier = Modifier
                 .padding(24.dp)
-                .fillMaxHeight(),
-            verticalArrangement = Arrangement.Center
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Top
         ) {
-            Text("The New Shoes", color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Bold, fontFamily = interFonts)
-            Text("Shop this season's Top Silhouette", color = Color.LightGray, fontSize = 13.sp, modifier = Modifier.padding(vertical = 4.dp))
-            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = "The New Shoes",
+                color = Color.White,
+                fontSize = 28.sp,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = montserratFonts,
+                lineHeight = 36.sp
+            )
+            Text(
+                text = "Shop this season's Top Silhouette",
+                color = Color.White,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = interFonts,
+                lineHeight = 24.sp,
+                letterSpacing = 0.5.sp,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+            Spacer(modifier = Modifier.height(24.dp))
             AppButton(
                 text = "Shop Now",
-                height = 36.dp,
-                cornerRadius = 100.dp,
-                modifier = Modifier.width(130.dp),
+                height = 32.dp,
+                cornerRadius = 8.dp,
+                modifier = Modifier.width(118.dp),
                 fillMaxWidth = false,
-                backgroundColor = Green
+                backgroundColor = Green,
+                fontSize = 14.sp,
+                lineHeight = 20.sp,
+                letterSpacing = 0.1.sp
             )
         }
         

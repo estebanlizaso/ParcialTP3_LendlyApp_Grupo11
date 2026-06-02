@@ -14,7 +14,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
@@ -40,6 +42,9 @@ fun AppButton(
     height: Dp = 48.dp,
     horizontalPadding: Dp = 24.dp,
     fillMaxWidth: Boolean = true,
+    fontSize: TextUnit = 16.sp,
+    lineHeight: TextUnit = TextUnit.Unspecified,
+    letterSpacing: TextUnit = TextUnit.Unspecified,
     icon: (@Composable () -> Unit)? = null,
     iconSpacing: Dp = 8.dp
 ) {
@@ -86,7 +91,10 @@ fun AppButton(
                 text = text,
                 color = finalTextColor,
                 fontWeight = FontWeight.SemiBold,
-                fontFamily = interFonts
+                fontFamily = interFonts,
+                fontSize = fontSize,
+                lineHeight = lineHeight,
+                letterSpacing = letterSpacing
             )
         }
     }

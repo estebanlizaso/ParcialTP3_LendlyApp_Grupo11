@@ -38,7 +38,7 @@ fun SMSVerification(
     // 6 estados para cada numero del codigo
     val codeValues = remember { mutableStateListOf("", "", "", "", "", "") }
 
-    val montserratSemiBold = FontFamily(Font(R.font.montserratsemibold, FontWeight.SemiBold))
+    val montserratSemiBold = FontFamily(Font(R.font.montserrat_semibold, FontWeight.SemiBold))
     val interRegular = FontFamily(Font(R.font.interregular, FontWeight.Normal))
     val interMedium = FontFamily(Font(R.font.intermedium, FontWeight.Medium))
     val interSemiBold = FontFamily(Font(R.font.intersemibold, FontWeight.SemiBold))

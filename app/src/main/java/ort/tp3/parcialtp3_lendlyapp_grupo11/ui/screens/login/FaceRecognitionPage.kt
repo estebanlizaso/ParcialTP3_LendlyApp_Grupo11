@@ -24,7 +24,7 @@ fun FaceRecognitionPage(
     onBackClick: () -> Unit,
     onNextClick: () -> Unit
 ) {
-    val montserratSemiBold = FontFamily(Font(R.font.montserratsemibold, FontWeight.SemiBold))
+    val montserratSemiBold = FontFamily(Font(R.font.montserrat_semibold, FontWeight.SemiBold))
     val interRegular = FontFamily(Font(R.font.interregular, FontWeight.Normal))
 
     Column(

@@ -11,6 +11,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 
 val montserratFonts = FontFamily(
     Font(R.font.montserrat_extra_bold, FontWeight.ExtraBold),
+    Font(R.font.montserrat_semibold, FontWeight.SemiBold)
 )
 
 val interFonts = FontFamily(
