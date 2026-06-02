@@ -16,7 +16,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
+
 
 enum class ButtonType {
     FILLED,
@@ -35,9 +36,9 @@ fun AppButton(
     textColor: Color = Color.Black,
     borderColor: Color? = null,
     borderWidth: Dp = 1.dp,
-    cornerRadius: Dp = 12.dp,
-    height: Dp = 56.dp,
-    horizontalPadding: Dp = 16.dp,
+    cornerRadius: Dp = 100.dp,
+    height: Dp = 48.dp,
+    horizontalPadding: Dp = 24.dp,
     fillMaxWidth: Boolean = true,
     icon: (@Composable () -> Unit)? = null,
     iconSpacing: Dp = 8.dp
@@ -85,7 +86,7 @@ fun AppButton(
                 text = text,
                 color = finalTextColor,
                 fontWeight = FontWeight.SemiBold,
-                fontFamily = interSemiBold
+                fontFamily = interFonts
             )
         }
     }

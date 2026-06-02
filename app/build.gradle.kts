@@ -40,6 +40,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.androidx.compose.material3.lint)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
@@ -53,7 +55,10 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
+    implementation(libs.logging.interceptor)
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.coil.compose)
+    implementation(libs.logging.interceptor)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
