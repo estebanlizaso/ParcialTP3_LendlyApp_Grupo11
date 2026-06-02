@@ -19,7 +19,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.CreatePasswordPage
+import androidx.compose.ui.platform.LocalContext
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.*
+import ort.tp3.parcialtp3_lendlyapp_grupo11.SessionManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.graphics.Color
@@ -46,35 +48,14 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home.HomeRoute
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home.NotificationScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.*
 
-@Composable
-fun PlaceholderScreen(title: String, onBack: () -> Unit) {
-    Box(
-        modifier = Modifier.fillMaxSize().background(DarkGreen),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = title, color = White, fontSize = 24.sp)
-            Spacer(modifier = Modifier.height(16.dp))
-            AppButton(text = "Go Back", onClick = onBack)
-        }
-    }
-}
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             ParcialTP3_LendlyApp_Grupo11Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    CreatePasswordPage(
-                        modifier = Modifier.padding(innerPadding),
-                        onNextClick = {
-                            println("¡REGISTRO EXITOSO! La API devolvió el token y deberíamos ir a la DonePage.")
-                        },
-                        onBackClick = { }
-                    )
-                }
+                val context = LocalContext.current
+                val sessionManager = remember { SessionManager(context) }
                 val navController = rememberNavController()
                 val bottomNavItems = lendlyBottomNavItems()
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -118,8 +99,7 @@ class MainActivity : ComponentActivity() {
                         composable(Screen.Splash.route) {
                             SplashScreen(
                                 onTimeout = {
-                                    val isUserLoggedIn = true // Cambiar a true para probar navegación a Home
-                                    if (isUserLoggedIn) {
+                                    if (!sessionManager.isLoggedIn()) {
                                         navController.navigate(AppRoute.HOME) {
                                             popUpTo(Screen.Splash.route) { inclusive = true }
                                         }
@@ -239,12 +219,79 @@ class MainActivity : ComponentActivity() {
                             }
                         }
 
-                        // AUTH PLACEHOLDERS
+                        // AUTH
                         composable(Screen.Login.route) {
-                            PlaceholderScreen(title = "Login Screen", onBack = { navController.popBackStack() })
+                            LoginPage(
+                                onLoginSuccess = {
+                                    navController.navigate(AppRoute.HOME) {
+                                        popUpTo(Screen.Login.route) { inclusive = true }
+                                    }
+                                }
+                            )
                         }
                         composable(Screen.Signup.route) {
-                            PlaceholderScreen(title = "Sign-up Screen", onBack = { navController.popBackStack() })
+                            ProfileDetailFormPage(
+                                onBackClick = { navController.popBackStack() },
+                                onNextClick = { navController.navigate(AppRoute.ID_VERIFICATION) }
+                            )
+                        }
+
+                        // REGISTRATION STEPS
+                        composable(AppRoute.ID_VERIFICATION) {
+                            IDVerificationPage(
+                                onBackClick = { navController.popBackStack() },
+                                onNextClick = { navController.navigate(AppRoute.FACE_RECOGNITION) }
+                            )
+                        }
+                        composable(AppRoute.FACE_RECOGNITION) {
+                            FaceRecognitionPage(
+                                onBackClick = { navController.popBackStack() },
+                                onNextClick = { navController.navigate(AppRoute.SIGNATURE) }
+                            )
+                        }
+                        composable(AppRoute.SIGNATURE) {
+                            SignaturePage(
+                                onBackClick = { navController.popBackStack() },
+                                onNextClick = { navController.navigate(AppRoute.VERIFY_PHONE_NUMBER) }
+                            )
+                        }
+                        composable(AppRoute.VERIFY_PHONE_NUMBER) {
+                            VerifyPhoneNumber(
+                                onBackClick = { navController.popBackStack() },
+                                onSendCodeClick = { navController.navigate(AppRoute.SMS_VERIFICATION) }
+                            )
+                        }
+                        composable(AppRoute.SMS_VERIFICATION) {
+                            SMSVerification(
+                                onBackClick = { navController.popBackStack() },
+                                onNextClick = { navController.navigate(AppRoute.CREATE_PASSWORD) }
+                            )
+                        }
+                        composable(AppRoute.CREATE_PASSWORD) {
+                            CreatePasswordPage(
+                                onBackClick = { navController.popBackStack() },
+                                onNextClick = { navController.navigate(AppRoute.VERIFIED) }
+                            )
+                        }
+                        composable(AppRoute.VERIFIED) {
+                            VerifiedPage(
+                                onBackClick = { navController.popBackStack() },
+                                onNextClick = { navController.navigate(AppRoute.DONE) }
+                            )
+                        }
+                        composable(AppRoute.DONE) {
+                            DonePage(
+                                onExitClick = {
+                                    navController.navigate(AppRoute.HOME) {
+                                        popUpTo(AppRoute.HOME) { inclusive = true }
+                                    }
+                                },
+                                onDoneClick = {
+                                    navController.navigate(AppRoute.HOME) {
+                                        popUpTo(AppRoute.HOME) { inclusive = true }
+                                    }
+                                }
+                            )
                         }
 
                         // APP ROUTES
