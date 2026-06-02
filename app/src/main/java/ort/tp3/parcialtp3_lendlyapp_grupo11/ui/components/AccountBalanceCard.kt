@@ -21,7 +21,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenLight3
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
 @Composable
 fun AccountBalanceCard(
@@ -45,7 +45,8 @@ fun AccountBalanceCard(
                     color = GrayColor,
                     fontSize = 11.sp,
                     letterSpacing = 0.6.sp,
-                    fontFamily = interSemiBold
+                    fontFamily = interFonts,
+                    fontWeight = FontWeight.SemiBold,
                 )
                 Spacer(modifier = Modifier.size(22.dp))
                 Text(
@@ -53,7 +54,7 @@ fun AccountBalanceCard(
                     color = BlackFont,
                     fontSize = 28.sp,
                     fontWeight = FontWeight.SemiBold,
-                    fontFamily = interSemiBold
+                    fontFamily = interFonts
                 )
             }
 

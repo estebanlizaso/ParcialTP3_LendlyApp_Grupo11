@@ -18,7 +18,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
+
 
 @Composable
 fun AppLabel(
@@ -42,8 +43,8 @@ fun AppLabel(
                 text = label,
                 color = textColor,
                 fontSize = 14.sp,
-                fontWeight = FontWeight.Normal,
-                fontFamily = interSemiBold,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = interFonts,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
         }
@@ -54,7 +55,7 @@ fun AppLabel(
             textStyle = TextStyle(
                 color = textColor,
                 fontSize = 16.sp,
-                fontFamily = interSemiBold
+                fontFamily = interFonts
             ),
             keyboardOptions = keyboardOptions,
             decorationBox = { innerTextField ->
@@ -72,7 +73,7 @@ fun AppLabel(
                             text = placeholder,
                             color = borderColor.copy(alpha = 0.6f),
                             fontSize = 16.sp,
-                            fontFamily = interSemiBold
+                            fontFamily = interFonts
                         )
                     }
                     innerTextField()

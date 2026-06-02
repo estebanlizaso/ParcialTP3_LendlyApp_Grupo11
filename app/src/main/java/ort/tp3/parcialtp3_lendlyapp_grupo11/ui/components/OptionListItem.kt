@@ -22,8 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenDark2
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.DarkGreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
 @Composable
 fun OptionListItem(
@@ -31,7 +31,7 @@ fun OptionListItem(
     subtitle: String = "",
     iconText: String,
     modifier: Modifier = Modifier,
-    iconBackgroundColor: Color = GreenDark2,
+    iconBackgroundColor: Color = DarkGreen,
     iconTextColor: Color = BlackFont,
     onClick: () -> Unit = {}
 ) {
@@ -54,7 +54,7 @@ fun OptionListItem(
                 color = iconTextColor,
                 fontSize = if (iconText.length > 2) 9.sp else 14.sp,
                 fontWeight = FontWeight.SemiBold,
-                fontFamily = interSemiBold,
+                fontFamily = interFonts,
                 textAlign = TextAlign.Center
             )
         }
@@ -67,14 +67,14 @@ fun OptionListItem(
                 color = BlackFont,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.SemiBold,
-                fontFamily = interSemiBold
+                fontFamily = interFonts
             )
             if (subtitle.isNotEmpty()) {
                 Text(
                     text = subtitle,
                     color = GrayColor,
                     fontSize = 11.sp,
-                    fontFamily = interSemiBold
+                    fontFamily = interFonts
                 )
             }
         }

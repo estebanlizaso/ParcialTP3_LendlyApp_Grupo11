@@ -22,7 +22,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.ScreenTopBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenLight3
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
 private data class CashInPartner(
     val name: String,
@@ -61,7 +61,7 @@ fun OverTheCounterPartnersScreen(
             color = BlackFont,
             fontSize = 22.sp,
             fontWeight = FontWeight.SemiBold,
-            fontFamily = interSemiBold
+            fontFamily = interFonts
         )
 
         Spacer(modifier = Modifier.height(28.dp))

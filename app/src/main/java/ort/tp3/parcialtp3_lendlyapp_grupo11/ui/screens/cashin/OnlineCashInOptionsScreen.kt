@@ -28,7 +28,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.ScreenTopBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenLight3
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
 private data class PaymentOption(
     val title: String,
@@ -78,7 +78,7 @@ fun OnlineCashInOptionsScreen(
             color = BlackFont,
             fontSize = 22.sp,
             fontWeight = FontWeight.SemiBold,
-            fontFamily = interSemiBold
+            fontFamily = interFonts
         )
 
         Spacer(modifier = Modifier.height(18.dp))
@@ -126,7 +126,7 @@ private fun PaymentSectionTitle(text: String) {
         color = BlackFont,
         fontSize = 12.sp,
         fontWeight = FontWeight.SemiBold,
-        fontFamily = interSemiBold,
+        fontFamily = interFonts,
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
     )
 }
