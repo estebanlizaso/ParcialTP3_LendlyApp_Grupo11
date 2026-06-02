@@ -1,11 +1,10 @@
-package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.pages.loan
+package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
@@ -18,11 +17,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.LoanUiState
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.LoanViewModel

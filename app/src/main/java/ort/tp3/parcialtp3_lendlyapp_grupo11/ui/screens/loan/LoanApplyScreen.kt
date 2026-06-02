@@ -1,5 +1,6 @@
-package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.pages.loan
+package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -188,7 +189,7 @@ fun InstallmentPlanItem(title: String, interest: String, monthly: String, isSele
     Surface(
         onClick = onClick,
         shape = RoundedCornerShape(8.dp),
-        border = if (isSelected) androidx.compose.foundation.BorderStroke(1.dp, Green) else null,
+        border = if (isSelected) BorderStroke(1.dp, Green) else null,
         color = Color(0xFFF9F9F9)
     ) {
         Row(

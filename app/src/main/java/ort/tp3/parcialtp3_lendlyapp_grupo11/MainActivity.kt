@@ -1,6 +1,5 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,7 +16,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -35,12 +33,12 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.*
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.onboarding.OnboardingText
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.onboarding.PagerIndicator
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.navigation.Screen
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.pages.loan.LoanApplyScreen
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.pages.loan.LoanHistoryScreen
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.pages.loan.LoanScreen
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.pages.loan.LoanSuccessScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan.LoanApplyScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan.LoanHistoryScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan.LoanScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan.LoanSuccessScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.navigation.*
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.pages.onboarding.SplashScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.onboarding.SplashScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.cashin.*
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.history.HistoryRoute
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.history.TransactionDetailRoute
@@ -51,7 +49,6 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.shop.FilterScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.shop.ProductDetailScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.shop.ShopScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.shop.ShopSearchScreen
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.*
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.DarkGreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenLight
@@ -129,7 +126,12 @@ class MainActivity : ComponentActivity() {
                     NavHost(
                         navController = navController,
                         startDestination = Screen.Splash.route,
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier.padding(
+                            if (currentRoute == Screen.Splash.route || currentRoute == "onboarding_flow")
+                                PaddingValues(0.dp)
+                            else
+                                innerPadding
+                        )
                     ) {
                         // SPLASH
                         composable(Screen.Splash.route) {
@@ -371,7 +373,9 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(AppRoute.LOAN) {
-                            PlaceholderScreen(title = "Loan Screen", onBack = { navController.popBackStack() })
+                            LoanScreen(
+                                onNavigateToApply = { navController.navigate(Screen.LoanApply.route) }
+                            )
                         }
 
                         composable(AppRoute.SHOP) {

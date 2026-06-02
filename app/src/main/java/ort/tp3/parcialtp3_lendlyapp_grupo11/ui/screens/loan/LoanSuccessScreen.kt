@@ -1,5 +1,6 @@
-package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.pages.loan
+package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -15,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
@@ -73,7 +75,7 @@ fun LoanSuccessScreen(
             Surface(
                 color = Color(0xFFF9F9F9),
                 shape = RoundedCornerShape(8.dp),
-                border = androidx.compose.foundation.BorderStroke(1.dp, Color.LightGray)
+                border = BorderStroke(1.dp, Color.LightGray)
             ) {
                 Text("Loan Amount", modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp), fontSize = 14.sp)
             }
@@ -121,7 +123,7 @@ fun DetailRow(label: String, value: String, isLink: Boolean = false) {
             color = if (isLink) DarkGreen else Color.Black,
             fontSize = 16.sp,
             fontWeight = if (isLink) FontWeight.Bold else FontWeight.Normal,
-            textDecoration = if (isLink) androidx.compose.ui.text.style.TextDecoration.Underline else null
+            textDecoration = if (isLink) TextDecoration.Underline else null
         )
     }
 }
