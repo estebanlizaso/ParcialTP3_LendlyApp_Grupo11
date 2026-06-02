@@ -39,6 +39,7 @@ fun AppButton(
     cornerRadius: Dp = 100.dp,
     height: Dp = 48.dp,
     horizontalPadding: Dp = 24.dp,
+    fillMaxWidth: Boolean = true,
     icon: (@Composable () -> Unit)? = null,
     iconSpacing: Dp = 8.dp
 ) {
@@ -55,7 +56,7 @@ fun AppButton(
     val finalBorderColor = if (enabled) (borderColor ?: backgroundColor) else Color.Gray
 
     val finalModifier = modifier
-        .fillMaxWidth()
+        .then(if (fillMaxWidth) Modifier.fillMaxWidth() else Modifier)
         .height(height)
         .clip(shape)
         .then(

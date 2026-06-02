@@ -28,3 +28,4 @@ val LightGreenText = Color(0xFFE5F5EA)
 // Colores de texto
 val BlackFont = Color(0xFF102000)
 
+val GrayColor = Color(0xFF6A6C6A);
