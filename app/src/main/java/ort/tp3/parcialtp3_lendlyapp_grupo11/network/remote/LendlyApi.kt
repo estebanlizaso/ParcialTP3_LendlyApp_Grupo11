@@ -22,3 +22,19 @@ interface LendlyApi {
     @POST("auth/create")
     suspend fun register(@Body request: RegisterRequestDto): RegisterResponseDto
 }
+    @Headers(API_KEY_HEADER)
+    @GET("users/{id}")
+    suspend fun getUser(@Path("id") id: Int): UserResponse
+
+    @Headers(API_KEY_HEADER)
+    @GET("loans")
+    suspend fun getLoans(): LoansResponse
+
+    @Headers(API_KEY_HEADER)
+    @GET("products")
+    suspend fun getProducts(): ProductsResponse
+
+    @Headers(API_KEY_HEADER)
+    @GET("transactions")
+    suspend fun getTransactions(): TransactionsResponse
+}
