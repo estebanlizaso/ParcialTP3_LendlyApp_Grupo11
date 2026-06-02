@@ -9,6 +9,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.CreatePasswordPage
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.DonePage
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.FaceRecognitionPage
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.IDVerificationPage
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.LoginPage
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.ProfileDetailFormPage
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.SMSVerification
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.SignaturePage
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.VerifiedPage
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.VerifyPhoneNumber
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.foundation.text.KeyboardOptions
@@ -16,7 +25,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -89,9 +97,82 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     NavHost(
                         navController = navController,
-                        startDestination = AppRoute.HOME,
+                        startDestination = AppRoute.LOGIN,
                         modifier = Modifier.padding(innerPadding)
                     ) {
+                        composable(AppRoute.LOGIN) {
+                            LoginPage(
+                                onLoginSuccess = { navController.navigate(AppRoute.VERIFY_PHONE_NUMBER) }
+                            )
+                        }
+
+                        composable(AppRoute.VERIFY_PHONE_NUMBER) {
+                            VerifyPhoneNumber(
+                                onBackClick = { navController.popBackStack() },
+                                onSendCodeClick = { navController.navigate(AppRoute.SMS_VERIFICATION) }
+                            )
+                        }
+
+                        composable(AppRoute.SMS_VERIFICATION) {
+                            SMSVerification(
+                                onBackClick = { navController.popBackStack() },
+                                onNextClick = { navController.navigate(AppRoute.FACE_RECOGNITION) }
+                            )
+                        }
+
+                        composable(AppRoute.FACE_RECOGNITION) {
+                            FaceRecognitionPage(
+                                onBackClick = { navController.popBackStack() },
+                                onNextClick = { navController.navigate(AppRoute.ID_VERIFICATION) }
+                            )
+                        }
+
+                        composable(AppRoute.ID_VERIFICATION) {
+                            IDVerificationPage(
+                                onBackClick = { navController.popBackStack() },
+                                onNextClick = { navController.navigate(AppRoute.VERIFIED) }
+                            )
+                        }
+
+                        composable(AppRoute.VERIFIED) {
+                            VerifiedPage(
+                                onBackClick = { navController.popBackStack() },
+                                onNextClick = { navController.navigate(AppRoute.PROFILE_DETAIL_FORM) }
+                            )
+                        }
+
+                        composable(AppRoute.PROFILE_DETAIL_FORM) {
+                            ProfileDetailFormPage(
+                                onBackClick = { navController.popBackStack() },
+                                onNextClick = { navController.navigate(AppRoute.SIGNATURE) }
+                            )
+                        }
+
+                        composable(AppRoute.SIGNATURE) {
+                            SignaturePage(
+                                onBackClick = { navController.popBackStack() },
+                                onNextClick = { navController.navigate(AppRoute.CREATE_PASSWORD) }
+                            )
+                        }
+
+                        composable(AppRoute.CREATE_PASSWORD) {
+                            CreatePasswordPage(
+                                onBackClick = { navController.popBackStack() },
+                                onNextClick = { navController.navigate(AppRoute.DONE) }
+                            )
+                        }
+
+                        composable(AppRoute.DONE) {
+                            DonePage(
+                                onExitClick = { navController.popBackStack() },
+                                onDoneClick = {
+                                    navController.navigate(AppRoute.HOME) {
+                                        popUpTo(AppRoute.LOGIN) { inclusive = true }
+                                    }
+                                }
+                            )
+                        }
+
                         composable(AppRoute.HOME) {
                             HomeRoute(
                                 onCashInClick = { navController.navigate(AppRoute.CASH_IN_OPTIONS) },

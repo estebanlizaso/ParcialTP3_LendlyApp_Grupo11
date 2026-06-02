@@ -1,6 +1,17 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.navigation
 
 object AppRoute {
+    const val LOGIN = "login"
+    const val VERIFY_PHONE_NUMBER = "verify_phone_number"
+    const val SMS_VERIFICATION = "sms_verification"
+    const val CREATE_PASSWORD = "create_password"
+    const val ID_VERIFICATION = "id_verification"
+    const val FACE_RECOGNITION = "face_recognition"
+    const val SIGNATURE = "signature"
+    const val PROFILE_DETAIL_FORM = "profile_detail_form"
+    const val VERIFIED = "verified"
+    const val DONE = "done"
+
     const val HOME = "home"
     const val HISTORY = "history"
     const val TRANSACTION_DETAIL = "transaction_detail"

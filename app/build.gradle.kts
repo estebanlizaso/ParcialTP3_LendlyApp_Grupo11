@@ -55,8 +55,6 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.retrofit)
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.converter.gson)
     implementation(libs.coil.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

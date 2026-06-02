@@ -20,7 +20,6 @@ object ApiClient {
 
     val api: LendlyApi = Retrofit.Builder()
         .baseUrl(BASE_URL)
-        .client(client) // <-- Agregamos el cliente acá
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(LendlyApi::class.java)
