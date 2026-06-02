@@ -23,7 +23,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenLight3
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
 @Composable
 fun CashInAmountScreen(
@@ -50,7 +50,7 @@ fun CashInAmountScreen(
             color = BlackFont,
             fontSize = 22.sp,
             fontWeight = FontWeight.SemiBold,
-            fontFamily = interSemiBold
+            fontFamily = interFonts
         )
 
         Spacer(modifier = Modifier.height(28.dp))
@@ -59,7 +59,7 @@ fun CashInAmountScreen(
             color = GrayColor,
             fontSize = 13.sp,
             fontWeight = FontWeight.SemiBold,
-            fontFamily = interSemiBold
+            fontFamily = interFonts
         )
 
         Spacer(modifier = Modifier.height(28.dp))
@@ -68,7 +68,7 @@ fun CashInAmountScreen(
             color = BlackFont,
             fontSize = 24.sp,
             fontWeight = FontWeight.SemiBold,
-            fontFamily = interSemiBold,
+            fontFamily = interFonts,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )
@@ -82,7 +82,7 @@ fun CashInAmountScreen(
             color = GrayColor,
             fontSize = 13.sp,
             fontWeight = FontWeight.SemiBold,
-            fontFamily = interSemiBold
+            fontFamily = interFonts
         )
 
         Spacer(modifier = Modifier.weight(1f))

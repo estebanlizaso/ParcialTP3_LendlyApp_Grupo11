@@ -18,11 +18,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
 @Composable
 fun AppSearchBar(
@@ -37,7 +38,8 @@ fun AppSearchBar(
         textStyle = TextStyle(
             color = BlackFont,
             fontSize = 14.sp,
-            fontFamily = interSemiBold
+            fontWeight = FontWeight.SemiBold,
+            fontFamily = interFonts
         ),
         singleLine = true,
         decorationBox = { innerTextField ->
@@ -62,7 +64,8 @@ fun AppSearchBar(
                             text = placeholder,
                             color = GrayColor,
                             fontSize = 14.sp,
-                            fontFamily = interSemiBold
+                            fontWeight = FontWeight.SemiBold,
+                            fontFamily = interFonts
                         )
                     }
                     innerTextField()

@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenDark2
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.DarkGreen
 
 enum class TransactionIconType {
     PAYMENT,
@@ -35,7 +35,7 @@ fun TransactionIconBadge(
         modifier = modifier
             .size(badgeSize)
             .clip(CircleShape)
-            .background(if (highlighted) Green else GreenDark2),
+            .background(if (highlighted) Green else DarkGreen),
         contentAlignment = Alignment.Center
     ) {
         Canvas(modifier = Modifier.size(iconSize)) {

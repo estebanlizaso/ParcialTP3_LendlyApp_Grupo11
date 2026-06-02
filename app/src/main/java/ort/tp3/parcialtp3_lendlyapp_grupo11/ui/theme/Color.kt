@@ -29,3 +29,8 @@ val LightGreenText = Color(0xFFE5F5EA)
 val BlackFont = Color(0xFF102000)
 
 val GrayColor = Color(0xFF6A6C6A);
+
+//colores accountBalance
+
+val GreenLight3 = Color(0xFFFCF8F8)
+
