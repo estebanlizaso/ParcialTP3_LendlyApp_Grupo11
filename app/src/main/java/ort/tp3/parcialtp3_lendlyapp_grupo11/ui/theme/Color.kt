@@ -1,7 +1,6 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme
 
 import androidx.compose.ui.graphics.Color
-import java.util.stream.Gatherer
 
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)
