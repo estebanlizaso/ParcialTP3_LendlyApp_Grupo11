@@ -36,10 +36,9 @@ fun ProfilePage(
     onOptionClick: (String) -> Unit,
     onEditClick: () -> Unit,
     onLogOutClick: () -> Unit,
-    onNavigateBottom: (String) -> Unit,
     viewModel: ManageViewModel = viewModel()
 ) {
-    val montserratSemiBold = FontFamily(Font(R.font.montserratsemibold, FontWeight.SemiBold))
+    val montserratSemiBold = FontFamily(Font(R.font.montserrat_semibold, FontWeight.SemiBold))
     val interMedium = FontFamily(Font(R.font.intermedium, FontWeight.Medium))
     val interRegular = FontFamily(Font(R.font.interregular, FontWeight.Normal))
     val uiState by viewModel.uiState.collectAsState() //estado API
@@ -255,11 +254,6 @@ fun ProfilePage(
                     thickness = 1.dp,
                     color = Color(0xFFE5E2E1)
                 )
-
-                BottomNavBar(
-                    selectedRoute = "Manage",
-                    onNavigate = onNavigateBottom
-                )
             }
         }
     }
@@ -271,7 +265,6 @@ fun ProfilePagePreview() {
     ProfilePage(
         onOptionClick = {},
         onEditClick = {},
-        onLogOutClick = {},
-        onNavigateBottom = {}
+        onLogOutClick = {}
     )
 }

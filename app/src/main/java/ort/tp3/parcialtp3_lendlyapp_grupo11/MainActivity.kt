@@ -5,14 +5,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.ui.Modifier
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.manage.CreditScorePage
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.manage.ProfileDetailPage
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.manage.ProfilePage
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -76,7 +71,6 @@ class MainActivity : ComponentActivity() {
                 val context = LocalContext.current
                 val sessionManager = remember { SessionManager(context) }
                 val navController = rememberNavController()
-                val bottomNavItems = lendlyBottomNavItems()
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
                 val selectedNavIndex = selectedBottomNavIndex(currentRoute)
@@ -86,14 +80,26 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     bottomBar = {
                         if (selectedNavIndex >= 0) {
-                            Column {
-                                HorizontalDivider(color = Color(0xFFE6E6E6))
-                                AppBottomNavigationBar(
-                                    items = bottomNavItems,
-                                    selectedIndex = selectedNavIndex,
-                                    onItemClick = { index ->
-                                        val route = bottomNavItems.getOrNull(index)?.route
-                                        if (route != null && route != currentRoute) {
+                            Column(modifier = Modifier.padding(bottom = 18.dp)) {
+                                BottomNavBar(
+                                    selectedRoute = when (currentRoute) {
+                                        AppRoute.HOME -> "Home"
+                                        AppRoute.LOAN -> "Loan"
+                                        AppRoute.SHOP -> "Shop"
+                                        AppRoute.HISTORY -> "History"
+                                        AppRoute.MANAGE -> "Manage"
+                                        else -> "Home"
+                                    },
+                                    onNavigate = { routeName ->
+                                        val route = when (routeName) {
+                                            "Home" -> AppRoute.HOME
+                                            "Loan" -> AppRoute.LOAN
+                                            "Shop" -> AppRoute.SHOP
+                                            "History" -> AppRoute.HISTORY
+                                            "Manage" -> AppRoute.MANAGE
+                                            else -> AppRoute.HOME
+                                        }
+                                        if (route != currentRoute) {
                                             navController.navigate(route) {
                                                 popUpTo(AppRoute.HOME) {
                                                     saveState = true
@@ -104,7 +110,6 @@ class MainActivity : ComponentActivity() {
                                         }
                                     }
                                 )
-                                Spacer(modifier = Modifier.height(10.dp))
                             }
                         }
                     }
@@ -421,6 +426,43 @@ class MainActivity : ComponentActivity() {
                                     navController.navigate(AppRoute.HOME) {
                                         popUpTo(AppRoute.HOME) { inclusive = true }
                                         launchSingleTop = true
+                                    }
+                                }
+                            )
+                        }
+
+                        // MANAGE FLOW
+                        composable(AppRoute.MANAGE) {
+                            ProfilePage(
+                                onOptionClick = { option ->
+                                    when (option) {
+                                        "Account details" -> navController.navigate(AppRoute.PROFILE_DETAIL)
+                                        "Credit score" -> navController.navigate(AppRoute.CREDIT_SCORE)
+                                    }
+                                },
+                                onEditClick = { navController.navigate(AppRoute.PROFILE_DETAIL) },
+                                onLogOutClick = {
+                                    sessionManager.clearSession()
+                                    navController.navigate(Screen.Login.route) {
+                                        popUpTo(0) { inclusive = true }
+                                    }
+                                }
+                            )
+                        }
+
+                        composable(AppRoute.PROFILE_DETAIL) {
+                            ProfileDetailPage(
+                                onBackClick = { navController.popBackStack() },
+                                onSaveClick = { navController.popBackStack() }
+                            )
+                        }
+
+                        composable(AppRoute.CREDIT_SCORE) {
+                            CreditScorePage(
+                                onBackClick = { navController.popBackStack() },
+                                onOptionClick = { option ->
+                                    if (option == "Account details") {
+                                        navController.navigate(AppRoute.PROFILE_DETAIL)
                                     }
                                 }
                             )

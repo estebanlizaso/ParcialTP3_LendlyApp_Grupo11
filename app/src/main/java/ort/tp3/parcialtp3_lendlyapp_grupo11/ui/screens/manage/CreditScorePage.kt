@@ -39,7 +39,7 @@ fun CreditScorePage(
     viewModel: ManageViewModel = viewModel(),
     modifier: Modifier = Modifier
 ) {
-    val montserratSemiBold = FontFamily(Font(R.font.montserratsemibold, FontWeight.SemiBold))
+    val montserratSemiBold = FontFamily(Font(R.font.montserrat_semibold, FontWeight.SemiBold))
     val montserratBold = FontFamily(Font(R.font.montserratbold, FontWeight.Bold))
     val interSemiBold = FontFamily(Font(R.font.intersemibold, FontWeight.SemiBold))
     val interMedium = FontFamily(Font(R.font.intermedium, FontWeight.Medium))

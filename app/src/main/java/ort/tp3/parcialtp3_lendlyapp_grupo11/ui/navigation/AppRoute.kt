@@ -27,6 +27,10 @@ object AppRoute {
     const val CASH_IN_AMOUNT = "cash_in_amount"
     const val CASH_IN_SUCCESS = "cash_in_success"
 
+    const val MANAGE = "manage"
+    const val PROFILE_DETAIL = "profile_detail"
+    const val CREDIT_SCORE = "credit_score"
+
     const val TRANSACTION_DETAIL_WITH_ARG = "$TRANSACTION_DETAIL/{transactionId}"
     const val PRODUCT_DETAIL_WITH_ARG = "$PRODUCT_DETAIL/{productId}"
 

@@ -16,7 +16,7 @@ fun lendlyBottomNavItems(): List<BottomNavItem> {
         BottomNavItem(label = "Loan", iconText = "L", route = AppRoute.LOAN),
         BottomNavItem(label = "Shop", iconText = "S", route = AppRoute.SHOP),
         BottomNavItem(label = "History", iconText = "R", route = AppRoute.HISTORY),
-        BottomNavItem(label = "Manage", iconText = "M")
+        BottomNavItem(label = "Manage", iconText = "M", route = AppRoute.MANAGE)
     )
 }
 
