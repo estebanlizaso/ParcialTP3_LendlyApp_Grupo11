@@ -1,7 +1,11 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.network.remote
 
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoansResponse
+import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoginRequestDto
+import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoginResponseDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.ProductsResponse
+import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.RegisterRequestDto
+import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.RegisterResponseDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.TransactionsResponse
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.UserResponse
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoginRequestDto
@@ -35,6 +39,12 @@ interface LendlyApi {
     @Headers(API_KEY_HEADER)
     @GET("transactions")
     suspend fun getTransactions(): TransactionsResponse
+
+    @Headers(API_KEY_HEADER)
+    @POST("auth/login")
+    suspend fun login(@Body request: LoginRequestDto): LoginResponseDto
+
+    @Headers(API_KEY_HEADER)
     @POST("auth/create")
     suspend fun register(@Body request: RegisterRequestDto): RegisterResponseDto
 }
