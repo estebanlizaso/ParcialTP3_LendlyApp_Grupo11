@@ -31,7 +31,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenLight3
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
 @Composable
 fun TransactionDetailScreen(
@@ -57,7 +57,8 @@ fun TransactionDetailScreen(
                 text = if (uiState.isLoading) "Loading transaction..." else uiState.error.orEmpty(),
                 color = if (uiState.error == null) GrayColor else Color.Red,
                 fontSize = 14.sp,
-                fontFamily = interSemiBold,
+                fontFamily = interFonts,
+                fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(24.dp)
             )
         }
@@ -84,7 +85,7 @@ private fun TransactionDetailContent(
             color = BlackFont,
             fontSize = 22.sp,
             fontWeight = FontWeight.SemiBold,
-            fontFamily = interSemiBold
+            fontFamily = interFonts
         )
 
         Spacer(modifier = Modifier.height(22.dp))
@@ -142,20 +143,22 @@ private fun TransactionDetailHeader(
                 text = detail.title,
                 color = GrayColor,
                 fontSize = 14.sp,
-                fontFamily = interSemiBold
+                fontFamily = interFonts,
+                fontWeight = FontWeight.SemiBold,
             )
             Text(
                 text = detail.amount,
                 color = BlackFont,
                 fontSize = 26.sp,
                 fontWeight = FontWeight.SemiBold,
-                fontFamily = interSemiBold
+                fontFamily = interFonts
             )
             Text(
                 text = detail.destination,
                 color = GrayColor,
                 fontSize = 14.sp,
-                fontFamily = interSemiBold
+                fontFamily = interFonts,
+                fontWeight = FontWeight.SemiBold,
             )
 
             Spacer(modifier = Modifier.height(14.dp))
@@ -183,7 +186,8 @@ private fun HelpCenterText() {
             text = "Didn't find what you were looking for?",
             color = GrayColor,
             fontSize = 13.sp,
-            fontFamily = interSemiBold,
+            fontFamily = interFonts,
+            fontWeight = FontWeight.SemiBold,
             textAlign = TextAlign.Center
         )
         Text(
@@ -191,7 +195,7 @@ private fun HelpCenterText() {
             color = Color(0xFF526E37),
             fontSize = 13.sp,
             fontWeight = FontWeight.SemiBold,
-            fontFamily = interSemiBold,
+            fontFamily = interFonts,
             textAlign = TextAlign.Center,
             textDecoration = TextDecoration.Underline
         )

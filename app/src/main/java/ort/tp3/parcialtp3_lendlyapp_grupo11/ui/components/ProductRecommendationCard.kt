@@ -16,15 +16,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenDark2
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.DarkGreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenLight3
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
 @Composable
 fun ProductRecommendationCard(
@@ -51,7 +52,7 @@ fun ProductRecommendationCard(
                 modifier = Modifier
                     .size(48.dp)
                     .clip(RoundedCornerShape(12.dp))
-                    .background(GreenDark2),
+                    .background(DarkGreen),
                 contentAlignment = Alignment.Center
             ) {
                 AsyncImage(
@@ -71,7 +72,8 @@ fun ProductRecommendationCard(
             fontSize = 11.sp,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            fontFamily = interSemiBold
+            fontWeight = FontWeight.SemiBold,
+            fontFamily = interFonts
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
@@ -80,7 +82,8 @@ fun ProductRecommendationCard(
             fontSize = 10.sp,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            fontFamily = interSemiBold
+            fontWeight = FontWeight.SemiBold,
+            fontFamily = interFonts
         )
     }
 }

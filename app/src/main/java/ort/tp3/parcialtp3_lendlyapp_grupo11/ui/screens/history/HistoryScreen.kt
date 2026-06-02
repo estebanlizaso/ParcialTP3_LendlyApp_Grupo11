@@ -41,7 +41,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
 @Composable
 fun HistoryScreen(
@@ -83,7 +83,7 @@ fun HistoryScreen(
                 color = BlackFont,
                 fontSize = 30.sp,
                 fontWeight = FontWeight.SemiBold,
-                fontFamily = interSemiBold
+                fontFamily = interFonts
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -176,7 +176,7 @@ private fun HistoryFilterChip(
             color = BlackFont,
             fontSize = 14.sp,
             fontWeight = FontWeight.SemiBold,
-            fontFamily = interSemiBold
+            fontFamily = interFonts
         )
     }
 }
@@ -188,7 +188,7 @@ private fun HistorySectionTitle(title: String) {
         color = GrayColor,
         fontSize = 15.sp,
         fontWeight = FontWeight.SemiBold,
-        fontFamily = interSemiBold,
+        fontFamily = interFonts,
         modifier = Modifier.padding(top = 20.dp, bottom = 18.dp)
     )
 }
@@ -215,7 +215,8 @@ private fun HistoryTransactionItem(
                 text = transaction.time,
                 color = GrayColor,
                 fontSize = 13.sp,
-                fontFamily = interSemiBold
+                fontFamily = interFonts,
+                fontWeight = FontWeight.SemiBold,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
@@ -223,7 +224,7 @@ private fun HistoryTransactionItem(
                 color = BlackFont,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold,
-                fontFamily = interSemiBold
+                fontFamily = interFonts
             )
         }
 
@@ -233,7 +234,8 @@ private fun HistoryTransactionItem(
                     text = transaction.merchant,
                     color = GrayColor,
                     fontSize = 13.sp,
-                    fontFamily = interSemiBold,
+                    fontFamily = interFonts,
+                    fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.End
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -243,7 +245,7 @@ private fun HistoryTransactionItem(
                 color = BlackFont,
                 fontSize = 17.sp,
                 fontWeight = FontWeight.SemiBold,
-                fontFamily = interSemiBold,
+                fontFamily = interFonts,
                 textAlign = TextAlign.End
             )
         }
@@ -267,7 +269,8 @@ private fun RecentLoanHistoryItem(loan: RecentLoanHistoryUi) {
                 text = loan.date,
                 color = GrayColor,
                 fontSize = 13.sp,
-                fontFamily = interSemiBold
+                fontFamily = interFonts,
+                fontWeight = FontWeight.SemiBold,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
@@ -275,7 +278,7 @@ private fun RecentLoanHistoryItem(loan: RecentLoanHistoryUi) {
                 color = BlackFont,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold,
-                fontFamily = interSemiBold
+                fontFamily = interFonts
             )
         }
 
@@ -284,7 +287,8 @@ private fun RecentLoanHistoryItem(loan: RecentLoanHistoryUi) {
                 text = loan.merchant,
                 color = GrayColor,
                 fontSize = 13.sp,
-                fontFamily = interSemiBold,
+                fontFamily = interFonts,
+                fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.End
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -293,7 +297,7 @@ private fun RecentLoanHistoryItem(loan: RecentLoanHistoryUi) {
                 color = BlackFont,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold,
-                fontFamily = interSemiBold,
+                fontFamily = interFonts,
                 textAlign = TextAlign.End
             )
         }

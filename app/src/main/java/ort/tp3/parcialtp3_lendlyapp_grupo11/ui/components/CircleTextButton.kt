@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenDark2
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.DarkGreen
 
 @Composable
 fun CircleTextButton(
@@ -24,7 +24,7 @@ fun CircleTextButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     size: Dp = 44.dp,
-    backgroundColor: Color = GreenDark2
+    backgroundColor: Color = DarkGreen
 ) {
     Box(
         modifier = modifier

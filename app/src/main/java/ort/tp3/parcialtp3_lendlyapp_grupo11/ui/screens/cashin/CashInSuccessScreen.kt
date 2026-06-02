@@ -30,7 +30,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenLight3
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
 @Composable
 fun CashInSuccessScreen(
@@ -75,20 +75,22 @@ fun CashInSuccessScreen(
                 text = "Added to your account",
                 color = GrayColor,
                 fontSize = 14.sp,
-                fontFamily = interSemiBold
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = interFonts
             )
             Text(
                 text = "2,500.00 PHP",
                 color = BlackFont,
                 fontSize = 26.sp,
                 fontWeight = FontWeight.SemiBold,
-                fontFamily = interSemiBold
+                fontFamily = interFonts
             )
             Text(
                 text = "From $sourceName",
                 color = GrayColor,
                 fontSize = 14.sp,
-                fontFamily = interSemiBold
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = interFonts
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -114,7 +116,7 @@ fun CashInSuccessScreen(
                 color = BlackFont,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
-                fontFamily = interSemiBold
+                fontFamily = interFonts
             )
             Spacer(modifier = Modifier.height(20.dp))
             TransactionDetailRow(label = "Transfer Fee", value = "-P15.00")
@@ -130,7 +132,7 @@ fun CashInSuccessScreen(
                 color = Color(0xFF526E37),
                 fontSize = 13.sp,
                 fontWeight = FontWeight.SemiBold,
-                fontFamily = interSemiBold,
+                fontFamily = interFonts,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )

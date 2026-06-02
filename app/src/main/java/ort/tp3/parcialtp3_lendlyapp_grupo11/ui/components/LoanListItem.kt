@@ -26,7 +26,7 @@ import coil.compose.AsyncImage
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenLight3
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
 @Composable
 fun LoanListItem(
@@ -66,7 +66,7 @@ fun LoanListItem(
             color = BlackFont,
             fontSize = 15.sp,
             fontWeight = FontWeight.SemiBold,
-            fontFamily = interSemiBold,
+            fontFamily = interFonts,
             modifier = Modifier.weight(1f)
         )
 
@@ -79,14 +79,14 @@ fun LoanListItem(
                 color = BlackFont,
                 fontSize = 13.sp,
                 fontWeight = FontWeight.SemiBold,
-                fontFamily = interSemiBold,
+                fontFamily = interFonts,
                 textAlign = TextAlign.End
             )
             Text(
                 text = feeLabel,
                 color = GrayColor,
                 fontSize = 11.sp,
-                fontFamily = interSemiBold,
+                fontFamily = interFonts,
                 textAlign = TextAlign.End
             )
         }

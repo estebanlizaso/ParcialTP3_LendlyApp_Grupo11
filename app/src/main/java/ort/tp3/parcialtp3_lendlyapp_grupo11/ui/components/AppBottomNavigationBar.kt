@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenDark2
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.DarkGreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
 data class BottomNavItem(
     val label: String,
@@ -48,7 +48,7 @@ fun AppBottomNavigationBar(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 modifier = Modifier
                     .clip(RoundedCornerShape(24.dp))
-                    .background(if (isSelected) GreenDark2 else androidx.compose.ui.graphics.Color.Transparent)
+                    .background(if (isSelected) DarkGreen else androidx.compose.ui.graphics.Color.Transparent)
                     .clickable { onItemClick(index) }
                     .padding(horizontal = 12.dp, vertical = 6.dp)
             ) {
@@ -57,13 +57,14 @@ fun AppBottomNavigationBar(
                     color = if (isSelected) BlackFont else GrayColor,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.SemiBold,
-                    fontFamily = interSemiBold
+                    fontFamily = interFonts
                 )
                 Text(
                     text = item.label,
                     color = if (isSelected) BlackFont else GrayColor,
                     fontSize = 10.sp,
-                    fontFamily = interSemiBold
+                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = interFonts
                 )
             }
         }

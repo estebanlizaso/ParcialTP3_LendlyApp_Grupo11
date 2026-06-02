@@ -14,7 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
 @Composable
 fun ScreenTopBar(
@@ -50,7 +50,7 @@ fun ScreenTopBar(
                     color = BlackFont,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
-                    fontFamily = interSemiBold,
+                    fontFamily = interFonts,
                     modifier = Modifier
                         .size(32.dp)
                         .clickable { onInfoClick() }
@@ -65,7 +65,7 @@ fun ScreenTopBar(
             color = BlackFont,
             fontSize = 14.sp,
             fontWeight = FontWeight.SemiBold,
-            fontFamily = interSemiBold
+            fontFamily = interFonts
         )
     }
 }

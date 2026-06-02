@@ -26,7 +26,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.ProductRecommendationC
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.SectionHeader
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
 @Composable
 fun HomeScreen(
@@ -53,7 +53,7 @@ fun HomeScreen(
             color = BlackFont,
             fontSize = 24.sp,
             fontWeight = FontWeight.SemiBold,
-            fontFamily = interSemiBold
+            fontFamily = interFonts
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -68,7 +68,7 @@ fun HomeScreen(
                 text = "Loading home data...",
                 color = BlackFont,
                 fontSize = 13.sp,
-                fontFamily = interSemiBold
+                fontFamily = interFonts
             )
         }
 
@@ -78,7 +78,7 @@ fun HomeScreen(
                 text = uiState.error,
                 color = Color.Red,
                 fontSize = 13.sp,
-                fontFamily = interSemiBold
+                fontFamily = interFonts
             )
         }
 
