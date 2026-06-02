@@ -10,28 +10,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.*
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.ui.Modifier
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.CreatePasswordPage
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.DonePage
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.FaceRecognitionPage
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.IDVerificationPage
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.LoginPage
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.ProfileDetailFormPage
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.SMSVerification
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.SignaturePage
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.VerifiedPage
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.VerifyPhoneNumber
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,8 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.NavHost
@@ -124,9 +100,7 @@ class MainActivity : ComponentActivity() {
                         composable(Screen.Splash.route) {
                             SplashScreen(
                                 onTimeout = {
-                                    // Placeholder para lógica de login persistente
                                     val isUserLoggedIn = true // Cambiar a true para probar navegación a Home
-
                                     if (isUserLoggedIn) {
                                         navController.navigate(AppRoute.HOME) {
                                             popUpTo(Screen.Splash.route) { inclusive = true }
@@ -228,7 +202,6 @@ class MainActivity : ComponentActivity() {
                                     } else {
                                         AppButton(
                                             text = stringResource(R.string.onboarding3_login_button),
-                                            onClick = { navController.navigate(Screen.Login.route) },
                                             onClick = {
                                                 navController.navigate(Screen.Login.route)
                                             },
@@ -256,50 +229,7 @@ class MainActivity : ComponentActivity() {
                             PlaceholderScreen(title = "Sign-up Screen", onBack = { navController.popBackStack() })
                         }
 
-                val bottomNavItems = lendlyBottomNavItems()
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route
-                val selectedNavIndex = selectedBottomNavIndex(currentRoute)
-                var cashInSource by remember { mutableStateOf("BPI") }
-                val navigateToHome = {
-                    navController.navigate(AppRoute.HOME) {
-                        popUpTo(AppRoute.HOME)
-                        launchSingleTop = true
-                    }
-                }
-
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    bottomBar = {
-                        if (selectedNavIndex >= 0) {
-                            Column {
-                                HorizontalDivider(color = Color(0xFFE6E6E6))
-                                AppBottomNavigationBar(
-                                    items = bottomNavItems,
-                                    selectedIndex = selectedNavIndex,
-                                    onItemClick = { index ->
-                                        val route = bottomNavItems.getOrNull(index)?.route
-                                        if (route != null && route != currentRoute) {
-                                            navController.navigate(route) {
-                                                popUpTo(AppRoute.HOME) {
-                                                    saveState = true
-                                                }
-                                                launchSingleTop = true
-                                                restoreState = true
-                                            }
-                                        }
-                                    }
-                                )
-                                Spacer(modifier = Modifier.height(10.dp))
-                            }
-                        }
-                    }
-                ) { innerPadding ->
-                    NavHost(
-                        navController = navController,
-                        startDestination = AppRoute.HOME,
-                        modifier = Modifier.padding(innerPadding)
-                    ) {
+                        // APP ROUTES
                         composable(AppRoute.HOME) {
                             HomeRoute(
                                 onCashInClick = { navController.navigate(AppRoute.CASH_IN_OPTIONS) },
