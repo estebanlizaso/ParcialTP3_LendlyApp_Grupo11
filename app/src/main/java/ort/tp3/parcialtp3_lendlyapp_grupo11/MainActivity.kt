@@ -4,14 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.navigation.AppNavigation
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -21,13 +13,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.*
-import ort.tp3.parcialtp3_lendlyapp_grupo11.SessionManager
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -48,7 +36,26 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.history.HistoryRoute
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.history.TransactionDetailRoute
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home.HomeRoute
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home.NotificationScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.*
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.shop.FilterScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.shop.ProductDetailScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.shop.ShopScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.shop.ShopSearchScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.*
+
+@Composable
+fun PlaceholderScreen(title: String, onBack: () -> Unit = {}) {
+    Box(
+        modifier = Modifier.fillMaxSize().background(DarkGreen),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(text = title, color = White, fontSize = 24.sp)
+            Spacer(modifier = Modifier.height(16.dp))
+            AppButton(text = "Go Back", onClick = onBack)
+        }
+    }
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +63,6 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ParcialTP3_LendlyApp_Grupo11Theme {
-                //AppNavigation()
                 val context = LocalContext.current
                 val sessionManager = remember { SessionManager(context) }
                 val navController = rememberNavController()
@@ -102,7 +108,7 @@ class MainActivity : ComponentActivity() {
                         composable(Screen.Splash.route) {
                             SplashScreen(
                                 onTimeout = {
-                                    if (!sessionManager.isLoggedIn()) {
+                                    if (sessionManager.isLoggedIn()) {
                                         navController.navigate(AppRoute.HOME) {
                                             popUpTo(Screen.Splash.route) { inclusive = true }
                                         }
@@ -203,9 +209,7 @@ class MainActivity : ComponentActivity() {
                                     } else {
                                         AppButton(
                                             text = stringResource(R.string.onboarding3_login_button),
-                                            onClick = {
-                                                navController.navigate(Screen.Login.route)
-                                            },
+                                            onClick = { navController.navigate(Screen.Login.route) },
                                             type = ButtonType.OUTLINED,
                                             borderColor = White,
                                             textColor = White,
@@ -297,13 +301,52 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-                        // APP ROUTES
+                        // MAIN APP FLOW
                         composable(AppRoute.HOME) {
                             HomeRoute(
                                 onCashInClick = { navController.navigate(AppRoute.CASH_IN_OPTIONS) },
                                 onNotificationClick = { navController.navigate(AppRoute.NOTIFICATIONS) }
                             )
                         }
+                        
+                        composable(AppRoute.LOAN) {
+                            PlaceholderScreen(title = "Loan Screen", onBack = { navController.popBackStack() })
+                        }
+                        
+                        composable(AppRoute.SHOP) {
+                            ShopScreen(
+                                onSearchClick = { navController.navigate(AppRoute.SHOP_SEARCH) },
+                                onFilterClick = { navController.navigate(AppRoute.FILTER) },
+                                onProductClick = { productId ->
+                                    navController.navigate(AppRoute.productDetail(productId))
+                                }
+                            )
+                        }
+
+                        composable(AppRoute.SHOP_SEARCH) {
+                            ShopSearchScreen(
+                                onBackClick = { navController.popBackStack() },
+                                onSearchClick = { query ->
+                                    // Opcionalmente manejar la búsqueda aquí
+                                }
+                            )
+                        }
+                        
+                        composable(AppRoute.PRODUCT_DETAIL_WITH_ARG) { backStackEntry ->
+                            val productId = backStackEntry.arguments?.getString("productId").orEmpty()
+                            ProductDetailScreen(
+                                productId = productId,
+                                onBackClick = { navController.popBackStack() }
+                            )
+                        }
+                        
+                        composable(AppRoute.FILTER) {
+                            FilterScreen(
+                                onBackClick = { navController.popBackStack() },
+                                onApplyClick = { navController.popBackStack() }
+                            )
+                        }
+
                         composable(AppRoute.HISTORY) {
                             HistoryRoute(
                                 onNotificationClick = { navController.navigate(AppRoute.NOTIFICATIONS) },
@@ -312,6 +355,7 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
+                        
                         composable(AppRoute.TRANSACTION_DETAIL_WITH_ARG) { backStackEntry ->
                             val transactionId = backStackEntry.arguments?.getString("transactionId").orEmpty()
                             TransactionDetailRoute(
@@ -319,9 +363,11 @@ class MainActivity : ComponentActivity() {
                                 onBackClick = { navController.popBackStack() }
                             )
                         }
+                        
                         composable(AppRoute.NOTIFICATIONS) {
                             NotificationScreen(onBackClick = { navController.popBackStack() })
                         }
+                        
                         composable(AppRoute.CASH_IN_OPTIONS) {
                             CashInOptionsScreen(
                                 onBackClick = { navController.popBackStack() },
@@ -329,6 +375,7 @@ class MainActivity : ComponentActivity() {
                                 onOverTheCounterClick = { navController.navigate(AppRoute.OVER_THE_COUNTER_PARTNERS) }
                             )
                         }
+                        
                         composable(AppRoute.ONLINE_CASH_IN_OPTIONS) {
                             OnlineCashInOptionsScreen(
                                 onBackClick = { navController.popBackStack() },
@@ -338,6 +385,7 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
+                        
                         composable(AppRoute.OVER_THE_COUNTER_PARTNERS) {
                             OverTheCounterPartnersScreen(
                                 onBackClick = { navController.popBackStack() },
@@ -347,6 +395,7 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
+                        
                         composable(AppRoute.CASH_IN_AMOUNT) {
                             CashInAmountScreen(
                                 sourceName = cashInSource,
@@ -354,6 +403,7 @@ class MainActivity : ComponentActivity() {
                                 onNextClick = { navController.navigate(AppRoute.CASH_IN_SUCCESS) }
                             )
                         }
+
                         composable(AppRoute.CASH_IN_SUCCESS) {
                             CashInSuccessScreen(
                                 sourceName = cashInSource,

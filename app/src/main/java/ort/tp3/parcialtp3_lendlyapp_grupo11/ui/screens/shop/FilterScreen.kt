@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.ButtonType
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
 @Composable
 fun FilterScreen(
@@ -57,7 +57,7 @@ fun FilterScreen(
                     textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    fontFamily = interSemiBold
+                    fontFamily = interFonts
                 )
                 Box(modifier = Modifier.size(48.dp))
             }
@@ -149,7 +149,7 @@ fun FilterSection(
             text = title,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
-            fontFamily = interSemiBold
+            fontFamily = interFonts
         )
         Row(
             modifier = Modifier

@@ -11,15 +11,6 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.shop.ShopSearchScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.shop.FilterScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.shop.ProductDetailScreen
 
-sealed class Screen(val route: String) {
-    object Shop : Screen("shop")
-    object Search : Screen("search")
-    object Filter : Screen("filter")
-    object ProductDetail : Screen("productDetail/{productId}") {
-        fun createRoute(productId: String) = "productDetail/$productId"
-    }
-}
-
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()

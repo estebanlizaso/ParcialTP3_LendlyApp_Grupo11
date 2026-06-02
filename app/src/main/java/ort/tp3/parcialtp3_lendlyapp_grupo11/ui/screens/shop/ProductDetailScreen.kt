@@ -42,7 +42,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.shop.viewmodel.ProductDetailViewModel
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.utils.ImageHelper
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.utils.PriceHelper
 
@@ -71,7 +71,7 @@ fun ProductDetailScreen(
                         product?.name ?: "Loading...",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        fontFamily = interSemiBold
+                        fontFamily = interFonts
                     )
                 },
                 navigationIcon = {
@@ -186,7 +186,7 @@ fun ProductDetailScreen(
                         text = product.name,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        fontFamily = interSemiBold
+                        fontFamily = interFonts
                     )
                 }
 

@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppLabel
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
 @Composable
 fun ShopSearchScreen(
@@ -55,9 +55,8 @@ fun ShopSearchScreen(
                     textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    fontFamily = interSemiBold
+                    fontFamily = interFonts
                 )
-                // Spacer to balance the back button
                 Box(modifier = Modifier.size(48.dp))
             }
         }
@@ -69,7 +68,6 @@ fun ShopSearchScreen(
                 .background(Color.White)
                 .padding(horizontal = 16.dp)
         ) {
-            // Search Bar
             AppLabel(
                 label = "",
                 value = searchQuery,
@@ -82,7 +80,6 @@ fun ShopSearchScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Recent Header
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -92,21 +89,20 @@ fun ShopSearchScreen(
                     text = "Recent",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    fontFamily = interSemiBold
+                    fontFamily = interFonts
                 )
                 Text(
                     text = "Clear All",
-                    color = Color(0xFF4F772D), // Color verde oscuro de la imagen
+                    color = Color(0xFF4F772D),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold,
-                    fontFamily = interSemiBold,
+                    fontFamily = interFonts,
                     modifier = Modifier.clickable { recentSearches = emptyList() }
                 )
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Recent Searches List
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.fillMaxSize()

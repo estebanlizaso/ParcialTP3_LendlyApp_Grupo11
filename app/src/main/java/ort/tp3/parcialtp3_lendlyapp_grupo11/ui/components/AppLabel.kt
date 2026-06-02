@@ -83,7 +83,8 @@ fun AppLabel(
                                     text = placeholder,
                                     color = borderColor.copy(alpha = 0.6f),
                                     fontSize = 16.sp,
-                                    fontFamily = interSemiBold
+                                    fontWeight = FontWeight.SemiBold,
+                                    fontFamily = interFonts
                                 )
                             }
                             innerTextField()

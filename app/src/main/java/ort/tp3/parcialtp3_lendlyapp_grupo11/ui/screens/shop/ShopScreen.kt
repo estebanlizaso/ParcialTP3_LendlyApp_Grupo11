@@ -34,7 +34,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.ProductDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.*
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.shop.viewmodel.ShopViewModel
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interSemiBold
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.utils.ImageHelper
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.utils.PriceHelper
 
@@ -50,17 +50,13 @@ fun ShopScreen(
     val featuredProducts by viewModel.featuredProducts.collectAsState()
     val allProducts by viewModel.allProducts.collectAsState()
 
-    Scaffold(
-        bottomBar = { BottomNavigationBar() }
-    ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .background(Color.White)
-                .verticalScroll(rememberScrollState())
-        ) {
-            // Header
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .verticalScroll(rememberScrollState())
+    ) {
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -69,7 +65,7 @@ fun ShopScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(Icons.Outlined.Person, "Profile", modifier = Modifier.size(28.dp))
-                // Logo central
+
                 Image(
                     painter = painterResource(id = R.drawable.logo),
                     contentDescription = "Logo",
@@ -78,7 +74,6 @@ fun ShopScreen(
                 Icon(Icons.Outlined.Notifications, "Notifications", modifier = Modifier.size(28.dp))
             }
 
-            // Search Bar & Filter
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -95,13 +90,13 @@ fun ShopScreen(
                     cornerRadius = 12.dp,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                     keyboardActions = KeyboardActions(onSearch = { onSearchClick() }),
-                    leadingIcon = { 
+                    leadingIcon = {
                         Icon(
-                            Icons.Default.Search, 
-                            null, 
+                            Icons.Default.Search,
+                            null,
                             tint = Color.Gray,
                             modifier = Modifier.clickable { onSearchClick() }
-                        ) 
+                        )
                     }
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -115,13 +110,10 @@ fun ShopScreen(
                 }
             }
 
-            // Promotional Banner
             PromoBanner()
 
-            // Horizontal Sections
             ShopSection("Shop By Category") { CategoryList() }
-            
-            // Sección de Marcas con estado de carga
+
             ShopSection("Popular Brands") {
                 if (brands.isEmpty()) {
                     Box(Modifier.fillMaxWidth().height(100.dp), contentAlignment = Alignment.Center) {
@@ -141,7 +133,6 @@ fun ShopScreen(
             
             Spacer(modifier = Modifier.height(24.dp))
         }
-    }
 }
 
 @Composable
@@ -153,14 +144,14 @@ fun BrandList(brands: List<ProductBrandDto>) {
         items(brands) { brand ->
             Card(
                 modifier = Modifier
-                    .width(150.dp) // Ancho 150px según Figma
-                    .height(130.dp), // Alto 130px según Figma
+                    .width(150.dp)
+                    .height(130.dp),
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(containerColor = Color(0xFFF8F8F8)),
                 border = BorderStroke(1.dp, Color(0xFFEEEEEE))
             ) {
                 Column(modifier = Modifier.fillMaxSize()) {
-                    // ARRIBA: Imagen desde recurso local (Helper)
+
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -176,8 +167,7 @@ fun BrandList(brands: List<ProductBrandDto>) {
                             contentScale = ContentScale.Crop
                         )
                     }
-                    
-                    // ABAJO: Nombre a la izquierda y LOGO de la API a la derecha
+
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -191,8 +181,7 @@ fun BrandList(brands: List<ProductBrandDto>) {
                             fontSize = 13.sp,
                             color = Color.Black
                         )
-                        
-                        // Logo desde la URL de la API
+
                         AsyncImage(
                             model = brand.logo,
                             contentDescription = null,
@@ -213,7 +202,7 @@ fun PromoBanner() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .height(250.dp) // Ajustado a 250dp segun Figma
+            .height(250.dp)
             .background(Color(0xFF002203), RoundedCornerShape(24.dp))
             .clip(RoundedCornerShape(24.dp))
     ) {
@@ -228,8 +217,8 @@ fun PromoBanner() {
                 contentDescription = null,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .offset(y = 45.dp) // Bajamos un poco mas el rectangulo por la nueva altura
-                    .size(160.dp), // Aumentamos tamaño del rectangulo proporcionalmente
+                    .offset(y = 45.dp)
+                    .size(160.dp),
                 contentScale = ContentScale.Fit
             )
             Image(
@@ -237,8 +226,8 @@ fun PromoBanner() {
                 contentDescription = null,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .offset(x = 10.dp, y = 35.dp) // Ajuste fino para la nueva altura
-                    .size(220.dp), // Zapatillas mas grandes para llenar el espacio
+                    .offset(x = 10.dp, y = 35.dp)
+                    .size(220.dp),
                 contentScale = ContentScale.Fit
             )
         }
@@ -249,7 +238,7 @@ fun PromoBanner() {
                 .fillMaxHeight(),
             verticalArrangement = Arrangement.Center
         ) {
-            Text("The New Shoes", color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Bold, fontFamily = interSemiBold)
+            Text("The New Shoes", color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Bold, fontFamily = interFonts)
             Text("Shop this season's Top Silhouette", color = Color.LightGray, fontSize = 13.sp, modifier = Modifier.padding(vertical = 4.dp))
             Spacer(modifier = Modifier.height(12.dp))
             AppButton(
@@ -281,7 +270,7 @@ fun ShopSection(title: String, content: @Composable () -> Unit) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(title, fontWeight = FontWeight.Bold, fontSize = 18.sp, fontFamily = interSemiBold)
+            Text(title, fontWeight = FontWeight.Bold, fontSize = 18.sp, fontFamily = interFonts)
             TextButton(onClick = { }) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text("See All", color = Color.Gray, fontSize = 14.sp)
@@ -327,7 +316,7 @@ fun CategoryList() {
                     text = name, 
                     fontSize = 14.sp, 
                     fontWeight = FontWeight.SemiBold,
-                    fontFamily = interSemiBold,
+                    fontFamily = interFonts,
                     modifier = Modifier.padding(top = 8.dp), 
                     color = Color.DarkGray
                 )
@@ -358,13 +347,13 @@ fun ProductList(
                 border = BorderStroke(1.dp, Color(0xFFF0F0F0))
             ) {
                 Column(
-                    modifier = Modifier.padding(8.dp), // Reducimos padding interno para que entre todo
+                    modifier = Modifier.padding(8.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(80.dp) // Altura ajustada para la imagen
+                            .height(80.dp)
                             .background(Color.White, RoundedCornerShape(14.dp)),
                         contentAlignment = Alignment.Center
                     ) {
@@ -390,16 +379,16 @@ fun ProductList(
                     Text(
                         text = product.name,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 12.sp, // Tamaño ajustado para Figma
+                        fontSize = 12.sp,
                         maxLines = 1,
-                        fontFamily = interSemiBold
+                        fontFamily = interFonts
                     )
                     Text(
                         text = "${PriceHelper.formatPrice(product.price)} * ${product.installmentMonths} mo",
                         color = Color.Gray,
-                        fontSize = 10.sp, // Tamaño ajustado para Figma
+                        fontSize = 10.sp,
                         modifier = Modifier.padding(top = 2.dp),
-                        fontFamily = interSemiBold
+                        fontFamily = interFonts
                     )
                 }
             }

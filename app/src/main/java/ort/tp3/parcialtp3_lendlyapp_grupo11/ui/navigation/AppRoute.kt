@@ -13,6 +13,11 @@ object AppRoute {
     const val DONE = "done"
 
     const val HOME = "home"
+    const val LOAN = "loan"
+    const val SHOP = "shop"
+    const val SHOP_SEARCH = "shop_search"
+    const val PRODUCT_DETAIL = "product_detail"
+    const val FILTER = "filter"
     const val HISTORY = "history"
     const val TRANSACTION_DETAIL = "transaction_detail"
     const val NOTIFICATIONS = "notifications"
@@ -23,8 +28,13 @@ object AppRoute {
     const val CASH_IN_SUCCESS = "cash_in_success"
 
     const val TRANSACTION_DETAIL_WITH_ARG = "$TRANSACTION_DETAIL/{transactionId}"
+    const val PRODUCT_DETAIL_WITH_ARG = "$PRODUCT_DETAIL/{productId}"
 
     fun transactionDetail(transactionId: String): String {
         return "$TRANSACTION_DETAIL/$transactionId"
+    }
+
+    fun productDetail(productId: String): String {
+        return "$PRODUCT_DETAIL/$productId"
     }
 }
