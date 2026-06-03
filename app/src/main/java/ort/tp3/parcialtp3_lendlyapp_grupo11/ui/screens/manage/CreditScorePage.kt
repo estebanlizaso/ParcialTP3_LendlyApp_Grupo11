@@ -10,8 +10,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,7 +42,7 @@ fun CreditScorePage(
     val interSemiBold = FontFamily(Font(R.font.intersemibold, FontWeight.SemiBold))
     val interMedium = FontFamily(Font(R.font.intermedium, FontWeight.Medium))
     val interRegular = FontFamily(Font(R.font.interregular, FontWeight.Normal))
-    val uiState by viewModel.uiState.collectAsState() //estado API
+    val uiState = viewModel.uiState //estado API
 
     Column(
         modifier = Modifier
@@ -56,118 +54,113 @@ fun CreditScorePage(
             AppTopBar(onBackClick = onBackClick, showInfoIcon = false)
         }
 
-        // 3 estados posibles
-        when (uiState) {
-            is ManageUiState.Loading -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(color = Color(0xFF5ED366))
-                }
+        if (uiState.isLoading) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(color = Color(0xFF5ED366))
             }
-            is ManageUiState.Error -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = (uiState as ManageUiState.Error).message, color = Color.Red)
-                }
+        } else if (uiState.errorMessage != null) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(text = uiState.errorMessage, color = Color.Red)
             }
-            is ManageUiState.Success -> {
-                val user = (uiState as ManageUiState.Success).user
+        } else if (uiState.isSuccess && uiState.user != null) {
+            val user = uiState.user
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 24.dp)
+            ) {
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Text(
+                    text = "Credit Score",
+                    fontFamily = montserratSemiBold,
+                    fontSize = 28.sp,
+                    color = Color(0xFF171D1E)
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
 
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1f)
-                        .verticalScroll(rememberScrollState())
-                        .padding(horizontal = 24.dp)
+                        .background(Color(0xFFFCF8F8), RoundedCornerShape(24.dp))
+                        .padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Spacer(modifier = Modifier.height(24.dp))
-
-                    Text(
-                        text = "Credit Score",
-                        fontFamily = montserratSemiBold,
-                        fontSize = 28.sp,
-                        color = Color(0xFF171D1E)
-                    )
-
-                    Spacer(modifier = Modifier.height(24.dp))
-
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color(0xFFFCF8F8), RoundedCornerShape(24.dp))
-                            .padding(24.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_credit_score_meter),
-                                contentDescription = "Meter",
-                                modifier = Modifier.fillMaxWidth().height(140.dp),
-                                contentScale = ContentScale.Fit
-                            )
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 36.dp)
-                                    .offset(y = (-8).dp),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Text("300", fontFamily = interSemiBold, fontSize = 16.sp, color = Color(0xFF6A6C6A))
-                                Text("850", fontFamily = interSemiBold, fontSize = 16.sp, color = Color(0xFF6A6C6A))
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        // sacamos puntaje de la API
-                        Text(
-                            text = user.creditScore.toString(),
-                            fontFamily = montserratBold,
-                            fontSize = 48.sp,
-                            color = Color(0xFF000000)
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_credit_score_meter),
+                            contentDescription = "Meter",
+                            modifier = Modifier.fillMaxWidth().height(140.dp),
+                            contentScale = ContentScale.Fit
                         )
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        // sacamos el nivel de credito de la API
-                        Text(
-                            text = buildAnnotatedString {
-                                withStyle(style = SpanStyle(color = Color(0xFF6A6C6A))) {
-                                    append("Your Score is ")
-                                }
-                                withStyle(style = SpanStyle(color = Color(0xFF171D1E))) {
-                                    append(user.creditLevel)
-                                }
-                            },
-                            fontFamily = interSemiBold,
-                            fontSize = 22.sp
-                        )
-
-                        Spacer(modifier = Modifier.height(24.dp))
-                        HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp, color = Color(0xFFE5E2E1))
-                        Spacer(modifier = Modifier.height(24.dp))
-
-                        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
-                            Text("What is Credit Score?", fontFamily = interSemiBold, fontSize = 14.sp, color = Color(0xFF6A6C6A))
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(
-                                text = "This is your trust score, used as a bases to determine the various activities you do on Credit Score.",
-                                fontFamily = interRegular, fontSize = 12.sp, lineHeight = 16.sp, color = Color(0xFF6A6C6A), textAlign = TextAlign.Start
-                            )
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 36.dp)
+                                .offset(y = (-8).dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text("300", fontFamily = interSemiBold, fontSize = 16.sp, color = Color(0xFF6A6C6A))
+                            Text("850", fontFamily = interSemiBold, fontSize = 16.sp, color = Color(0xFF6A6C6A))
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(32.dp))
-                    Text("General", fontFamily = interMedium, fontSize = 14.sp, color = Color(0xFF6A6C6A))
                     Spacer(modifier = Modifier.height(16.dp))
-                    HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp, color = Color(0xFFE5E2E1))
+
+                    // sacamos puntaje de la API
+                    Text(
+                        text = user.creditScore.toString(),
+                        fontFamily = montserratBold,
+                        fontSize = 48.sp,
+                        color = Color(0xFF000000)
+                    )
+
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    ManageOptionItem(iconId = R.drawable.ic_account_details, title = "Account details") { onOptionClick("Account details") }
-                    ManageOptionItem(iconId = R.drawable.ic_email_phone, title = "Receiving by email or phone") { onOptionClick("Email/Phone") }
-                    ManageOptionItem(iconId = R.drawable.ic_scheduled_pay, title = "Scheduled pay") { onOptionClick("Scheduled pay") }
-                    ManageOptionItem(iconId = R.drawable.ic_settings, title = "Settings") { onOptionClick("Settings") }
+                    // sacamos el nivel de credito de la API
+                    Text(
+                        text = buildAnnotatedString {
+                            withStyle(style = SpanStyle(color = Color(0xFF6A6C6A))) {
+                                append("Your Score is ")
+                            }
+                            withStyle(style = SpanStyle(color = Color(0xFF171D1E))) {
+                                append(user.creditLevel)
+                            }
+                        },
+                        fontFamily = interSemiBold,
+                        fontSize = 22.sp
+                    )
 
-                    Spacer(modifier = Modifier.height(32.dp))
+                    Spacer(modifier = Modifier.height(24.dp))
+                    HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp, color = Color(0xFFE5E2E1))
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
+                        Text("What is Credit Score?", fontFamily = interSemiBold, fontSize = 14.sp, color = Color(0xFF6A6C6A))
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "This is your trust score, used as a bases to determine the various activities you do on Credit Score.",
+                            fontFamily = interRegular, fontSize = 12.sp, lineHeight = 16.sp, color = Color(0xFF6A6C6A), textAlign = TextAlign.Start
+                        )
+                    }
                 }
+
+                Spacer(modifier = Modifier.height(32.dp))
+                Text("General", fontFamily = interMedium, fontSize = 14.sp, color = Color(0xFF6A6C6A))
+                Spacer(modifier = Modifier.height(16.dp))
+                HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp, color = Color(0xFFE5E2E1))
+                Spacer(modifier = Modifier.height(8.dp))
+
+                ManageOptionItem(iconId = R.drawable.ic_account_details, title = "Account details") { onOptionClick("Account details") }
+                ManageOptionItem(iconId = R.drawable.ic_email_phone, title = "Receiving by email or phone") { onOptionClick("Email/Phone") }
+                ManageOptionItem(iconId = R.drawable.ic_scheduled_pay, title = "Scheduled pay") { onOptionClick("Scheduled pay") }
+                ManageOptionItem(iconId = R.drawable.ic_settings, title = "Settings") { onOptionClick("Settings") }
+
+                Spacer(modifier = Modifier.height(32.dp))
             }
         }
     }

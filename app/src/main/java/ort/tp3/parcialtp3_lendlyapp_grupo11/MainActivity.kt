@@ -70,6 +70,7 @@ class MainActivity : ComponentActivity() {
             ParcialTP3_LendlyApp_Grupo11Theme {
                 val context = LocalContext.current
                 val sessionManager = remember { SessionManager(context) }
+                val registerViewModel = remember { RegisterViewModel(sessionManager = sessionManager) }
                 val navController = rememberNavController()
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
@@ -253,6 +254,7 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(Screen.Signup.route) {
                             ProfileDetailFormPage(
+                                viewModel = registerViewModel,
                                 onBackClick = { navController.popBackStack() },
                                 onNextClick = { navController.navigate(AppRoute.ID_VERIFICATION) }
                             )
@@ -291,6 +293,7 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(AppRoute.CREATE_PASSWORD) {
                             CreatePasswordPage(
+                                viewModel = registerViewModel,
                                 onBackClick = { navController.popBackStack() },
                                 onNextClick = { navController.navigate(AppRoute.VERIFIED) }
                             )
