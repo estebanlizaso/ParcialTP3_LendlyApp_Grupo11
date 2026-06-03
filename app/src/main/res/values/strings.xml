@@ -51,6 +51,21 @@
 
     <string name="loan_get_loan_button">Get This Loan</string>
 
+    <!-- Loan Apply Screen -->
+    <string name="loan_apply_header_title">Please provide your details\nfor your loan</string>
+    <string name="loan_apply_header_subtitle">Please provide your details for your loan</string>
+    <string name="loan_apply_step_1">Step 1</string>
+    <string name="loan_apply_enter_amount">Enter loan amount</string>
+    <string name="loan_apply_step_2">Step 2</string>
+    <string name="loan_apply_select_plan">Select an installment plan</string>
+    <string name="loan_apply_step_3">Step 3</string>
+    <string name="loan_apply_select_purpose">Select your loan purpose</string>
+    <string name="loan_apply_summary">Summary</string>
+    <string name="loan_apply_lender">Lender</string>
+    <string name="loan_apply_amount_label">Loan Amount</string>
+    <string name="loan_apply_fee_label">3% Processing Fee</string>
+    <string name="loan_apply_total_receive">Total amount to Receive</string>
+
 
 
 </resources>

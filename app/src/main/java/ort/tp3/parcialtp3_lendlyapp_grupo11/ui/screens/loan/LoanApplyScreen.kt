@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -21,9 +22,9 @@ import androidx.compose.ui.res.stringResource
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.StepBox
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.icons.InfoIcon
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.DarkGreen
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.*
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.LoanApplyUiState
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.LoanViewModel
 
@@ -63,62 +64,85 @@ fun LoanApplyScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp)
         ) {
-            Text("Please provide your details\nfor your loan", fontSize = 24.sp, fontWeight = FontWeight.Bold)
-            Text("Please provide your details for your loan", fontSize = 14.sp, color = Color.Gray)
+            Text(
+                text = stringResource(R.string.loan_apply_header_title),
+                style = TextStyle(
+                    fontFamily = montserratFonts,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 24.sp,
+                    lineHeight = 32.sp,
+                    color = Color.Black
+                )
+            )
+            Spacer(Modifier.height(8.dp))
+            Text(
+                text = stringResource(R.string.loan_apply_header_subtitle),
+                style = TextStyle(
+                    fontFamily = interFonts,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 12.sp,
+                    lineHeight = 16.sp,
+                    letterSpacing = 0.4.sp,
+                    color = Color.Black
+                )
+            )
 
             Spacer(Modifier.height(32.dp))
 
-            StepLabel(step = 1, text = "Enter loan amount")
-            Spacer(Modifier.height(16.dp))
-            Text(
-                "₱ ${amount}.00",
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold,
-                color = DarkGreen,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
+            StepBox(stepTag = stringResource(R.string.loan_apply_step_1), description = stringResource(R.string.loan_apply_enter_amount)) {
+                Text(
+                    "₱ ${amount}.00",
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = DarkGreen,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                )
+            }
+            
             HorizontalDivider(Modifier.padding(vertical = 16.dp))
 
-            StepLabel(step = 2, text = "Select an installment plan")
-            Spacer(Modifier.height(16.dp))
-            InstallmentPlanItem(
-                title = "6 Months",
-                interest = "2.99% Interest",
-                monthly = "₱ 982.12/mo",
-                isSelected = selectedPlan == "6 Months",
-                onClick = { selectedPlan = "6 Months" }
-            )
+            StepBox(stepTag = stringResource(R.string.loan_apply_step_2), description = stringResource(R.string.loan_apply_select_plan)) {
+                InstallmentPlanItem(
+                    title = "6 Months",
+                    interest = "2.99% Interest",
+                    monthly = "₱ 982.12/mo",
+                    isSelected = selectedPlan == "6 Months",
+                    onClick = { selectedPlan = "6 Months" }
+                )
+            }
 
             Spacer(Modifier.height(24.dp))
 
-            StepLabel(step = 3, text = "Select your loan purpose")
-            Spacer(Modifier.height(8.dp))
-            
-            var expanded by remember { mutableStateOf(false) }
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xFFF9F9F9), RoundedCornerShape(8.dp))
-                    .clickable { expanded = true }
-                    .padding(16.dp)
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+            StepBox(stepTag = stringResource(R.string.loan_apply_step_3), description = stringResource(R.string.loan_apply_select_purpose)) {
+                var expanded by remember { mutableStateOf(false) }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(0xFFF9F9F9), RoundedCornerShape(8.dp))
+                        .clickable { expanded = true }
+                        .padding(16.dp)
                 ) {
-                    Text(selectedPurpose)
-                    Icon(Icons.Default.KeyboardArrowDown, contentDescription = null)
-                }
-                DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                    listOf("Educational", "Business", "Personal", "Medical").forEach { purpose ->
-                        DropdownMenuItem(
-                            text = { Text(purpose) },
-                            onClick = {
-                                selectedPurpose = purpose
-                                expanded = false
-                            }
-                        )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(selectedPurpose)
+                        Icon(Icons.Default.KeyboardArrowDown, contentDescription = null)
+                    }
+                    DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                        listOf("Educational", "Business", "Personal", "Medical").forEach { purpose ->
+                            DropdownMenuItem(
+                                text = { Text(purpose) },
+                                onClick = {
+                                    selectedPurpose = purpose
+                                    expanded = false
+                                }
+                            )
+                        }
                     }
                 }
             }
@@ -132,14 +156,14 @@ fun LoanApplyScreen(
                     .background(Color(0xFFF0FFF0), RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
                     .padding(24.dp)
             ) {
-                Text("Summary", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Text(text = stringResource(R.string.loan_apply_summary), fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(16.dp))
-                SummaryRow("Loan Amount", "PHP $amount.00")
-                SummaryRow("3% Processing Fee", "-150.00")
+                SummaryRow(stringResource(R.string.loan_apply_amount_label), "PHP $amount.00")
+                SummaryRow(stringResource(R.string.loan_apply_fee_label), "-150.00")
                 HorizontalDivider(Modifier.padding(vertical = 12.dp))
-                SummaryRow("Total amount to Receive", "₱ $amount.00", isBold = true)
-                SummaryRow("Lender", "null")
-                Text("What is this?", color = DarkGreen, fontSize = 14.sp, textDecoration = null, modifier = Modifier.padding(top = 8.dp))
+                SummaryRow(stringResource(R.string.loan_apply_total_receive), "₱ $amount.00", isBold = true)
+                SummaryRow(stringResource(R.string.loan_apply_lender), "null")
+                Text(stringResource(R.string.loan_what_is_this), color = DarkGreen, fontSize = 14.sp, textDecoration = null, modifier = Modifier.padding(top = 8.dp))
                 
                 Spacer(Modifier.height(24.dp))
                 
@@ -149,32 +173,13 @@ fun LoanApplyScreen(
                 }
 
                 AppButton(
-                    text = "Get This Loan",
+                    text = stringResource(R.string.loan_get_loan_button),
                     onClick = { viewModel.applyLoan(amount.toDouble(), selectedPlan, selectedPurpose) },
                     modifier = Modifier.fillMaxWidth(),
                     isLoading = applyState is LoanApplyUiState.Loading
                 )
             }
         }
-    }
-}
-
-@Composable
-fun StepLabel(step: Int, text: String) {
-    Column {
-        Surface(
-            color = Color(0xFFE8F5E9),
-            shape = RoundedCornerShape(4.dp)
-        ) {
-            Text(
-                "Step $step",
-                modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
-                fontSize = 12.sp,
-                color = Green
-            )
-        }
-        Spacer(Modifier.height(4.dp))
-        Text(text, fontWeight = FontWeight.Bold, fontSize = 16.sp)
     }
 }
 
