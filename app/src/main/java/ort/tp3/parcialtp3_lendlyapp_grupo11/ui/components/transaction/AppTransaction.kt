@@ -40,8 +40,7 @@ fun AppTransaction(
         icon()
 
         Spacer(Modifier.height(16.dp))
-        
-        // Added to your account
+
         Text(
             text = statusText,
             style = TextStyle(
@@ -54,8 +53,7 @@ fun AppTransaction(
                 textAlign = TextAlign.Center
             )
         )
-        
-        // Amount
+
         Text(
             text = "$amount $currency",
             style = TextStyle(
@@ -68,8 +66,7 @@ fun AppTransaction(
                 textAlign = TextAlign.Center
             )
         )
-        
-        // Origin
+
         Text(
             text = originText,
             style = TextStyle(
@@ -84,8 +81,7 @@ fun AppTransaction(
         )
 
         Spacer(Modifier.height(16.dp))
-        
-        // Type Label (e.g. Cash-In)
+
         Surface(
             color = Color.Transparent,
             shape = RoundedCornerShape(8.dp),

@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -123,7 +124,7 @@ fun ProductDetailScreen(
                     .padding(padding)
                     .verticalScroll(rememberScrollState())
             ) {
-                // Badges Row
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -135,8 +136,6 @@ fun ProductDetailScreen(
                     BadgeItem(Icons.Default.LocalOffer, "0% installment")
                     BadgeItem(Icons.Default.Inventory2, "Easy pick-up")
                 }
-
-                // Product Image Section (omitted for brevity in match)
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -144,23 +143,16 @@ fun ProductDetailScreen(
                         .padding(24.dp),
                     contentAlignment = Alignment.Center
                 ) {
+
                     val localImg = ImageHelper.getLocalProductImage(product.name)
-                    if (localImg != null) {
-                        Image(
-                            painter = painterResource(id = localImg),
-                            contentDescription = product.name,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Fit
-                        )
-                    } else {
-                        AsyncImage(
-                            model = product.image,
-                            contentDescription = product.name,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Fit,
-                            placeholder = painterResource(id = R.drawable.logo)
-                        )
-                    }
+                    AsyncImage(
+                        model = product.image,
+                        contentDescription = product.name,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Fit,
+                        placeholder = painterResource(id = R.drawable.logo),
+                        fallback = localImg?.let { painterResource(id = it) }
+                    )
                     
                     Surface(
                         modifier = Modifier
@@ -191,7 +183,6 @@ fun ProductDetailScreen(
 
                 HorizontalDivider(modifier = Modifier.padding(vertical = 24.dp), thickness = 8.dp, color = Color(0xFFF5F5F5))
 
-                // Selector de tienda
                 SectionTitle("WHERE DO YOU WANT TO SHOP?")
                 Card(
                     modifier = Modifier
@@ -235,7 +226,6 @@ fun ProductDetailScreen(
 
                 HorizontalDivider(modifier = Modifier.padding(vertical = 24.dp), thickness = 8.dp, color = Color(0xFFF5F5F5))
 
-                // Features
                 ExpandableSection("FEATURES") {
                     FeatureItem(Icons.AutoMirrored.Filled.List, "How To Apply For A Loan", "(1) Only 1 ID needed for the loan approval and, (2) Click on Continue to check if you are qualified")
                     FeatureItem(Icons.Default.Info, "Disclaimer", "Estimated calculation only. Down Payment and other loan terms may vary.")
@@ -243,7 +233,6 @@ fun ProductDetailScreen(
 
                 HorizontalDivider(modifier = Modifier.padding(vertical = 24.dp), thickness = 8.dp, color = Color(0xFFF5F5F5))
 
-                // Specs
                 ExpandableSection("PRODUCT SPECIFICATIONS") {
                     SpecItem("Chip", "A16 Bionic chip\n6-core CPU with 2 performance and 4 efficiency cores\n5-core GPU\n16-core Neural Engine")
                     SpecItem("Camera", "12MP camera\nf/1.8 aperture\nAutofocus with Focus Pixels\nRetina Flash")

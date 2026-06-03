@@ -33,7 +33,6 @@ fun CreatePasswordPage(
 ) {
     val uiState = viewModel.uiState
 
-    // registro en API exitoso
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
             onNextClick()
@@ -63,7 +62,6 @@ fun CreatePasswordPage(
         Spacer(modifier = Modifier.height(40.dp))
 
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
-            // Título
             Text(
                 text = "Create your password",
                 fontFamily = montserratSemiBold,
@@ -74,7 +72,6 @@ fun CreatePasswordPage(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Mostrar mensaje de error global si existe
             uiState.errorMessage?.let { error ->
                 Text(
                     text = error,

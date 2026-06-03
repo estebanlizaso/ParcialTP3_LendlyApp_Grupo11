@@ -114,7 +114,7 @@ fun AppNavigation(
                     innerPadding
             )
         ) {
-            // SPLASH
+
             composable(AppRoute.SPLASH) {
                 SplashScreen(
                     onTimeout = {
@@ -131,7 +131,6 @@ fun AppNavigation(
                 )
             }
 
-            // ONBOARDING
             composable(AppRoute.ONBOARDING_FLOW) {
                 OnboardingScreen(
                     onLoginClick = { navController.navigate(AppRoute.LOGIN) },
@@ -139,7 +138,6 @@ fun AppNavigation(
                 )
             }
 
-            // AUTH
             composable(AppRoute.LOGIN) {
                 LoginPage(
                     onLoginSuccess = {
@@ -157,7 +155,6 @@ fun AppNavigation(
                 )
             }
 
-            // REGISTRATION STEPS
             composable(AppRoute.ID_VERIFICATION) {
                 IDVerificationPage(
                     onBackClick = { navController.popBackStack() },
@@ -216,7 +213,6 @@ fun AppNavigation(
                 )
             }
 
-            // MAIN APP FLOW
             composable(AppRoute.HOME) {
                 HomeRoute(
                     onCashInClick = { navController.navigate(AppRoute.CASH_IN_OPTIONS) },
@@ -363,7 +359,6 @@ fun AppNavigation(
                 )
             }
 
-            // MANAGE FLOW
             composable(AppRoute.MANAGE) {
                 ProfilePage(
                     onOptionClick = { option ->

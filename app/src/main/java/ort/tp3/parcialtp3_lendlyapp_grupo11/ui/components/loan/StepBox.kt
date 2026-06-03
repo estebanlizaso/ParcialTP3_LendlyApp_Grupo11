@@ -22,7 +22,7 @@ fun StepBox(
     content: @Composable () -> Unit
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
-        // Step Tag
+
         Surface(
             color = SplashScreenGreen,
             shape = RoundedCornerShape(4.dp),
@@ -43,8 +43,7 @@ fun StepBox(
         }
         
         Spacer(Modifier.height(10.dp))
-        
-        // Description
+
         Text(
             text = description,
             style = TextStyle(

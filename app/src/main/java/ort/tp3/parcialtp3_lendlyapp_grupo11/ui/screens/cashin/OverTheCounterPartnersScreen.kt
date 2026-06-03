@@ -8,22 +8,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.OptionListItem
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.ScreenTopBar
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackIcon
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Neutral98
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
 private data class CashInPartner(
     val name: String,
@@ -52,18 +51,16 @@ fun OverTheCounterPartnersScreen(
             .padding(horizontal = 24.dp)
     ) {
         Spacer(modifier = Modifier.height(24.dp))
-        ScreenTopBar(
-            title = "",
-            onBackClick = onBackClick
-        )
-
-        Spacer(modifier = Modifier.height(34.dp))
-        Text(
-            text = "Over-The-Counter Partners",
-            color = BlackFont,
-            fontSize = 22.sp,
-            fontWeight = FontWeight.SemiBold,
-            fontFamily = interFonts
+        AppTopBar(
+            onLeftClick = onBackClick,
+            leftIcon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_arrow_back),
+                    contentDescription = null,
+                    tint = BlackIcon,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
         )
 
         Spacer(modifier = Modifier.height(28.dp))

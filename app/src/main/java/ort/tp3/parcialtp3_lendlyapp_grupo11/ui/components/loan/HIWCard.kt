@@ -81,5 +81,3 @@ fun HIWCard(
         }
     }
 }
-//TODO: revisar el padding de las 4 tarjetas contra figma que no coinciden. Lo mismo el texto
-//TODO: revisar también el espacio en blanco antes del botón

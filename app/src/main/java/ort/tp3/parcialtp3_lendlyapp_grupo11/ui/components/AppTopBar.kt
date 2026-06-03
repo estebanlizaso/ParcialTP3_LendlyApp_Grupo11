@@ -39,7 +39,6 @@ fun AppTopBar(
             .padding(horizontal = 12.dp),
         contentAlignment = Alignment.Center
     ) {
-        // Left Button
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.CenterStart
@@ -65,7 +64,6 @@ fun AppTopBar(
             }
         }
 
-        // Center Text
         if (centerText.isNotEmpty()) {
             Text(
                 text = centerText,
@@ -81,7 +79,6 @@ fun AppTopBar(
             )
         }
 
-        // Right Icon
         if (rightIcon != null) {
             Box(
                 modifier = Modifier.fillMaxSize(),

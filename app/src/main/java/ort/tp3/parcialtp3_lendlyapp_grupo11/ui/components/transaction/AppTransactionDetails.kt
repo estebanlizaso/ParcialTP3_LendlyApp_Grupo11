@@ -85,7 +85,6 @@ private fun DetailRow(label: String, value: String, isBold: Boolean = false) {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Left Text
         Text(
             text = label,
             style = TextStyle(
@@ -97,8 +96,7 @@ private fun DetailRow(label: String, value: String, isBold: Boolean = false) {
                 color = GrayText
             )
         )
-        
-        // Right Text
+
         Text(
             text = value,
             style = TextStyle(

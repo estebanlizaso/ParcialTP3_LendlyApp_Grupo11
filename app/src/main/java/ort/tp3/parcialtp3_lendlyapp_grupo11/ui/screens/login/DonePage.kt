@@ -74,7 +74,7 @@ fun DonePage(
             modifier = Modifier
                 .width(183.dp)
                 .height(330.dp),
-            contentScale = ContentScale.Fit // Asegura que escale bien dentro de sus proporciones
+            contentScale = ContentScale.Fit
         )
 
         Spacer(modifier = Modifier.height(48.dp))
@@ -101,7 +101,6 @@ fun DonePage(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        //no uso bottombar porque este fondo es oscuro
         AppButton(
             text = "Done",
             modifier = Modifier.fillMaxWidth(),

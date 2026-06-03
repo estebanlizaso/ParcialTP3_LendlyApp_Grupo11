@@ -51,8 +51,7 @@ fun AppButton(
     iconSpacing: Dp = 8.dp
 ) {
     val shape = RoundedCornerShape(cornerRadius)
-    
-    // Colores ajustados por estado enabled
+
     val finalBackgroundColor = if (enabled && !isLoading) {
         if (type == ButtonType.FILLED) backgroundColor else Color.Transparent
     } else {

@@ -33,7 +33,6 @@ fun AppTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     trailingIcon: @Composable (() -> Unit)? = null,
     textColor: Color = Color.Black,
-    //incluir ambas variantes de color de label
     labelColor: Color = Color(0xFF454745),
     unfocusedBorderColor: Color = Color(0xFF6A6C6A)
 ) {

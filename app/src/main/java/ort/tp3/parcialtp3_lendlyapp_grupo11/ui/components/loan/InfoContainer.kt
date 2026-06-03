@@ -23,13 +23,11 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.*
 fun InfoContainer(
     modifier: Modifier = Modifier,
     isProminent: Boolean = false,
-    // Prominent specific
     tagText: String = "",
     tagIcon: Painter? = null,
     titleText: String = "",
     subtitleText: String = "",
     imagePainter: Painter? = null,
-    // Standard specific
     borrowLabel: String = "",
     borrowAmount: String = "",
     evaluationLabel: String = "",

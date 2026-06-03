@@ -26,7 +26,7 @@ fun LoanSummary(
     isLoading: Boolean = false,
     errorMessage: String? = null
 ) {
-    // Cálculo dinámico de comisiones
+
     val amountValue = amount.toDoubleOrNull() ?: 0.0
     val processingFeeValue = amountValue * (processingFeePercentage / 100.0)
     val totalToReceive = amountValue - processingFeeValue
@@ -35,7 +35,7 @@ fun LoanSummary(
         modifier = modifier
             .fillMaxWidth()
     ) {
-        // Linea de 8px y SplashScreenGreen - Ancho de pantalla
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -132,8 +132,7 @@ fun SummaryRow(label: String, value: String, isBold: Boolean = false) {
                 color = DarkGreyText
             )
         )
-        
-        // Right text
+
         Text(
             text = value,
             style = if (isBold) {

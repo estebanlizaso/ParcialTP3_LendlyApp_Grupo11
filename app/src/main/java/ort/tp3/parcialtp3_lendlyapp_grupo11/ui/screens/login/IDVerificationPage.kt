@@ -70,7 +70,6 @@ fun IDVerificationPage(
             contentDescription = "ID Scan frame",
             modifier = Modifier
                 .fillMaxWidth(),
-                //.height(320.dp), se le puede dar altura fija de esta forma
             contentScale = ContentScale.Crop
         )
 

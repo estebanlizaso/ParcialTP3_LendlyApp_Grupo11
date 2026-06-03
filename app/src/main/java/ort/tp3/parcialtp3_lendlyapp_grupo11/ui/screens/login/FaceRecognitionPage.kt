@@ -71,8 +71,7 @@ fun FaceRecognitionPage(
             contentDescription = "Face recognition frame",
             modifier = Modifier
                 .fillMaxWidth(),
-                //.height(320.dp), se le puede dar altura fija de esta forma
-            contentScale = ContentScale.Crop // asegura que la imagen llene el ancho sin deformarse
+            contentScale = ContentScale.Crop
         )
 
         Spacer(modifier = Modifier.weight(1f))

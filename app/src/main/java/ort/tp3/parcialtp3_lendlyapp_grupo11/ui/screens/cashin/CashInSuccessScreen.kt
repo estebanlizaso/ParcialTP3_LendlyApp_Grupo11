@@ -1,6 +1,8 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.cashin
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,7 +11,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,13 +25,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.ButtonType
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.CircleTextButton
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.TransactionDetailRow
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.TransactionIconBadge
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.TransactionIconType
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.icons.CloseIcon
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.icons.InfoIcon
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackIcon
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayText
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Neutral98
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
@@ -37,7 +46,9 @@ fun CashInSuccessScreen(
     sourceName: String,
     modifier: Modifier = Modifier,
     onDoneClick: () -> Unit = {},
-    onCloseClick: () -> Unit = onDoneClick
+    onCloseClick: () -> Unit = onDoneClick,
+    onInfoClick: () -> Unit = {},
+    onMoreClick: () -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -48,19 +59,31 @@ fun CashInSuccessScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Neutral98)
-                .padding(horizontal = 24.dp, vertical = 24.dp),
+                .padding(bottom = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                CircleTextButton(text = "X", onClick = onCloseClick)
-                Spacer(modifier = Modifier.weight(1f))
-                Text(text = "i", color = BlackFont, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
-                Spacer(modifier = Modifier.size(24.dp))
-                Text(text = "...", color = BlackFont, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
-            }
+            AppTopBar(
+                onLeftClick = onCloseClick,
+                leftIcon = {
+                    CloseIcon(onClick = onCloseClick)
+                },
+                rightIcon = {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        InfoIcon(onClick = onInfoClick)
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = "More",
+                            tint = BlackIcon,
+                            modifier = Modifier
+                                .size(24.dp)
+                                .clickable { onMoreClick() }
+                        )
+                    }
+                }
+            )
 
             Spacer(modifier = Modifier.height(34.dp))
             TransactionIconBadge(
