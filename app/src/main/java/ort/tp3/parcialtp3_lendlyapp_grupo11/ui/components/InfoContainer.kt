@@ -30,7 +30,11 @@ fun InfoContainer(
     subtitleText: String = "",
     imagePainter: Painter? = null,
     // Standard specific
+    borrowLabel: String = "",
     borrowAmount: String = "",
+    evaluationLabel: String = "",
+    detailsTitle: String = "",
+    whatIsThisLabel: String = "",
     onWhatIsThisClick: () -> Unit = {},
     details: List<LoanDetailData> = emptyList()
 ) {
@@ -99,7 +103,7 @@ fun InfoContainer(
                 modifier = Modifier.padding(24.dp)
             ) {
                 Text(
-                    text = "You can borrow up to",
+                    text = borrowLabel,
                     style = TextStyle(
                         fontFamily = interFonts,
                         fontWeight = FontWeight.SemiBold,
@@ -125,7 +129,7 @@ fun InfoContainer(
                 Spacer(modifier = Modifier.height(4.dp))
                 
                 Text(
-                    text = "*Subject to evaluation",
+                    text = evaluationLabel,
                     style = TextStyle(
                         fontFamily = interFonts,
                         fontWeight = FontWeight.Medium,
@@ -145,7 +149,7 @@ fun InfoContainer(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Loan Details",
+                        text = detailsTitle,
                         style = TextStyle(
                             fontFamily = interFonts,
                             fontWeight = FontWeight.SemiBold,
@@ -156,7 +160,7 @@ fun InfoContainer(
                     )
                     
                     Text(
-                        text = "What is this?",
+                        text = whatIsThisLabel,
                         modifier = Modifier.clickable { onWhatIsThisClick() },
                         style = TextStyle(
                             fontFamily = interFonts,

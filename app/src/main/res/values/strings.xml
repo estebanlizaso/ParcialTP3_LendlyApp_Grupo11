@@ -16,6 +16,40 @@
     <string name="onboarding3_login_button">Log In</string>
     <string name="onboarding3_register_button">Sign up for free</string>
 
+    <!-- Loan Screen -->
+    <string name="loan_limited_time_offer">Limited Time Offer</string>
+    <string name="loan_safe_secure_title">Safe and\nsecure loans</string>
+    <string name="loan_rayland_subtitle">All here in Rayland</string>
+    <string name="loan_borrow_up_to">You can borrow up to</string>
+    <string name="loan_borrow_amount">₱ 30,000.00</string>
+    <string name="loan_subject_to_evaluation">*Subject to evaluation</string>
+    <string name="loan_details_title">Loan Details</string>
+    <string name="loan_what_is_this">What is this?</string>
+
+    <!-- Loan Details Metrics -->
+    <string name="loan_payable_in">Payable in</string>
+    <string name="loan_payable_value">6 - 12</string>
+    <string name="loan_months">months</string>
+    <string name="loan_interest_rate">Interest Rate</string>
+    <string name="loan_interest_value">1.99%</string>
+    <string name="loan_interest_label">ave per mo.</string>
+    <string name="loan_process_fee">Process Fee</string>
+    <string name="loan_process_value">3%</string>
+    <string name="loan_process_label">as low as</string>
+
+    <!-- How it works -->
+    <string name="loan_how_it_works_title">How it works</string>
+    <string name="loan_how_credit_title">Keep your credit score high</string>
+    <string name="loan_how_credit_desc">The offered loan amount is based on your credit score</string>
+    <string name="loan_how_approval_title">Get instant approval</string>
+    <string name="loan_how_approval_desc">Everything we need to process is already in the application</string>
+    <string name="loan_how_payments_title">Easy payments option available</string>
+    <string name="loan_how_payments_desc">Skip the queue and pay your due on the application</string>
+    <string name="loan_how_safe_title">Safe and secure</string>
+    <string name="loan_how_safe_desc">Rayland is working with trusted partners to provide this services</string>
+
+    <string name="loan_get_loan_button">Get This Loan</string>
+
 
 
 </resources>

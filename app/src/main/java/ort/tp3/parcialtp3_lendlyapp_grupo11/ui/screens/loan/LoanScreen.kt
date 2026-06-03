@@ -14,6 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.*
 
@@ -38,22 +39,38 @@ fun LoanScreen(
         // Promotion Card
         InfoContainer(
             isProminent = true,
-            tagText = "Limited Time Offer",
+            tagText = stringResource(R.string.loan_limited_time_offer),
             tagIcon = painterResource(id = R.drawable.ic_alarm),
-            titleText = "Safe and\nsecure loans",
-            subtitleText = "All here in Rayland",
+            titleText = stringResource(R.string.loan_safe_secure_title),
+            subtitleText = stringResource(R.string.loan_rayland_subtitle),
             imagePainter = painterResource(id = R.drawable.loan_info),
             modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 12.dp)
         )
 
         // Loan Limit Card
         InfoContainer(
-            borrowAmount = "₱ 30,000.00",
+            borrowLabel = stringResource(R.string.loan_borrow_up_to),
+            borrowAmount = stringResource(R.string.loan_borrow_amount),
+            evaluationLabel = stringResource(R.string.loan_subject_to_evaluation),
+            detailsTitle = stringResource(R.string.loan_details_title),
+            whatIsThisLabel = stringResource(R.string.loan_what_is_this),
             onWhatIsThisClick = { /* TODO: Navigate */ },
             details = listOf(
-                LoanDetailData("Payable in", "6 - 12", "months"),
-                LoanDetailData("Interest Rate", "1.99%", "ave per mo."),
-                LoanDetailData("Process Fee", "3%", "as low as")
+                LoanDetailData(
+                    stringResource(R.string.loan_payable_in),
+                    stringResource(R.string.loan_payable_value),
+                    stringResource(R.string.loan_months)
+                ),
+                LoanDetailData(
+                    stringResource(R.string.loan_interest_rate),
+                    stringResource(R.string.loan_interest_value),
+                    stringResource(R.string.loan_interest_label)
+                ),
+                LoanDetailData(
+                    stringResource(R.string.loan_process_fee),
+                    stringResource(R.string.loan_process_value),
+                    stringResource(R.string.loan_process_label)
+                )
             ),
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
         )
@@ -61,7 +78,7 @@ fun LoanScreen(
         // How it works section
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "How it works",
+                text = stringResource(R.string.loan_how_it_works_title),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 16.dp)
@@ -69,15 +86,15 @@ fun LoanScreen(
             
             Row(modifier = Modifier.fillMaxWidth()) {
                 HIWCard(
-                    title = "Keep your credit score high",
-                    description = "The offered loan amount is based on your credit score",
+                    title = stringResource(R.string.loan_how_credit_title),
+                    description = stringResource(R.string.loan_how_credit_desc),
                     image = painterResource(id = R.drawable.loan_how_credit_score),
                     modifier = Modifier.weight(1f)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 HIWCard(
-                    title = "Get instant approval",
-                    description = "Everything we need to process is already in the application",
+                    title = stringResource(R.string.loan_how_approval_title),
+                    description = stringResource(R.string.loan_how_approval_desc),
                     image = painterResource(id = R.drawable.loan_how_approval),
                     modifier = Modifier.weight(1f)
                 )
@@ -87,15 +104,15 @@ fun LoanScreen(
             
             Row(modifier = Modifier.fillMaxWidth()) {
                 HIWCard(
-                    title = "Easy payments option available",
-                    description = "Skip the queue and pay your due on the application",
+                    title = stringResource(R.string.loan_how_payments_title),
+                    description = stringResource(R.string.loan_how_payments_desc),
                     image = painterResource(id = R.drawable.loan_how_easy_payments),
                     modifier = Modifier.weight(1f)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 HIWCard(
-                    title = "Safe and secure",
-                    description = "Rayland is working with trusted partners to provide this services",
+                    title = stringResource(R.string.loan_how_safe_title),
+                    description = stringResource(R.string.loan_how_safe_desc),
                     image = painterResource(id = R.drawable.loan_how_safe_secure),
                     modifier = Modifier.weight(1f)
                 )
@@ -103,7 +120,7 @@ fun LoanScreen(
         }
 
         AppButton(
-            text = "Get This Loan",
+            text = stringResource(R.string.loan_get_loan_button),
             onClick = onNavigateToApply,
             modifier = Modifier
                 .fillMaxWidth()
