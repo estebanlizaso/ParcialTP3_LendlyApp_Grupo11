@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.HomeTopBar
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.manage.ManageOptionItem
 
 @Composable
@@ -50,8 +51,18 @@ fun ProfilePage(
             CircularProgressIndicator(color = Color(0xFF5ED366))
         }
     } else if (uiState.errorMessage != null) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
             Text(text = uiState.errorMessage, color = Color.Red)
+            Spacer(modifier = Modifier.height(16.dp))
+            AppButton(
+                text = "Try again",
+                onClick = { viewModel.loadUserProfile() },
+                modifier = Modifier.padding(horizontal = 24.dp)
+            )
         }
     } else if (uiState.isSuccess && uiState.user != null) {
         val user = uiState.user
