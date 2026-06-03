@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.stringResource
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.*
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.icons.InfoIcon
 
 @Composable
 fun LoanScreen(

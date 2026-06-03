@@ -48,7 +48,7 @@ fun AppTopBar(
                 contentDescription = "Back",
                 tint = iconColor,
                 modifier = Modifier
-                    .size(24.dp)
+                    .size(15.dp)
                     .clickable(
                         interactionSource = backInteractionSource,
                         indication = null,

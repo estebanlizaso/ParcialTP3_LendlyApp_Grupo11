@@ -17,6 +17,7 @@
     <string name="onboarding3_register_button">Sign up for free</string>
 
     <!-- Loan Screen -->
+    <string name="loan_title">Loan</string>
     <string name="loan_limited_time_offer">Limited Time Offer</string>
     <string name="loan_safe_secure_title">Safe and\nsecure loans</string>
     <string name="loan_rayland_subtitle">All here in Rayland</string>
