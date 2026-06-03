@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.OptionListItem
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.ScreenTopBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenLight3
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Neutral98
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
@@ -33,7 +33,7 @@ fun CashInOptionsScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(GreenLight3)
+            .background(Neutral98)
             .padding(horizontal = 24.dp)
     ) {
         Spacer(modifier = Modifier.height(24.dp))

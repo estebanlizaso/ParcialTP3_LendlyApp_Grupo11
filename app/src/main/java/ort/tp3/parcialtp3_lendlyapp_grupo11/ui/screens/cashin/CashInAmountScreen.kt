@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.ScreenTopBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenLight3
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayText
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Neutral98
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
@@ -35,7 +35,7 @@ fun CashInAmountScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(GreenLight3)
+            .background(Neutral98)
             .padding(horizontal = 24.dp)
     ) {
         Spacer(modifier = Modifier.height(24.dp))
@@ -56,7 +56,7 @@ fun CashInAmountScreen(
         Spacer(modifier = Modifier.height(28.dp))
         Text(
             text = "Balance: ₱0.00",
-            color = GrayColor,
+            color = GrayText,
             fontSize = 13.sp,
             fontWeight = FontWeight.SemiBold,
             fontFamily = interFonts
@@ -79,7 +79,7 @@ fun CashInAmountScreen(
         Spacer(modifier = Modifier.height(18.dp))
         Text(
             text = "$sourceName's max limit is ₱10,000.00 per day",
-            color = GrayColor,
+            color = GrayText,
             fontSize = 13.sp,
             fontWeight = FontWeight.SemiBold,
             fontFamily = interFonts

@@ -1,5 +1,7 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.network.remote
 
+import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanApplyRequest
+import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanApplyResponse
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoansResponse
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoginRequestDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoginResponseDto
@@ -25,6 +27,10 @@ interface LendlyApi {
     @Headers(API_KEY_HEADER)
     @GET("loans")
     suspend fun getLoans(): LoansResponse
+
+    @Headers(API_KEY_HEADER)
+    @POST("loans/apply")
+    suspend fun applyLoan(@Body request: LoanApplyRequest): LoanApplyResponse
 
     @Headers(API_KEY_HEADER)
     @GET("products")

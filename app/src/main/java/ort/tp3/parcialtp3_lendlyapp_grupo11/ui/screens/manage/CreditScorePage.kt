@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.manage.AppTopBar
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.manage.ManageOptionItem
 
 @Composable
@@ -42,7 +42,7 @@ fun CreditScorePage(
     val montserratSemiBold = FontFamily(Font(R.font.montserrat_semibold, FontWeight.SemiBold))
     val montserratBold = FontFamily(Font(R.font.montserratbold, FontWeight.Bold))
     val interSemiBold = FontFamily(Font(R.font.intersemibold, FontWeight.SemiBold))
-    val interMedium = FontFamily(Font(R.font.intermedium, FontWeight.Medium))
+    val interMedium = FontFamily(Font(R.font.inter_medium, FontWeight.Medium))
     val interRegular = FontFamily(Font(R.font.interregular, FontWeight.Normal))
     val uiState by viewModel.uiState.collectAsState() //estado API
 
@@ -53,7 +53,7 @@ fun CreditScorePage(
             .padding(top = 32.dp)
     ) {
         Box(modifier = Modifier.padding(horizontal = 12.dp)) {
-            AppTopBar(onBackClick = onBackClick, showInfoIcon = false)
+            AppTopBar(onLeftClick = onBackClick)
         }
 
         // 3 estados posibles

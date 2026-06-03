@@ -19,6 +19,8 @@ val GreenLight = Color(0xFFEADDFF)
 // Globales
 val Green = Color(0xFF7BF179)
 val White = Color.White
+val GreyDivider = Color(0xFFE5E2E1)
+val LightGreyBorder = Color(0xFFEAEAEA)
 
 //-------------------------------------------------------
 
@@ -28,9 +30,19 @@ val LightGreenText = Color(0xFFE5F5EA)
 // Colores de texto
 val BlackFont = Color(0xFF102000)
 
-val GrayColor = Color(0xFF6A6C6A);
+val DarkGreenText = Color(0xFF1F3701)
+
+val GrayText = Color(0xFF6A6C6A)
+
+val DarkGreyText = Color(0xFF454745)
+val MediumDarkGreenText = Color(0xFF4C662B)
+
+val BlackTopBarFont = Color(0xFF1D1B20)
 
 //colores accountBalance
 
-val GreenLight3 = Color(0xFFFCF8F8)
+val Neutral98 = Color(0xFFFCF8F8)
+
+// Colores iconos
+val BlackIcon = Color(0xFF171D1E)
 

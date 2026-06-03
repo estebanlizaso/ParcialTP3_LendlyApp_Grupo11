@@ -11,7 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayText
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
 @Composable
@@ -27,7 +27,7 @@ fun TransactionDetailRow(
     ) {
         Text(
             text = label,
-            color = GrayColor,
+            color = GrayText,
             fontSize = 14.sp,
             fontFamily = interFonts,
             fontWeight = FontWeight.SemiBold,

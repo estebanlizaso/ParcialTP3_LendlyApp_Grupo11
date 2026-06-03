@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.manage.AppTopBar
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.manage.AppBottomBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.manage.AppTextField
 
@@ -83,7 +83,7 @@ fun ProfileDetailPage(
 
             val montserratSemiBold =
                 FontFamily(Font(R.font.montserrat_semibold, FontWeight.SemiBold))
-            val interMedium = FontFamily(Font(R.font.intermedium, FontWeight.Medium))
+            val interMedium = FontFamily(Font(R.font.inter_medium, FontWeight.Medium))
             val darkLabelColor = Color(0xFF454745)
             val lightLabelColor = Color(0xFF6A6C6A)
             val inputTextGray = Color(0xFF6A6C6A)
@@ -97,10 +97,7 @@ fun ProfileDetailPage(
                     .padding(top = 32.dp, bottom = 24.dp)
             ) {
                 Box(modifier = Modifier.padding(horizontal = 12.dp)) {
-                    AppTopBar(
-                        onBackClick = onBackClick,
-                        showInfoIcon = false
-                    )
+                    AppTopBar(onLeftClick = onBackClick)
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))

@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,6 +34,7 @@ fun AppButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     enabled: Boolean = true,
+    isLoading: Boolean = false,
     type: ButtonType = ButtonType.FILLED,
     backgroundColor: Color = Green,
     textColor: Color = Color.Black,
@@ -50,14 +52,15 @@ fun AppButton(
 ) {
     val shape = RoundedCornerShape(cornerRadius)
     
-    val finalBackgroundColor = if (enabled) {
+    // Colores ajustados por estado enabled
+    val finalBackgroundColor = if (enabled && !isLoading) {
         if (type == ButtonType.FILLED) backgroundColor else Color.Transparent
     } else {
         if (type == ButtonType.FILLED) Color.LightGray else Color.Transparent
     }
     
-    val finalTextColor = if (enabled) textColor else Color.Gray
-    val finalBorderColor = if (enabled) (borderColor ?: backgroundColor) else Color.Gray
+    val finalTextColor = if (enabled && !isLoading) textColor else Color.Gray
+    val finalBorderColor = if (enabled && !isLoading) (borderColor ?: backgroundColor) else Color.Gray
 
     val finalModifier = modifier
         .then(if (fillMaxWidth) Modifier.fillMaxWidth() else Modifier)
@@ -72,30 +75,38 @@ fun AppButton(
                 m
             } else Modifier
         )
-        .clickable(enabled = enabled) { onClick() }
+        .clickable(enabled = enabled && !isLoading) { onClick() }
 
     Box(
         modifier = finalModifier,
         contentAlignment = Alignment.Center
     ) {
-        Row(
-            modifier = Modifier.padding(horizontal = horizontalPadding),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            if (icon != null) {
-                icon()
-                Spacer(modifier = Modifier.width(iconSpacing))
-            }
-            Text(
-                text = text,
+        if (isLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(24.dp),
                 color = finalTextColor,
-                fontWeight = FontWeight.SemiBold,
-                fontFamily = interFonts,
-                fontSize = fontSize,
-                lineHeight = lineHeight,
-                letterSpacing = letterSpacing
+                strokeWidth = 2.dp
             )
+        } else {
+            Row(
+                modifier = Modifier.padding(horizontal = horizontalPadding),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                if (icon != null) {
+                    icon()
+                    Spacer(modifier = Modifier.width(iconSpacing))
+                }
+                Text(
+                    text = text,
+                    color = finalTextColor,
+                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = interFonts,
+                    fontSize = fontSize,
+                    lineHeight = lineHeight,
+                    letterSpacing = letterSpacing
+                )
+            }
         }
     }
 }
@@ -107,11 +118,32 @@ fun ButtonPreview() {
         modifier = Modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        AppButton(text = "Standard Button")
+        // Estilo exacto de la imagen (Filled, 48dp, 100px radio, 24px padding)
         AppButton(
-            text = "Figma Style",
-            cornerRadius = 100.dp,
-            height = 48.dp
+            text = "Log In",
+            type = ButtonType.FILLED
+        )
+
+        // Botón deshabilitado
+        AppButton(
+            text = "Disabled Button",
+            enabled = false
+        )
+
+        // Botón con Icono (Show Icon = True)
+        AppButton(
+            text = "Send Code",
+            icon = {
+                // Ejemplo de icono simple
+                Box(Modifier.size(18.dp).background(Color.Black, RoundedCornerShape(4.dp)))
+            }
+        )
+
+        // Botón Outlined
+        AppButton(
+            text = "Outlined Button",
+            type = ButtonType.OUTLINED,
+            borderColor = Color.Black
         )
     }
 }

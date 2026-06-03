@@ -1,6 +1,5 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,7 +16,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -28,13 +26,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.component.Logo
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.*
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.onboarding.OnboardingText
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.onboarding.PagerIndicator
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.navigation.Screen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan.LoanApplyScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan.LoanHistoryScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan.LoanScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan.LoanSuccessScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.navigation.*
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.pages.onboarding.SplashScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.onboarding.SplashScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.cashin.*
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.history.HistoryRoute
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.history.TransactionDetailRoute
@@ -45,7 +49,12 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.shop.FilterScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.shop.ProductDetailScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.shop.ShopScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.shop.ShopSearchScreen
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.*
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.DarkGreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenLight
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.White
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.LoanViewModel
 
 @Composable
 fun PlaceholderScreen(title: String, onBack: () -> Unit = {}) {
@@ -62,7 +71,6 @@ fun PlaceholderScreen(title: String, onBack: () -> Unit = {}) {
 }
 
 class MainActivity : ComponentActivity() {
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -71,6 +79,7 @@ class MainActivity : ComponentActivity() {
                 val context = LocalContext.current
                 val sessionManager = remember { SessionManager(context) }
                 val navController = rememberNavController()
+                val loanViewModel: LoanViewModel = viewModel() // TODO LOAN - Se agrega solo para loan
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
                 val selectedNavIndex = selectedBottomNavIndex(currentRoute)
@@ -117,7 +126,12 @@ class MainActivity : ComponentActivity() {
                     NavHost(
                         navController = navController,
                         startDestination = Screen.Splash.route,
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier.padding(
+                            if (currentRoute == Screen.Splash.route || currentRoute == "onboarding_flow")
+                                PaddingValues(0.dp)
+                            else
+                                innerPadding
+                        )
                     ) {
                         // SPLASH
                         composable(Screen.Splash.route) {
@@ -152,6 +166,7 @@ class MainActivity : ComponentActivity() {
                                 Logo(modifier = Modifier.width(117.dp))
                                 Spacer(Modifier.height(32.dp))
 
+                                // Pager
                                 HorizontalPager(
                                     state = pagerState,
                                     modifier = Modifier.weight(1f)
@@ -160,8 +175,11 @@ class MainActivity : ComponentActivity() {
                                         modifier = Modifier.fillMaxSize(),
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
+                                        // Imagen
                                         Box(
-                                            modifier = Modifier.fillMaxWidth().padding(start = 16.dp),
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(start = 16.dp),
                                             contentAlignment = Alignment.Center
                                         ) {
                                             Image(
@@ -179,6 +197,8 @@ class MainActivity : ComponentActivity() {
                                             )
                                         }
                                         Spacer(Modifier.height(32.dp))
+
+                                        // Texto
                                         OnboardingText(
                                             title = stringResource(
                                                 id = when (page) {
@@ -196,6 +216,7 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
 
+                                // Indicador + Botones
                                 Column(
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -239,6 +260,38 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                             }
+                        // TODO LOAN - Se agrega solo para loan desde acá
+                        }
+
+                        // LOAN SECTION
+                        composable(Screen.Loan.route) {
+                            LoanScreen(
+                                onNavigateToApply = { navController.navigate(Screen.LoanApply.route) }
+                            )
+                        }
+                        composable(Screen.LoanApply.route) {
+                            LoanApplyScreen(
+                                viewModel = loanViewModel,
+                                onBack = { navController.popBackStack() },
+                                onSuccess = { navController.navigate(Screen.LoanSuccess.route) }
+                            )
+                        }
+                        composable(Screen.LoanSuccess.route) {
+                            LoanSuccessScreen(
+                                viewModel = loanViewModel,
+                                onDone = { navController.navigate(Screen.LoanHistory.route) }
+                            )
+                        }
+                        composable(Screen.LoanHistory.route) {
+                            LoanHistoryScreen(
+                                viewModel = loanViewModel,
+                                onBack = {
+                                    navController.navigate(Screen.Loan.route) {
+                                        popUpTo(Screen.Loan.route) { inclusive = true }
+                                    }
+                                }
+                            )
+                            //TODO LOAN - Se agrega solo para loan hasta acá
                         }
 
                         // AUTH
@@ -323,11 +376,13 @@ class MainActivity : ComponentActivity() {
                                 onNotificationClick = { navController.navigate(AppRoute.NOTIFICATIONS) }
                             )
                         }
-                        
+
                         composable(AppRoute.LOAN) {
-                            PlaceholderScreen(title = "Loan Screen", onBack = { navController.popBackStack() })
+                            LoanScreen(
+                                onNavigateToApply = { navController.navigate(Screen.LoanApply.route) }
+                            )
                         }
-                        
+
                         composable(AppRoute.SHOP) {
                             ShopScreen(
                                 onSearchClick = { navController.navigate(AppRoute.SHOP_SEARCH) },
@@ -346,7 +401,7 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
-                        
+
                         composable(AppRoute.PRODUCT_DETAIL_WITH_ARG) { backStackEntry ->
                             val productId = backStackEntry.arguments?.getString("productId").orEmpty()
                             ProductDetailScreen(
@@ -354,7 +409,7 @@ class MainActivity : ComponentActivity() {
                                 onBackClick = { navController.popBackStack() }
                             )
                         }
-                        
+
                         composable(AppRoute.FILTER) {
                             FilterScreen(
                                 onBackClick = { navController.popBackStack() },
@@ -370,7 +425,7 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
-                        
+
                         composable(AppRoute.TRANSACTION_DETAIL_WITH_ARG) { backStackEntry ->
                             val transactionId = backStackEntry.arguments?.getString("transactionId").orEmpty()
                             TransactionDetailRoute(
@@ -378,11 +433,11 @@ class MainActivity : ComponentActivity() {
                                 onBackClick = { navController.popBackStack() }
                             )
                         }
-                        
+
                         composable(AppRoute.NOTIFICATIONS) {
                             NotificationScreen(onBackClick = { navController.popBackStack() })
                         }
-                        
+
                         composable(AppRoute.CASH_IN_OPTIONS) {
                             CashInOptionsScreen(
                                 onBackClick = { navController.popBackStack() },
@@ -390,7 +445,7 @@ class MainActivity : ComponentActivity() {
                                 onOverTheCounterClick = { navController.navigate(AppRoute.OVER_THE_COUNTER_PARTNERS) }
                             )
                         }
-                        
+
                         composable(AppRoute.ONLINE_CASH_IN_OPTIONS) {
                             OnlineCashInOptionsScreen(
                                 onBackClick = { navController.popBackStack() },
@@ -400,7 +455,7 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
-                        
+
                         composable(AppRoute.OVER_THE_COUNTER_PARTNERS) {
                             OverTheCounterPartnersScreen(
                                 onBackClick = { navController.popBackStack() },
@@ -410,7 +465,7 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
-                        
+
                         composable(AppRoute.CASH_IN_AMOUNT) {
                             CashInAmountScreen(
                                 sourceName = cashInSource,

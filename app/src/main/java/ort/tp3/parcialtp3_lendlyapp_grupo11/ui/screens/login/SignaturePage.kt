@@ -19,7 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppTopBar
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.icons.InfoIcon
 
 @Composable
 fun SignaturePage(
@@ -28,7 +29,7 @@ fun SignaturePage(
 ) {
     val montserratSemiBold = FontFamily(Font(R.font.montserrat_semibold, FontWeight.SemiBold))
     val interRegular = FontFamily(Font(R.font.interregular, FontWeight.Normal))
-    val interMedium = FontFamily(Font(R.font.intermedium, FontWeight.Medium))
+    val interMedium = FontFamily(Font(R.font.inter_medium, FontWeight.Medium))
 
     Column(
         modifier = Modifier
@@ -38,8 +39,8 @@ fun SignaturePage(
     ) {
         Box(modifier = Modifier.padding(horizontal = 12.dp)) {
             AppTopBar(
-                onBackClick = onBackClick,
-                onInfoClick = { /* Acción de Info */ }
+                onLeftClick = onBackClick,
+                rightIcon = { InfoIcon(onClick = { /* Acción de Info */ }) }
             )
         }
 

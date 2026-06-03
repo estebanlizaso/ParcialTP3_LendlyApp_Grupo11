@@ -21,7 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayText
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.DarkGreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
@@ -72,7 +72,7 @@ fun OptionListItem(
             if (subtitle.isNotEmpty()) {
                 Text(
                     text = subtitle,
-                    color = GrayColor,
+                    color = GrayText,
                     fontSize = 11.sp,
                     fontFamily = interFonts
                 )

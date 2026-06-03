@@ -25,7 +25,8 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.SessionManager
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppBottomBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppTextField
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppTopBar
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.icons.InfoIcon
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.RegisterUiState
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.RegisterViewModel
 
@@ -63,8 +64,8 @@ fun CreatePasswordPage(
     ) {
         Box(modifier = Modifier.padding(horizontal = 12.dp)) {
             AppTopBar(
-                onBackClick = onBackClick,
-                onInfoClick = { /* Info */ }
+                onLeftClick = onBackClick,
+                rightIcon = { InfoIcon(onClick = { /* Info */ }) }
             )
         }
 
