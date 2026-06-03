@@ -29,6 +29,27 @@ La empresa ha provisto un diseño completo en Figma que servirá de base para im
 - Constantes: UPPER_SNAKE_CASE (MAX_LOAN_AMOUNT)
 - Métodos: camelCase (getUserData(), calcularInteres())
 
+---
+
+## 🤖 Uso de IA Generativa
+Durante el desarrollo de este proyecto se utilizó asistencia de IA Generativa (Gemini / ChatGPT) como herramienta de soporte para agilizar tareas complejas y optimizar el código. El uso principal incluyó:
+
+- Refactorización de la arquitectura MVVM y manejo de estados (StateFlow).
+- Implementación de componentes UI nativos y complejos en Jetpack Compose (ej. gráficos con Canvas nativo para el puntaje crediticio).
+- Estructuración de flujos de navegación (NavHost) y manejo avanzado de excepciones de red.
+- Asistencia en la resolución de conflictos durante la integración continua con Git.
+
+### Ejemplo de Prompting Estructurado
+Para garantizar la calidad y coherencia del código generado, las consultas a la IA se realizaron utilizando prompts técnicos estructurados con restricciones claras. A continuación, un ejemplo de directiva utilizada durante el desarrollo:
+
+> "Actúa como un desarrollador Android Senior experto en Jetpack Compose. Necesito implementar la pantalla de Account Details y su respectiva conexión a la API.
+>
+> Por favor, genera el código cumpliendo estrictamente con las siguientes directivas:
+> **1. Arquitectura:** Utiliza el patrón MVVM. El estado de la UI debe manejarse mediante un `StateFlow` en el ViewModel, separando claramente los estados de *Loading*, *Success* y *Error*.
+> **2. Manejo de Red:** Atrapa las excepciones de tipo `IOException` (sin internet) y `HttpException`. Si falla, la UI debe mostrar un mensaje claro y un botón de 'Try Again' que vuelva a disparar la petición.
+> **3. Interfaz (UI):** Respeta al máximo la fidelidad visual del diseño provisto en Figma. Utiliza Material Design 3.
+> **4. Convenciones de Código:** Asegúrate de respetar las siguientes convenciones: nombres de clases en `PascalCase`, variables y funciones en `camelCase`, y evita el uso de librerías externas para la UI a menos que sea estrictamente necesario."
+
  
 ### Estructura de commits
 ```[Code]

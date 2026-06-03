@@ -1,6 +1,9 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.navigation
 
 object AppRoute {
+    const val SPLASH = "splash"
+    const val ONBOARDING_FLOW = "onboarding_flow"
+    
     const val LOGIN = "login"
     const val VERIFY_PHONE_NUMBER = "verify_phone_number"
     const val SMS_VERIFICATION = "sms_verification"
@@ -14,6 +17,10 @@ object AppRoute {
 
     const val HOME = "home"
     const val LOAN = "loan"
+    const val LOAN_APPLY = "loan_apply"
+    const val LOAN_SUCCESS = "loan_success"
+    const val LOAN_HISTORY = "loan_history"
+    
     const val SHOP = "shop"
     const val SHOP_SEARCH = "shop_search"
     const val PRODUCT_DETAIL = "product_detail"
@@ -21,6 +28,7 @@ object AppRoute {
     const val HISTORY = "history"
     const val TRANSACTION_DETAIL = "transaction_detail"
     const val NOTIFICATIONS = "notifications"
+    
     const val CASH_IN_OPTIONS = "cash_in_options"
     const val ONLINE_CASH_IN_OPTIONS = "online_cash_in_options"
     const val OVER_THE_COUNTER_PARTNERS = "over_the_counter_partners"
@@ -28,6 +36,7 @@ object AppRoute {
     const val CASH_IN_SUCCESS = "cash_in_success"
 
     const val MANAGE = "manage"
+    const val MANAGE_DONE = "manage_done"
     const val PROFILE_DETAIL = "profile_detail"
     const val CREDIT_SCORE = "credit_score"
 

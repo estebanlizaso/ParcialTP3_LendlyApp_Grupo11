@@ -152,11 +152,16 @@ fun BrandList(brands: List<ProductBrandDto>) {
                         contentAlignment = Alignment.Center
                     ) {
                         val localImage = ImageHelper.getLocalBrandLogo(brand.name)
-                        Image(
-                            painter = painterResource(id = localImage ?: R.drawable.zapatillas),
-                            contentDescription = null,
+                        val fallbackPainter = painterResource(id = localImage ?: R.drawable.logo)
+
+                        AsyncImage(
+                            model = brand.logo,
+                            contentDescription = brand.name,
                             modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
+                            contentScale = ContentScale.Fit,
+                            placeholder = fallbackPainter,
+                            error = fallbackPainter,
+                            fallback = fallbackPainter
                         )
                     }
 
@@ -164,7 +169,7 @@ fun BrandList(brands: List<ProductBrandDto>) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 12.dp, vertical = 8.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
+                        horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
@@ -172,14 +177,6 @@ fun BrandList(brands: List<ProductBrandDto>) {
                             fontWeight = FontWeight.Bold,
                             fontSize = 13.sp,
                             color = Color.Black
-                        )
-
-                        AsyncImage(
-                            model = brand.logo,
-                            contentDescription = null,
-                            modifier = Modifier.size(20.dp),
-                            contentScale = ContentScale.Fit,
-                            placeholder = painterResource(id = R.drawable.logo)
                         )
                     }
                 }
@@ -205,7 +202,7 @@ fun PromoBanner() {
                 .fillMaxHeight()
         ) {
             Image(
-                painter = painterResource(id = R.drawable.zapatillas),
+                painter = painterResource(id = R.drawable.shop_zapatillas),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize(),
@@ -287,7 +284,7 @@ fun ShopSection(title: String, content: @Composable () -> Unit) {
 fun CategoryList() {
     val categories = listOf(
         "Phone" to R.drawable.phone, 
-        "Headphones" to R.drawable.headphones, 
+        "Headphones" to R.drawable.headphones,
         "Apparel" to R.drawable.mac
     )
     LazyRow(
@@ -359,22 +356,17 @@ fun ProductList(
                         contentAlignment = Alignment.Center
                     ) {
                         val localProductImg = ImageHelper.getLocalProductImage(product.name)
-                        if (localProductImg != null) {
-                            Image(
-                                painter = painterResource(id = localProductImg),
-                                contentDescription = product.name,
-                                modifier = Modifier.size(60.dp),
-                                contentScale = ContentScale.Fit
-                            )
-                        } else {
-                            AsyncImage(
-                                model = product.image,
-                                contentDescription = product.name,
-                                modifier = Modifier.size(60.dp),
-                                contentScale = ContentScale.Fit,
-                                placeholder = painterResource(id = R.drawable.logo)
-                            )
-                        }
+                        val fallbackPainter = painterResource(id = localProductImg ?: R.drawable.logo)
+
+                        AsyncImage(
+                            model = product.image,
+                            contentDescription = product.name,
+                            modifier = Modifier.size(60.dp),
+                            contentScale = ContentScale.Fit,
+                            placeholder = fallbackPainter,
+                            error = fallbackPainter,
+                            fallback = fallbackPainter
+                        )
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(

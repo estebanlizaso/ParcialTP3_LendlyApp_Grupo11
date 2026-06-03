@@ -46,3 +46,4 @@ val Neutral98 = Color(0xFFFCF8F8)
 // Colores iconos
 val BlackIcon = Color(0xFF171D1E)
 
+val priceColor = Color(0xFF1B2D00)
