@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.OptionListItem
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.ScreenTopBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
@@ -63,12 +64,14 @@ fun CashInOptionsScreen(
                     title = "Online Banking",
                     subtitle = "Pay via other banks or e-wallet",
                     iconText = "B",
+                    iconResId = R.drawable.ic_online_banking,
                     onClick = onOnlineBankingClick
                 )
                 OptionListItem(
                     title = "Over-the-counter",
                     subtitle = "Pay in cash",
                     iconText = "P",
+                    iconResId = R.drawable.ic_over_the_counter,
                     onClick = onOverTheCounterClick
                 )
             }
