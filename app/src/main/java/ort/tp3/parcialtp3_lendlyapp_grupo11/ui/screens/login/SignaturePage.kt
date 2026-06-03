@@ -26,7 +26,6 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.icons.InfoIcon
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppBottomBar
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppTopBar
 
 @Composable
 fun SignaturePage(

@@ -26,10 +26,7 @@ import coil.compose.AsyncImage
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.utils.ImageHelper
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayText
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.DarkGreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Neutral98
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenLight3
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
 @Composable

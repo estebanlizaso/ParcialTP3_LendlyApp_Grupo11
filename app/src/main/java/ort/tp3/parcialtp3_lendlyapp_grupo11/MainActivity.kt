@@ -129,7 +129,7 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         startDestination = Screen.Splash.route,
                         modifier = Modifier.padding(
-                            if (currentRoute == Screen.Splash.route || currentRoute == "onboarding_flow")
+                            if (currentRoute == Screen.Splash.route || currentRoute == "onboarding_flow" || currentRoute == null)
                                 PaddingValues(0.dp)
                             else
                                 innerPadding
@@ -262,39 +262,6 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                             }
-                        // TODO LOAN - Se agrega solo para loan desde acá
-                        }
-
-                        // LOAN SECTION
-                        composable(Screen.Loan.route) {
-                            LoanScreen(
-                                viewModel = loanViewModel,
-                                onNavigateToApply = { navController.navigate(Screen.LoanApply.route) }
-                            )
-                        }
-                        composable(Screen.LoanApply.route) {
-                            LoanApplyScreen(
-                                viewModel = loanViewModel,
-                                onBack = { navController.popBackStack() },
-                                onSuccess = { navController.navigate(Screen.LoanSuccess.route) }
-                            )
-                        }
-                        composable(Screen.LoanSuccess.route) {
-                            LoanSuccessScreen(
-                                viewModel = loanViewModel,
-                                onDone = { navController.navigate(Screen.LoanHistory.route) }
-                            )
-                        }
-                        composable(Screen.LoanHistory.route) {
-                            LoanHistoryScreen(
-                                viewModel = loanViewModel,
-                                onBack = {
-                                    navController.navigate(Screen.Loan.route) {
-                                        popUpTo(Screen.Loan.route) { inclusive = true }
-                                    }
-                                }
-                            )
-                            //TODO LOAN - Se agrega solo para loan hasta acá
                         }
 
                         // AUTH
@@ -387,6 +354,29 @@ class MainActivity : ComponentActivity() {
                                 viewModel = loanViewModel,
                                 onNavigateToApply = { navController.navigate(Screen.LoanApply.route) },
                                 onNotificationClick = { navController.navigate(AppRoute.NOTIFICATIONS) }
+                            )
+                        }
+                        composable(Screen.LoanApply.route) {
+                            LoanApplyScreen(
+                                viewModel = loanViewModel,
+                                onBack = { navController.popBackStack() },
+                                onSuccess = { navController.navigate(Screen.LoanSuccess.route) }
+                            )
+                        }
+                        composable(Screen.LoanSuccess.route) {
+                            LoanSuccessScreen(
+                                viewModel = loanViewModel,
+                                onDone = { navController.navigate(Screen.LoanHistory.route) }
+                            )
+                        }
+                        composable(Screen.LoanHistory.route) {
+                            LoanHistoryScreen(
+                                viewModel = loanViewModel,
+                                onBack = {
+                                    navController.navigate(AppRoute.LOAN) {
+                                        popUpTo(AppRoute.LOAN) { inclusive = true }
+                                    }
+                                }
                             )
                         }
 
