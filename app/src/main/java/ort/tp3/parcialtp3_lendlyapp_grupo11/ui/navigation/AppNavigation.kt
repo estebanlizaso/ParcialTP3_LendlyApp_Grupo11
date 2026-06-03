@@ -22,7 +22,8 @@ fun AppNavigation() {
                 onFilterClick = { navController.navigate(Screen.Filter.route) },
                 onProductClick = { productId -> 
                     navController.navigate(Screen.ProductDetail.createRoute(productId))
-                }
+                },
+                onNotificationClick = {}
             )
         }
         composable(Screen.Search.route) {

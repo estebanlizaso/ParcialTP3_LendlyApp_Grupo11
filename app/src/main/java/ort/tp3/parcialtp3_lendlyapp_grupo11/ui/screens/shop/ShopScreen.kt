@@ -11,8 +11,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
@@ -44,12 +42,14 @@ fun ShopScreen(
     viewModel: ShopViewModel = viewModel(),
     onSearchClick: () -> Unit = {},
     onFilterClick: () -> Unit = {},
-    onProductClick: (String) -> Unit = {}
+    onProductClick: (String) -> Unit = {},
+    onNotificationClick: () -> Unit = {}
 ) {
     var searchQuery by remember { mutableStateOf("") }
     val brands by viewModel.brands.collectAsState()
     val featuredProducts by viewModel.featuredProducts.collectAsState()
     val allProducts by viewModel.allProducts.collectAsState()
+    val avatarUrl by viewModel.avatarUrl.collectAsState()
 
     Column(
         modifier = Modifier
@@ -57,23 +57,14 @@ fun ShopScreen(
             .background(Color.White)
             .verticalScroll(rememberScrollState())
     ) {
+            Spacer(modifier = Modifier.height(24.dp))
+            HomeTopBar(
+                avatarUrl = avatarUrl,
+                modifier = Modifier.padding(horizontal = 24.dp),
+                onNotificationClick = onNotificationClick
+            )
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(Icons.Outlined.Person, "Profile", modifier = Modifier.size(28.dp))
-
-                Image(
-                    painter = painterResource(id = R.drawable.logo),
-                    contentDescription = "Logo",
-                    modifier = Modifier.height(32.dp)
-                )
-                Icon(Icons.Outlined.Notifications, "Notifications", modifier = Modifier.size(28.dp))
-            }
+            Spacer(modifier = Modifier.height(34.dp))
 
             Row(
                 modifier = Modifier

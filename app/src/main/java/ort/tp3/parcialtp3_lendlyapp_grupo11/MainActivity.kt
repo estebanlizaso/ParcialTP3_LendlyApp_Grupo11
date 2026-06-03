@@ -389,7 +389,8 @@ class MainActivity : ComponentActivity() {
                                 onFilterClick = { navController.navigate(AppRoute.FILTER) },
                                 onProductClick = { productId ->
                                     navController.navigate(AppRoute.productDetail(productId))
-                                }
+                                },
+                                onNotificationClick = { navController.navigate(AppRoute.NOTIFICATIONS) }
                             )
                         }
 
