@@ -9,8 +9,12 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.ProductBrandDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.ProductDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.ShopRepository
 import android.util.Log
+import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.HomeRepository
 
-class ShopViewModel : ViewModel() {
+class ShopViewModel(
+    private val repository: HomeRepository = HomeRepository()
+) : ViewModel() {
+
     private val mockBrands = listOf(
         ProductBrandDto("apple", "Apple", "https://img.logo.dev/apple.com?token=pk_dM8WXsJYTDmCwtB4k9ynrA&retina=true"),
         ProductBrandDto("samsung", "Samsung", "https://img.logo.dev/samsung.com?token=pk_dM8WXsJYTDmCwtB4k9ynrA&retina=true"),
@@ -27,13 +31,21 @@ class ShopViewModel : ViewModel() {
     private val _allProducts = MutableStateFlow<List<ProductDto>>(emptyList())
     val allProducts: StateFlow<List<ProductDto>> = _allProducts
 
+    private val _avatarUrl = MutableStateFlow<String>("")
+    val avatarUrl: StateFlow<String> = _avatarUrl
+
     init {
-        fetchProducts()
+        fetchData()
     }
 
-    private fun fetchProducts() {
+    private fun fetchData() {
         viewModelScope.launch {
             try {
+                // Fetch user for avatar
+                val userResponse = repository.getUser()
+                _avatarUrl.value = userResponse.user.avatar
+
+                // Fetch products
                 val response = ShopRepository.getProducts()
                 if (response.brands.isNotEmpty()) {
                     _brands.value = response.brands
@@ -41,7 +53,7 @@ class ShopViewModel : ViewModel() {
                 _featuredProducts.value = response.featured
                 _allProducts.value = response.products
             } catch (e: Exception) {
-                Log.e("ShopViewModel", "Error fetching products", e)
+                Log.e("ShopViewModel", "Error fetching data", e)
             }
         }
     }
