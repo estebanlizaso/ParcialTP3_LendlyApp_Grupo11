@@ -61,7 +61,7 @@ fun ProductDetailScreen(
     }
 
     val product = productState
-    val priceColor = Color(0xFF1B2D00) // Color verde oscuro/negro del precio segun imagen
+    val priceColor = Color(0xFF1B2D00)
 
     Scaffold(
         topBar = {
