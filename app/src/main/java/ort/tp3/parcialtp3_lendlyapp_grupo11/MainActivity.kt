@@ -285,7 +285,11 @@ class MainActivity : ComponentActivity() {
                         composable(Screen.LoanHistory.route) {
                             LoanHistoryScreen(
                                 viewModel = loanViewModel,
-                                onBack = { navController.popBackStack() }
+                                onBack = {
+                                    navController.navigate(Screen.Loan.route) {
+                                        popUpTo(Screen.Loan.route) { inclusive = true }
+                                    }
+                                }
                             )
                             //TODO LOAN - Se agrega solo para loan hasta acá
                         }
