@@ -19,7 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppBottomBar
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppTopBar
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.iconos.InfoIcon
 
 @Composable
 fun VerifiedPage(
@@ -44,7 +45,7 @@ fun VerifiedPage(
         ) {
             AppTopBar(
                 onBackClick = onBackClick,
-                onInfoClick = { /* Acción de Info */ }
+                rightIcon = { InfoIcon(onClick = { /* Acción de Info */ }) }
             )
         }
 

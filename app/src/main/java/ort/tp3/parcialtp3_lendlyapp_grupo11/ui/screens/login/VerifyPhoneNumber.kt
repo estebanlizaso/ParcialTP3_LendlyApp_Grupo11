@@ -16,7 +16,8 @@ import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppBottomBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppTextField
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppTopBar
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.iconos.InfoIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,7 +43,7 @@ fun VerifyPhoneNumber(
         Box(modifier = Modifier.padding(horizontal = 12.dp)) {
             AppTopBar(
                 onBackClick = onBackClick,
-                onInfoClick = { /* Mostrar info */ }
+                rightIcon = { InfoIcon(onClick = { /* Mostrar info */ }) }
             )
         }
 
