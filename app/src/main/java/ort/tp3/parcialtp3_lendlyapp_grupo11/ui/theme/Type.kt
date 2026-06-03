@@ -14,6 +14,10 @@ val montserratFonts = FontFamily(
     Font(R.font.montserrat_semibold, FontWeight.SemiBold)
 )
 
+val robotoFonts = FontFamily(
+    Font(R.font.roboto_medium, FontWeight.Medium)
+)
+
 val interFonts = FontFamily(
     Font(R.font.inter_regular, FontWeight.Normal),
     Font(R.font.inter_semi_bold, FontWeight.SemiBold),
