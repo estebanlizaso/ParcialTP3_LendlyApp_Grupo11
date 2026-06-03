@@ -8,19 +8,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 object ApiClient {
     private const val BASE_URL = "https://6d710e79-f4ca-4651-909f-7dd13bd29968.mock.pstmn.io/"
 
-    // Creamos el interceptor espía
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY // Nos muestra el body entero de la respuesta
+        level = HttpLoggingInterceptor.Level.BODY
     }
 
-    // Se lo enchufamos a OkHttp
     private val client = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)
         .build()
 
     val api: LendlyApi = Retrofit.Builder()
         .baseUrl(BASE_URL)
-        .client(client) // <-- Agregamos el cliente acá
+        .client(client)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(LendlyApi::class.java)

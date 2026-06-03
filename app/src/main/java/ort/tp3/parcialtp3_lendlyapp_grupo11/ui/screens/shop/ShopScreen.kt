@@ -153,7 +153,7 @@ fun BrandList(brands: List<ProductBrandDto>) {
                     ) {
                         val localImage = ImageHelper.getLocalBrandLogo(brand.name)
                         val fallbackPainter = painterResource(id = localImage ?: R.drawable.logo)
-                        
+
                         AsyncImage(
                             model = brand.logo,
                             contentDescription = brand.name,
@@ -202,7 +202,7 @@ fun PromoBanner() {
                 .fillMaxHeight()
         ) {
             Image(
-                painter = painterResource(id = R.drawable.zapatillas),
+                painter = painterResource(id = R.drawable.shop_zapatillas),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize(),
