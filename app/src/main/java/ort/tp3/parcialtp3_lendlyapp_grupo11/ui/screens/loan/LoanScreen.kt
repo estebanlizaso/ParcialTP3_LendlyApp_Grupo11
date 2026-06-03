@@ -6,7 +6,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.LoanViewModel
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -21,9 +24,12 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.loan.LoanDetailData
 
 @Composable
 fun LoanScreen(
+    viewModel: LoanViewModel,
     onNavigateToApply: () -> Unit,
-    avatarUrl: String = ""
+    onNotificationClick: () -> Unit = {}
 ) {
+    val avatarUrl by viewModel.avatarUrl.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -31,10 +37,12 @@ fun LoanScreen(
             .verticalScroll(rememberScrollState())
             .padding(bottom = 80.dp)
     ) {
+        Spacer(modifier = Modifier.height(24.dp))
         // Top Bar
         HomeTopBar(
             avatarUrl = avatarUrl,
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(horizontal = 24.dp),
+            onNotificationClick = onNotificationClick
         )
 
         // Promotion Card
@@ -45,7 +53,7 @@ fun LoanScreen(
             titleText = stringResource(R.string.loan_safe_secure_title),
             subtitleText = stringResource(R.string.loan_rayland_subtitle),
             imagePainter = painterResource(id = R.drawable.loan_info),
-            modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 12.dp)
+            modifier = Modifier.padding(start = 24.dp, top = 16.dp, end = 24.dp, bottom = 12.dp)
         )
 
         // Loan Limit Card
@@ -73,11 +81,11 @@ fun LoanScreen(
                     stringResource(R.string.loan_process_label)
                 )
             ),
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+            modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 16.dp)
         )
 
         // How it works section
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(24.dp)) {
             Text(
                 text = stringResource(R.string.loan_how_it_works_title),
                 fontSize = 20.sp,
@@ -125,7 +133,7 @@ fun LoanScreen(
             onClick = onNavigateToApply,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(24.dp)
         )
     }
 }

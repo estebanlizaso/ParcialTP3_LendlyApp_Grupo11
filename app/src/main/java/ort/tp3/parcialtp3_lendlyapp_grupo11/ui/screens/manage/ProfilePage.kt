@@ -70,9 +70,9 @@ fun ProfilePage(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color.White)
-                    .padding(top = 16.dp)
+                    .padding(top = 24.dp)
             ) {
-                Box(modifier = Modifier.padding(horizontal = 12.dp)) {
+                Box(modifier = Modifier.padding(horizontal = 24.dp)) {
                     HomeTopBar(avatarUrl = "", onNotificationClick = { })
                 }
 

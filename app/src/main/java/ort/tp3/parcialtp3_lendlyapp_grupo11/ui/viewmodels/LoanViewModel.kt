@@ -11,6 +11,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanApplyResponse
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoansResponse
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.LoanRepository
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.loan.LoanOptionData
+import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.HomeRepository
 
 sealed class LoanUiState {
     object Idle : LoanUiState()
@@ -27,7 +28,8 @@ sealed class LoanApplyUiState {
 }
 
 class LoanViewModel(
-    private val repository: LoanRepository = LoanRepository()
+    private val repository: LoanRepository = LoanRepository(),
+    private val homeRepository: HomeRepository = HomeRepository()
 ) : ViewModel() {
 
     private val _loansState = MutableStateFlow<LoanUiState>(LoanUiState.Idle)
@@ -41,6 +43,24 @@ class LoanViewModel(
 
     private val _appliedAmount = MutableStateFlow<String>("")
     val appliedAmount: StateFlow<String> = _appliedAmount.asStateFlow()
+
+    private val _avatarUrl = MutableStateFlow<String>("")
+    val avatarUrl: StateFlow<String> = _avatarUrl.asStateFlow()
+
+    init {
+        fetchAvatar()
+    }
+
+    private fun fetchAvatar() {
+        viewModelScope.launch {
+            try {
+                val response = homeRepository.getUser()
+                _avatarUrl.value = response.user.avatar
+            } catch (e: Exception) {
+                // Ignore error for avatar
+            }
+        }
+    }
 
     fun fetchLoans() {
         viewModelScope.launch {

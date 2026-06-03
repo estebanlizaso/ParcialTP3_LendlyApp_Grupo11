@@ -266,6 +266,7 @@ class MainActivity : ComponentActivity() {
                         // LOAN SECTION
                         composable(Screen.Loan.route) {
                             LoanScreen(
+                                viewModel = loanViewModel,
                                 onNavigateToApply = { navController.navigate(Screen.LoanApply.route) }
                             )
                         }
@@ -379,7 +380,9 @@ class MainActivity : ComponentActivity() {
 
                         composable(AppRoute.LOAN) {
                             LoanScreen(
-                                onNavigateToApply = { navController.navigate(Screen.LoanApply.route) }
+                                viewModel = loanViewModel,
+                                onNavigateToApply = { navController.navigate(Screen.LoanApply.route) },
+                                onNotificationClick = { navController.navigate(AppRoute.NOTIFICATIONS) }
                             )
                         }
 
