@@ -47,7 +47,7 @@ fun LoanApplyScreen(
     Scaffold(
         topBar = {
             AppTopBar(
-                onBackClick = onBack,
+                onLeftClick = onBack,
                 centerText = stringResource(id = R.string.loan_title),
                 rightIcon = { InfoIcon(onClick = { /* TODO */ }) }
             )

@@ -23,13 +23,14 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.robotoFonts
 
 @Composable
 fun AppTopBar(
-    onBackClick: () -> Unit,
+    onLeftClick: () -> Unit,
     modifier: Modifier = Modifier,
     centerText: String = "",
+    leftIcon: (@Composable () -> Unit)? = null,
     rightIcon: (@Composable () -> Unit)? = null
 ) {
     val iconColor = BlackIcon
-    val backInteractionSource = remember { MutableInteractionSource() }
+    val leftInteractionSource = remember { MutableInteractionSource() }
 
     Box(
         modifier = modifier
@@ -38,23 +39,30 @@ fun AppTopBar(
             .padding(horizontal = 12.dp),
         contentAlignment = Alignment.Center
     ) {
-        // Back Button
+        // Left Button
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.CenterStart
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_back_arrow),
-                contentDescription = "Back",
-                tint = iconColor,
+            Box(
                 modifier = Modifier
-                    .size(15.dp)
                     .clickable(
-                        interactionSource = backInteractionSource,
+                        interactionSource = leftInteractionSource,
                         indication = null,
-                        onClick = onBackClick
+                        onClick = onLeftClick
                     )
-            )
+            ) {
+                if (leftIcon != null) {
+                    leftIcon()
+                } else {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_back_arrow),
+                        contentDescription = null,
+                        tint = iconColor,
+                        modifier = Modifier.size(15.dp)
+                    )
+                }
+            }
         }
 
         // Center Text
@@ -89,6 +97,6 @@ fun AppTopBar(
 @Composable
 fun AppTopBarPreview() {
     AppTopBar(
-        onBackClick = {}
+        onLeftClick = {}
     )
 }

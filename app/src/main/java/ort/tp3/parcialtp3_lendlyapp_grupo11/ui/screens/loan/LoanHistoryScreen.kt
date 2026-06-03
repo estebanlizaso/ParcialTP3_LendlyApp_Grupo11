@@ -38,7 +38,7 @@ fun LoanHistoryScreen(
     Scaffold(
         topBar = {
             AppTopBar(
-                onBackClick = onBack,
+                onLeftClick = onBack,
                 rightIcon = { CalendarIcon(onClick = { /* TODO */ }) }
             )
         }

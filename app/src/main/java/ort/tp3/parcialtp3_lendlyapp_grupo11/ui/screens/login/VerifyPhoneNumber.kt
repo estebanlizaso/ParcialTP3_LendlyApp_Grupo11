@@ -42,7 +42,7 @@ fun VerifyPhoneNumber(
     ) {
         Box(modifier = Modifier.padding(horizontal = 12.dp)) {
             AppTopBar(
-                onBackClick = onBackClick,
+                onLeftClick = onBackClick,
                 rightIcon = { InfoIcon(onClick = { /* Mostrar info */ }) }
             )
         }

@@ -53,7 +53,7 @@ fun CreditScorePage(
             .padding(top = 32.dp)
     ) {
         Box(modifier = Modifier.padding(horizontal = 12.dp)) {
-            AppTopBar(onBackClick = onBackClick)
+            AppTopBar(onLeftClick = onBackClick)
         }
 
         // 3 estados posibles

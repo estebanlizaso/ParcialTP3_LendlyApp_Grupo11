@@ -54,7 +54,7 @@ fun ProfileDetailFormPage(
             .padding(top = 32.dp, bottom = 24.dp)
     ) {
         Box(modifier = Modifier.padding(horizontal = 12.dp)) {
-            AppTopBar(onBackClick = onBackClick)
+            AppTopBar(onLeftClick = onBackClick)
         }
 
         Spacer(modifier = Modifier.height(24.dp))

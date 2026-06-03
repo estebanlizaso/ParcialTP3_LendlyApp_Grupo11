@@ -2,13 +2,13 @@ package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -20,29 +20,42 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.icons.InfoIcon
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackIcon
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.DarkGreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoanSuccessScreen(
     onDone: () -> Unit
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { },
-                navigationIcon = {
-                    IconButton(onClick = onDone) {
-                        Icon(Icons.Default.Close, contentDescription = "Close")
-                    }
+            AppTopBar(
+                onLeftClick = onDone,
+                leftIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Close",
+                        tint = BlackIcon,
+                        modifier = Modifier.size(20.dp)
+                    )
                 },
-                actions = {
-                    IconButton(onClick = { }) {
-                        Icon(Icons.Default.Info, contentDescription = "Info")
-                    }
-                    IconButton(onClick = { }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "More")
+                rightIcon = {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        InfoIcon(onClick = { /* TODO */ })
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = "More",
+                            tint = BlackIcon,
+                            modifier = Modifier
+                                .size(24.dp)
+                                .clickable { /* TODO */ }
+                        )
                     }
                 }
             )

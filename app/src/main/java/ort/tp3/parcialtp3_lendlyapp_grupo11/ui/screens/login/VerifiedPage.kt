@@ -44,7 +44,7 @@ fun VerifiedPage(
                 .padding(horizontal = 12.dp)
         ) {
             AppTopBar(
-                onBackClick = onBackClick,
+                onLeftClick = onBackClick,
                 rightIcon = { InfoIcon(onClick = { /* Acción de Info */ }) }
             )
         }
