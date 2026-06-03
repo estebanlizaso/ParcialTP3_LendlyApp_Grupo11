@@ -1,4 +1,4 @@
-package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components
+package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.loan
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
@@ -7,6 +7,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -33,7 +34,7 @@ fun SelectableLoanOption(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         border = BorderStroke(1.dp, borderColor),
-        color = androidx.compose.ui.graphics.Color.Transparent
+        color = Color.Transparent
     ) {
         Row(
             modifier = Modifier

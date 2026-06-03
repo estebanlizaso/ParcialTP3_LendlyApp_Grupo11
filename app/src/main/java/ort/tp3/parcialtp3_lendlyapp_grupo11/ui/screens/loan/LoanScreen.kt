@@ -4,8 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,7 +15,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.stringResource
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.*
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.icons.InfoIcon
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.loan.HIWCard
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.loan.InfoContainer
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.loan.LoanDetailData
 
 @Composable
 fun LoanScreen(

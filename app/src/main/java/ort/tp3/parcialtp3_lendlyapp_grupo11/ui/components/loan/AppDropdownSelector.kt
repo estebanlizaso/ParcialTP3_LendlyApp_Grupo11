@@ -1,4 +1,4 @@
-package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components
+package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.loan
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background

@@ -1,6 +1,5 @@
-package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components
+package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.loan
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
@@ -10,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.*
@@ -59,7 +59,20 @@ fun StepBox(
         
         Spacer(Modifier.height(22.dp))
         
-        // Placeholder for form component
+
         content()
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun StepBoxPreview() {
+    Column(modifier = Modifier.padding(16.dp)) {
+        StepBox(
+            stepTag = "Step 1",
+            description = "Elegí el monto y las cuotas de tu préstamo"
+        ) {
+            Text("Aquí iría el contenido del paso")
+        }
     }
 }
