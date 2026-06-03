@@ -12,7 +12,7 @@ object ImageHelper {
         return when {
             nameLower.contains("apple") -> R.drawable.brand_apple
             nameLower.contains("samsung") -> R.drawable.brand_samsung
-            nameLower.contains("nike") -> R.drawable.brand_nike
+            nameLower.contains("nike") -> R.drawable.logo_nike_2
             nameLower.contains("sony") -> R.drawable.brand_sony
             else -> null
         }
@@ -25,7 +25,8 @@ object ImageHelper {
         val nameLower = productName.lowercase()
         return when {
             nameLower.contains("iphone") || nameLower.contains("phone") -> R.drawable.phone
-            nameLower.contains("headphones") || nameLower.contains("sony") -> R.drawable.headphones
+            nameLower.contains("airpods") || nameLower.contains("headphones") || nameLower.contains("headset") || nameLower.contains("sony") -> R.drawable.headphones
+            nameLower.contains("nike") || nameLower.contains("shoe") || nameLower.contains("sneaker") || nameLower.contains("zapatilla") -> R.drawable.zapatillas
             nameLower.contains("mac") || nameLower.contains("laptop") -> R.drawable.mac
             else -> null
         }

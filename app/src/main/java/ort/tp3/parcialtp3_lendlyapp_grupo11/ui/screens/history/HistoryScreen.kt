@@ -3,6 +3,7 @@ package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.history
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -28,15 +30,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppSearchBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.HomeTopBar
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.TransactionIconBadge
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.TransactionIconType
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
@@ -204,7 +206,7 @@ private fun HistoryTransactionItem(
             .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically
     ) {
-        TransactionIconBadge(type = transaction.type.toIconType())
+        HistoryIcon(imageResId = transaction.type.toIconResId(), contentDescription = transaction.title)
 
         Column(
             modifier = Modifier
@@ -258,7 +260,7 @@ private fun RecentLoanHistoryItem(loan: RecentLoanHistoryUi) {
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        TransactionIconBadge(type = TransactionIconType.CHECK)
+        HistoryIcon(imageResId = R.drawable.history_check, contentDescription = loan.status)
 
         Column(
             modifier = Modifier
@@ -343,11 +345,25 @@ private fun HistoryTransactionUi.matchesFilter(filter: HistoryFilterUi): Boolean
     }
 }
 
-private fun HistoryTransactionType.toIconType(): TransactionIconType {
+private fun HistoryTransactionType.toIconResId(): Int {
     return when (this) {
-        HistoryTransactionType.PAID_BILL -> TransactionIconType.PAYMENT
-        HistoryTransactionType.ADDED_BALANCE -> TransactionIconType.ADD
+        HistoryTransactionType.PAID_BILL -> R.drawable.history_payment
+        HistoryTransactionType.ADDED_BALANCE -> R.drawable.history_add
     }
+}
+
+@Composable
+private fun HistoryIcon(
+    imageResId: Int,
+    contentDescription: String
+) {
+    Image(
+        painter = painterResource(id = imageResId),
+        contentDescription = contentDescription,
+        modifier = Modifier
+            .size(40.dp)
+            .clip(RoundedCornerShape(20.dp))
+    )
 }
 
 @Preview(showBackground = true)

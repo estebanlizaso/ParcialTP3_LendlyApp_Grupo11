@@ -29,6 +29,25 @@ class HomeViewModel(
                 val brandLogos = productsResponse.brands.associate { brand ->
                     brand.name.lowercase() to brand.logo
                 }
+                val featuredProducts = productsResponse.featured.map { product ->
+                    HomeProductUi(
+                        name = product.name,
+                        imageUrl = product.image,
+                        monthlyInstallment = formatMoney(product.monthlyInstallment),
+                        months = "${product.installmentMonths} mo"
+                    )
+                }.toMutableList()
+
+                val phoneProduct = featuredProducts.firstOrNull { product ->
+                    product.name.contains("iphone", ignoreCase = true) || product.name.contains("phone", ignoreCase = true)
+                } ?: HomeProductUi("iPhone 12 Pro", "", formatMoney(1200.0), "24 mo")
+                val headphonesProduct = featuredProducts.firstOrNull { product ->
+                    product.name.contains("airpods", ignoreCase = true) || product.name.contains("headphones", ignoreCase = true)
+                } ?: HomeProductUi("AirPods Pro", "", formatMoney(1200.0), "24 mo")
+                val shoesProduct = featuredProducts.firstOrNull { product ->
+                    product.name.contains("nike", ignoreCase = true) || product.name.contains("shoe", ignoreCase = true) || product.name.contains("sneaker", ignoreCase = true)
+                } ?: HomeProductUi("Nike Air Max", "", formatMoney(1200.0), "24 mo")
+                val recommendedProducts = listOf(phoneProduct, headphonesProduct, shoesProduct)
 
                 uiState = HomeUiState(
                     isLoading = false,
@@ -50,14 +69,7 @@ class HomeViewModel(
                                 feeLabel = loan.nextPaymentLabel.orEmpty()
                             )
                         },
-                    products = productsResponse.featured.map { product ->
-                        HomeProductUi(
-                            name = product.name,
-                            imageUrl = product.image,
-                            monthlyInstallment = formatMoney(product.monthlyInstallment),
-                            months = "${product.installmentMonths} mo"
-                        )
-                    }
+                    products = recommendedProducts
                 )
             } catch (e: Exception) {
                 uiState = HomeUiState(
