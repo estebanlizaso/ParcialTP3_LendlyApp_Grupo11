@@ -35,7 +35,7 @@ fun AppTopBar(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(56.dp)
+            .height(64.dp)
             .padding(horizontal = 12.dp),
         contentAlignment = Alignment.Center
     ) {

@@ -66,6 +66,26 @@
     <string name="loan_apply_fee_label">3% Processing Fee</string>
     <string name="loan_apply_total_receive">Total amount to Receive</string>
 
+    <!-- Loan Success Screen -->
+    <string name="loan_success_added_to_account">Added to your account</string>
+    <string name="loan_success_amount_value">2,000.00</string>
+    <string name="loan_success_origin">From Apple Inc.</string>
+    <string name="loan_success_type_label">Loan Amount</string>
+    <string name="loan_success_details_title">Transaction Details</string>
+    <string name="loan_success_monthly_fee">Monthly Fee</string>
+    <string name="loan_success_monthly_fee_value">₱ 982.12</string>
+    <string name="loan_success_interest">Interest</string>
+    <string name="loan_success_interest_value">2.99%</string>
+    <string name="loan_success_installment_plan">Installment plan</string>
+    <string name="loan_success_installment_value">6 Months</string>
+    <string name="loan_success_date_time">Date &amp; Time</string>
+    <string name="loan_success_date_time_value">Jul 15, 2024 9:12 AM</string>
+    <string name="loan_success_transaction_number">Transaction Number</string>
+    <string name="loan_success_transaction_number_value">#200412312551</string>
+    <string name="loan_success_need_help">Need help?</string>
+    <string name="loan_success_go_to_help_center">Go to Help Center</string>
+    <string name="loan_success_done">Done</string>
+
 
 
 </resources>

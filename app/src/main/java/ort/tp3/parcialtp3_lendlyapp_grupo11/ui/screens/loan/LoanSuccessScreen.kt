@@ -1,142 +1,53 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.icons.InfoIcon
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackIcon
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.DarkGreen
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
+import androidx.compose.ui.res.stringResource
+import ort.tp3.parcialtp3_lendlyapp_grupo11.R
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.transaction.*
 
 @Composable
 fun LoanSuccessScreen(
     onDone: () -> Unit
 ) {
-    Scaffold(
-        topBar = {
-            AppTopBar(
-                onLeftClick = onDone,
-                leftIcon = {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = "Close",
-                        tint = BlackIcon,
-                        modifier = Modifier.size(20.dp)
+    TransactionPage(
+        onClose = onDone,
+        onDoneClick = onDone,
+        transactionContent = {
+            AppTransaction(
+                amount = stringResource(id = R.string.loan_success_amount_value),
+                statusText = stringResource(id = R.string.loan_success_added_to_account),
+                originText = stringResource(id = R.string.loan_success_origin),
+                typeLabel = stringResource(id = R.string.loan_success_type_label)
+            )
+        },
+        detailsContent = {
+            AppTransactionDetails(
+                title = stringResource(id = R.string.loan_success_details_title),
+                details = listOf(
+                    TransactionDetail(
+                        stringResource(id = R.string.loan_success_monthly_fee),
+                        stringResource(id = R.string.loan_success_monthly_fee_value)
+                    ),
+                    TransactionDetail(
+                        stringResource(id = R.string.loan_success_interest),
+                        stringResource(id = R.string.loan_success_interest_value)
+                    ),
+                    TransactionDetail(
+                        stringResource(id = R.string.loan_success_installment_plan),
+                        stringResource(id = R.string.loan_success_installment_value)
+                    ),
+                    TransactionDetail(
+                        stringResource(id = R.string.loan_success_date_time),
+                        stringResource(id = R.string.loan_success_date_time_value)
+                    ),
+                    TransactionDetail(
+                        stringResource(id = R.string.loan_success_transaction_number),
+                        stringResource(id = R.string.loan_success_transaction_number_value),
+                        isBold = true
                     )
-                },
-                rightIcon = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        InfoIcon(onClick = { /* TODO */ })
-                        Icon(
-                            imageVector = Icons.Default.MoreVert,
-                            contentDescription = "More",
-                            tint = BlackIcon,
-                            modifier = Modifier
-                                .size(24.dp)
-                                .clickable { /* TODO */ }
-                        )
-                    }
-                }
+                ),
+                onHelpCenterClick = { /* TODO */ }
             )
         }
-    ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(Modifier.height(32.dp))
-            
-            Box(
-                modifier = Modifier
-                    .size(80.dp)
-                    .background(Green, CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(Icons.Default.Add, contentDescription = null, tint = Color.Black, modifier = Modifier.size(40.dp))
-            }
-            
-            Spacer(Modifier.height(16.dp))
-            Text("Added to your account", fontSize = 14.sp, color = Color.Gray)
-            Text("2,000.00 PHP", fontSize = 28.sp, fontWeight = FontWeight.Bold)
-            Text("From Apple Inc.", fontSize = 14.sp, color = Color.Gray)
-            
-            Spacer(Modifier.height(16.dp))
-            Surface(
-                color = Color(0xFFF9F9F9),
-                shape = RoundedCornerShape(8.dp),
-                border = BorderStroke(1.dp, Color.LightGray)
-            ) {
-                Text("Loan Amount", modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp), fontSize = 14.sp)
-            }
-
-            Spacer(Modifier.height(48.dp))
-
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Text("Transaction Details", fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                Spacer(Modifier.height(16.dp))
-                
-                DetailRow("Monthly Fee", "₱ 982.12")
-                DetailRow("Interest", "2.99%")
-                DetailRow("Installment plan", "6 Months")
-                DetailRow("Date & Time", "Jul 15, 2024 9:12 AM")
-                DetailRow("Transaction Number", "#200412312551", isLink = true)
-                
-                Spacer(Modifier.height(48.dp))
-                
-                Text("Need help?", modifier = Modifier.align(Alignment.CenterHorizontally), fontSize = 14.sp, color = Color.Gray)
-                Text("Go to Help Center", modifier = Modifier.align(Alignment.CenterHorizontally), fontSize = 14.sp, fontWeight = FontWeight.Bold, color = DarkGreen)
-            }
-
-            Spacer(Modifier.weight(1f))
-
-            AppButton(
-                text = "Done",
-                onClick = onDone,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-    }
-}
-
-@Composable
-fun DetailRow(label: String, value: String, isLink: Boolean = false) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(label, color = Color.Gray, fontSize = 16.sp)
-        Text(
-            value,
-            color = if (isLink) DarkGreen else Color.Black,
-            fontSize = 16.sp,
-            fontWeight = if (isLink) FontWeight.Bold else FontWeight.Normal,
-            textDecoration = if (isLink) TextDecoration.Underline else null
-        )
-    }
+    )
 }
