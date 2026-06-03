@@ -57,7 +57,7 @@ fun StepBox(
             )
         )
         
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(22.dp))
         
         // Placeholder for form component
         content()

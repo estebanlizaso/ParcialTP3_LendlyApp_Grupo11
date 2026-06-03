@@ -20,9 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.stringResource
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.StepBox
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.*
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.icons.InfoIcon
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.*
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.LoanApplyUiState
@@ -90,61 +88,38 @@ fun LoanApplyScreen(
             Spacer(Modifier.height(32.dp))
 
             StepBox(stepTag = stringResource(R.string.loan_apply_step_1), description = stringResource(R.string.loan_apply_enter_amount)) {
-                Text(
-                    "₱ ${amount}.00",
-                    fontSize = 32.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = DarkGreen,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp),
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                AmountInputField(
+                    value = amount,
+                    onValueChange = { amount = it }
                 )
             }
             
-            HorizontalDivider(Modifier.padding(vertical = 16.dp))
+            HorizontalDivider(Modifier.padding(bottom = 16.dp))
 
             StepBox(stepTag = stringResource(R.string.loan_apply_step_2), description = stringResource(R.string.loan_apply_select_plan)) {
-                InstallmentPlanItem(
-                    title = "6 Months",
-                    interest = "2.99% Interest",
-                    monthly = "₱ 982.12/mo",
-                    isSelected = selectedPlan == "6 Months",
-                    onClick = { selectedPlan = "6 Months" }
-                )
-            }
-
-            Spacer(Modifier.height(24.dp))
-
-            StepBox(stepTag = stringResource(R.string.loan_apply_step_3), description = stringResource(R.string.loan_apply_select_purpose)) {
-                var expanded by remember { mutableStateOf(false) }
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color(0xFFF9F9F9), RoundedCornerShape(8.dp))
-                        .clickable { expanded = true }
-                        .padding(16.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(selectedPurpose)
-                        Icon(Icons.Default.KeyboardArrowDown, contentDescription = null)
-                    }
-                    DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                        listOf("Educational", "Business", "Personal", "Medical").forEach { purpose ->
-                            DropdownMenuItem(
-                                text = { Text(purpose) },
-                                onClick = {
-                                    selectedPurpose = purpose
-                                    expanded = false
-                                }
-                            )
-                        }
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    val plans = listOf(
+                        LoanOptionData("6 Months", "2.99% Interest", "₱ 982.12/mo"),
+                        LoanOptionData("12 Months", "1.99% Interest", "₱ 491.06/mo")
+                    )
+                    plans.forEach { plan ->
+                        SelectableLoanOption(
+                            data = plan,
+                            isSelected = selectedPlan == plan.title,
+                            onClick = { selectedPlan = plan.title }
+                        )
                     }
                 }
+            }
+
+            Spacer(Modifier.height(28.dp))
+
+            StepBox(stepTag = stringResource(R.string.loan_apply_step_3), description = stringResource(R.string.loan_apply_select_purpose)) {
+                AppDropdownSelector(
+                    options = listOf("Educational", "Business", "Personal", "Medical"),
+                    selectedOption = selectedPurpose,
+                    onOptionSelected = { selectedPurpose = it }
+                )
             }
 
             Spacer(Modifier.height(32.dp))
@@ -179,30 +154,6 @@ fun LoanApplyScreen(
                     isLoading = applyState is LoanApplyUiState.Loading
                 )
             }
-        }
-    }
-}
-
-@Composable
-fun InstallmentPlanItem(title: String, interest: String, monthly: String, isSelected: Boolean, onClick: () -> Unit) {
-    Surface(
-        onClick = onClick,
-        shape = RoundedCornerShape(8.dp),
-        border = if (isSelected) BorderStroke(1.dp, Green) else null,
-        color = Color(0xFFF9F9F9)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column {
-                Text(title, fontWeight = FontWeight.Bold)
-                Text(interest, fontSize = 12.sp, color = Color.Gray)
-            }
-            Text(monthly, fontWeight = FontWeight.Bold, color = DarkGreen)
         }
     }
 }
