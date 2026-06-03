@@ -41,7 +41,7 @@ import coil.compose.AsyncImage
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.shop.viewmodel.ProductDetailViewModel
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.*
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.utils.ImageHelper
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.utils.PriceHelper
@@ -61,7 +61,6 @@ fun ProductDetailScreen(
     }
 
     val product = productState
-    val priceColor = Color(0xFF1B2D00)
 
     Scaffold(
         topBar = {
