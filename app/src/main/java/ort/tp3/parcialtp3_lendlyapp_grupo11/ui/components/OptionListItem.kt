@@ -2,6 +2,7 @@ package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +17,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,6 +36,7 @@ fun OptionListItem(
     modifier: Modifier = Modifier,
     iconBackgroundColor: Color = DarkGreen,
     iconTextColor: Color = BlackFont,
+    iconResId: Int? = null,
     onClick: () -> Unit = {}
 ) {
     Row(
@@ -49,14 +53,23 @@ fun OptionListItem(
                 .background(iconBackgroundColor),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = iconText,
-                color = iconTextColor,
-                fontSize = if (iconText.length > 2) 9.sp else 14.sp,
-                fontWeight = FontWeight.SemiBold,
-                fontFamily = interFonts,
-                textAlign = TextAlign.Center
-            )
+            if (iconResId != null) {
+                Image(
+                    painter = painterResource(id = iconResId),
+                    contentDescription = title,
+                    modifier = Modifier.size(36.dp),
+                    contentScale = ContentScale.Crop
+                )
+            } else {
+                Text(
+                    text = iconText,
+                    color = iconTextColor,
+                    fontSize = if (iconText.length > 2) 9.sp else 14.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = interFonts,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
 
         Spacer(modifier = Modifier.size(12.dp))

@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppSearchBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.OptionListItem
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.ScreenTopBar
@@ -34,7 +35,8 @@ private data class PaymentOption(
     val title: String,
     val iconText: String,
     val iconBackgroundColor: Color,
-    val iconTextColor: Color = Color.White
+    val iconTextColor: Color = Color.White,
+    val iconResId: Int? = null
 )
 
 @Composable
@@ -46,15 +48,15 @@ fun OnlineCashInOptionsScreen(
     var searchQuery by remember { mutableStateOf("") }
 
     val banks = listOf(
-        PaymentOption("BPI", "BP", Color(0xFFC62828)),
-        PaymentOption("Chinabank", "CB", Color(0xFFFF1F1F)),
-        PaymentOption("RCBC", "RC", Color(0xFF5AA5DE)),
-        PaymentOption("Unionbank", "UB", Color(0xFFFF6D1A))
+        PaymentOption("BPI", "BP", Color(0xFFC62828), iconResId = R.drawable.logo_bpi),
+        PaymentOption("Chinabank", "CB", Color(0xFFFF1F1F), iconResId = R.drawable.logo_chinabank),
+        PaymentOption("RCBC", "RC", Color(0xFF5AA5DE), iconResId = R.drawable.logo_rcbc),
+        PaymentOption("Unionbank", "UB", Color(0xFFFF6D1A), iconResId = R.drawable.logo_unionbank)
     )
     val eWallets = listOf(
-        PaymentOption("GCash", "G", Color(0xFF1E88E5)),
-        PaymentOption("Pay Maya", "PM", Color(0xFF00B875)),
-        PaymentOption("PayPal", "P", Color.White, Color(0xFF006CCB))
+        PaymentOption("GCash", "G", Color(0xFF1E88E5), iconResId = R.drawable.logo_gcash),
+        PaymentOption("Pay Maya", "PM", Color(0xFF00B875), iconResId = R.drawable.logo_paymaya),
+        PaymentOption("PayPal", "P", Color.White, Color(0xFF006CCB), iconResId = R.drawable.logo_paypal)
     )
 
     val filteredBanks = banks.filter { it.title.contains(searchQuery, ignoreCase = true) }
@@ -141,6 +143,7 @@ private fun PaymentOptionItem(
         iconText = option.iconText,
         iconBackgroundColor = option.iconBackgroundColor,
         iconTextColor = option.iconTextColor,
+        iconResId = option.iconResId,
         onClick = onClick
     )
 }

@@ -12,7 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
@@ -22,23 +21,13 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
 
 @Composable
 fun ProfileDetailFormPage(
+    viewModel: RegisterViewModel,
     onBackClick: () -> Unit,
     onNextClick: () -> Unit
 ) {
-    // variables de estado para todos los campos
-    var firstName by remember { mutableStateOf("John D.") }
-    var lastName by remember { mutableStateOf("Doe") }
-    var day by remember { mutableStateOf("08") }
-    var month by remember { mutableStateOf("12") }
-    var year by remember { mutableStateOf("1997") }
-    var address by remember { mutableStateOf("Somewhere IN BLOCK 12") }
-    var city by remember { mutableStateOf("Davao City") }
-    var postalCode by remember { mutableStateOf("8000") }
-    var countryCode by remember { mutableStateOf("+65") }
-    var phone by remember { mutableStateOf("991251255") }
-
     val montserratSemiBold = FontFamily(Font(R.font.montserrat_semibold, FontWeight.SemiBold))
     val interMedium = FontFamily(Font(R.font.inter_medium, FontWeight.Medium))
+    val uiState = viewModel.uiState
 
     // colores
     val darkLabelColor = Color(0xFF454745)
@@ -76,10 +65,21 @@ fun ProfileDetailFormPage(
 
             Spacer(modifier = Modifier.height(32.dp))
 
+            // Global Error message display (if any, like server errors)
+            uiState.errorMessage?.let { error ->
+                Text(
+                    text = error,
+                    color = Color.Red,
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+            }
+
             AppTextField(
-                value = firstName,
-                onValueChange = { firstName = it },
+                value = viewModel.firstName,
+                onValueChange = { viewModel.firstName = it },
                 labelText = "Full legal first and middle name(s)",
+                errorMessage = viewModel.firstNameError,
                 labelColor = darkLabelColor,
                 textColor = inputTextGray,
                 unfocusedBorderColor = darkBorder
@@ -88,9 +88,10 @@ fun ProfileDetailFormPage(
             Spacer(modifier = Modifier.height(24.dp))
 
             AppTextField(
-                value = lastName,
-                onValueChange = { lastName = it },
+                value = viewModel.lastName,
+                onValueChange = { viewModel.lastName = it },
                 labelText = "Full legal last name",
+                errorMessage = viewModel.lastNameError,
                 labelColor = darkLabelColor,
                 textColor = inputTextGray,
                 unfocusedBorderColor = darkBorder
@@ -105,30 +106,36 @@ fun ProfileDetailFormPage(
                 color = darkLabelColor,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.Bottom
+            ) {
                 AppTextField(
-                    value = day,
-                    onValueChange = { day = it },
+                    value = viewModel.day,
+                    onValueChange = { if (it.length <= 2 && it.all { char -> char.isDigit() }) viewModel.day = it },
                     modifier = Modifier.weight(1f),
                     labelText = "Day",
+                    errorMessage = viewModel.dayError,
                     labelColor = lightLabelColor,
                     textColor = inputTextGray,
                     unfocusedBorderColor = lightBorder
                 )
                 AppTextField(
-                    value = month,
-                    onValueChange = { month = it },
+                    value = viewModel.month,
+                    onValueChange = { if (it.length <= 2 && it.all { char -> char.isDigit() }) viewModel.month = it },
                     modifier = Modifier.weight(1f),
                     labelText = "Month",
+                    errorMessage = viewModel.monthError,
                     labelColor = lightLabelColor,
                     textColor = inputTextGray,
                     unfocusedBorderColor = lightBorder
                 )
                 AppTextField(
-                    value = year,
-                    onValueChange = { year = it },
+                    value = viewModel.year,
+                    onValueChange = { if (it.length <= 4 && it.all { char -> char.isDigit() }) viewModel.year = it },
                     modifier = Modifier.weight(1.5f),
                     labelText = "Year",
+                    errorMessage = viewModel.yearError,
                     labelColor = lightLabelColor,
                     textColor = inputTextGray,
                     unfocusedBorderColor = lightBorder
@@ -138,9 +145,10 @@ fun ProfileDetailFormPage(
             Spacer(modifier = Modifier.height(24.dp))
 
             AppTextField(
-                value = address,
-                onValueChange = { address = it },
+                value = viewModel.address,
+                onValueChange = { viewModel.address = it },
                 labelText = "Address",
+                errorMessage = viewModel.addressError,
                 labelColor = lightLabelColor,
                 textColor = inputTextGray,
                 unfocusedBorderColor = lightBorder
@@ -149,9 +157,10 @@ fun ProfileDetailFormPage(
             Spacer(modifier = Modifier.height(24.dp))
 
             AppTextField(
-                value = city,
-                onValueChange = { city = it },
+                value = viewModel.city,
+                onValueChange = { viewModel.city = it },
                 labelText = "City",
+                errorMessage = viewModel.cityError,
                 labelColor = lightLabelColor,
                 textColor = inputTextGray,
                 unfocusedBorderColor = lightBorder
@@ -160,9 +169,10 @@ fun ProfileDetailFormPage(
             Spacer(modifier = Modifier.height(24.dp))
 
             AppTextField(
-                value = postalCode,
-                onValueChange = { postalCode = it },
+                value = viewModel.postalCode,
+                onValueChange = { if (it.length <= 4 && it.all { char -> char.isDigit() }) viewModel.postalCode = it },
                 labelText = "Postal Code",
+                errorMessage = viewModel.postalCodeError,
                 labelColor = lightLabelColor,
                 textColor = inputTextGray,
                 unfocusedBorderColor = lightBorder
@@ -179,12 +189,14 @@ fun ProfileDetailFormPage(
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.Bottom
             ) {
                 AppTextField(
-                    value = countryCode,
-                    onValueChange = { countryCode = it },
+                    value = viewModel.countryCode,
+                    onValueChange = { if (it.length <= 2 && it.all { char -> char.isDigit() }) viewModel.countryCode = it },
                     modifier = Modifier.width(80.dp),
+                    prefix = { Text("+") },
+                    errorMessage = viewModel.countryCodeError,
                     textColor = inputTextGray,
                     unfocusedBorderColor = lightBorder
                 )
@@ -192,9 +204,10 @@ fun ProfileDetailFormPage(
                 Spacer(modifier = Modifier.width(12.dp))
 
                 AppTextField(
-                    value = phone,
-                    onValueChange = { phone = it },
+                    value = viewModel.phone,
+                    onValueChange = { if (it.length <= 8 && it.all { char -> char.isDigit() }) viewModel.phone = it },
                     modifier = Modifier.weight(1f),
+                    errorMessage = viewModel.phoneError,
                     textColor = inputTextGray,
                     unfocusedBorderColor = lightBorder
                 )
@@ -206,17 +219,12 @@ fun ProfileDetailFormPage(
         Box(modifier = Modifier.padding(horizontal = 24.dp)) {
             AppBottomBar(
                 buttonText = "Next",
-                onClick = onNextClick
+                onClick = {
+                    if (viewModel.validateProfileDetails()) {
+                        onNextClick()
+                    }
+                }
             )
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ProfileDetailFormPagePreview() {
-    ProfileDetailFormPage(
-        onBackClick = {},
-        onNextClick = {}
-    )
 }

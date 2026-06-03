@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.manage.CreditScorePage
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.manage.ManageDonePage
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.manage.ProfileDetailPage
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.manage.ProfilePage
 import androidx.compose.foundation.Image
@@ -78,6 +79,7 @@ class MainActivity : ComponentActivity() {
             ParcialTP3_LendlyApp_Grupo11Theme {
                 val context = LocalContext.current
                 val sessionManager = remember { SessionManager(context) }
+                val registerViewModel = remember { RegisterViewModel(sessionManager = sessionManager) }
                 val navController = rememberNavController()
                 val loanViewModel: LoanViewModel = viewModel() // TODO LOAN - Se agrega solo para loan
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -254,7 +256,7 @@ class MainActivity : ComponentActivity() {
                                         Spacer(Modifier.height(16.dp))
                                         AppButton(
                                             text = stringResource(R.string.onboarding3_register_button),
-                                            onClick = { navController.navigate(Screen.Signup.route) },
+                                            onClick = { navController.navigate(AppRoute.VERIFY_PHONE_NUMBER) },
                                             modifier = Modifier.fillMaxWidth()
                                         )
                                     }
@@ -307,8 +309,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(Screen.Signup.route) {
                             ProfileDetailFormPage(
+                                viewModel = registerViewModel,
                                 onBackClick = { navController.popBackStack() },
-                                onNextClick = { navController.navigate(AppRoute.ID_VERIFICATION) }
+                                onNextClick = { navController.navigate(AppRoute.SIGNATURE) }
                             )
                         }
 
@@ -316,19 +319,19 @@ class MainActivity : ComponentActivity() {
                         composable(AppRoute.ID_VERIFICATION) {
                             IDVerificationPage(
                                 onBackClick = { navController.popBackStack() },
-                                onNextClick = { navController.navigate(AppRoute.FACE_RECOGNITION) }
+                                onNextClick = { navController.navigate(AppRoute.VERIFIED) }
                             )
                         }
                         composable(AppRoute.FACE_RECOGNITION) {
                             FaceRecognitionPage(
                                 onBackClick = { navController.popBackStack() },
-                                onNextClick = { navController.navigate(AppRoute.SIGNATURE) }
+                                onNextClick = { navController.navigate(AppRoute.ID_VERIFICATION) }
                             )
                         }
                         composable(AppRoute.SIGNATURE) {
                             SignaturePage(
                                 onBackClick = { navController.popBackStack() },
-                                onNextClick = { navController.navigate(AppRoute.VERIFY_PHONE_NUMBER) }
+                                onNextClick = { navController.navigate(AppRoute.CREATE_PASSWORD) }
                             )
                         }
                         composable(AppRoute.VERIFY_PHONE_NUMBER) {
@@ -340,19 +343,20 @@ class MainActivity : ComponentActivity() {
                         composable(AppRoute.SMS_VERIFICATION) {
                             SMSVerification(
                                 onBackClick = { navController.popBackStack() },
-                                onNextClick = { navController.navigate(AppRoute.CREATE_PASSWORD) }
+                                onNextClick = { navController.navigate(AppRoute.FACE_RECOGNITION) }
                             )
                         }
                         composable(AppRoute.CREATE_PASSWORD) {
                             CreatePasswordPage(
+                                viewModel = registerViewModel,
                                 onBackClick = { navController.popBackStack() },
-                                onNextClick = { navController.navigate(AppRoute.VERIFIED) }
+                                onNextClick = { navController.navigate(AppRoute.DONE) }
                             )
                         }
                         composable(AppRoute.VERIFIED) {
                             VerifiedPage(
                                 onBackClick = { navController.popBackStack() },
-                                onNextClick = { navController.navigate(AppRoute.DONE) }
+                                onNextClick = { navController.navigate(Screen.Signup.route) }
                             )
                         }
                         composable(AppRoute.DONE) {
@@ -505,14 +509,30 @@ class MainActivity : ComponentActivity() {
                                     navController.navigate(Screen.Login.route) {
                                         popUpTo(0) { inclusive = true }
                                     }
-                                }
+                                },
+                                onNotificationClick = { navController.navigate(AppRoute.NOTIFICATIONS) }
                             )
                         }
 
                         composable(AppRoute.PROFILE_DETAIL) {
                             ProfileDetailPage(
                                 onBackClick = { navController.popBackStack() },
-                                onSaveClick = { navController.popBackStack() }
+                                onSaveClick = { navController.navigate("manage_done") }
+                            )
+                        }
+
+                        composable("manage_done") {
+                            ManageDonePage(
+                                onExitClick = {
+                                    navController.navigate(AppRoute.MANAGE) {
+                                        popUpTo(AppRoute.MANAGE) { inclusive = true }
+                                    }
+                                },
+                                onDoneClick = {
+                                    navController.navigate(AppRoute.MANAGE) {
+                                        popUpTo(AppRoute.MANAGE) { inclusive = true }
+                                    }
+                                }
                             )
                         }
 

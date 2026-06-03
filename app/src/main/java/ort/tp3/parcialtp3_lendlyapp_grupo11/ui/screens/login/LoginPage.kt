@@ -28,8 +28,6 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.SessionManager
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppTextField
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.LoginUiState
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.LoginViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,7 +41,7 @@ fun LoginPage(
     // instanciamos ViewModel
     val viewModel: LoginViewModel = remember { LoginViewModel(sessionManager = sessionManager) }
     // estado de la UI
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState = viewModel.uiState
 
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
@@ -59,22 +57,12 @@ fun LoginPage(
     // sacar el fondo gris del click
     val interactionSource = remember { MutableInteractionSource() }
 
-    when (val state = uiState) {
-        is LoginUiState.Success -> {
-            LaunchedEffect(Unit) {
-                onLoginSuccess()
-                viewModel.resetState()
-            }
+    // Efecto para manejar el éxito del login
+    LaunchedEffect(uiState.isSuccess) {
+        if (uiState.isSuccess) {
+            onLoginSuccess()
+            viewModel.resetState()
         }
-        is LoginUiState.Error -> {
-            // muestra un error
-            Text(
-                text = state.message,
-                color = Color.Red,
-                modifier = Modifier.padding(16.dp)
-            )
-        }
-        else -> {}
     }
 
     Column(
@@ -93,6 +81,17 @@ fun LoginPage(
         )
 
         Spacer(modifier = Modifier.height(60.dp))
+
+        // Mostrar mensaje de error si existe
+        uiState.errorMessage?.let { error ->
+            Text(
+                text = error,
+                color = Color.Red,
+                fontFamily = interRegular,
+                fontSize = 14.sp,
+                modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
+            )
+        }
 
         Row(
             modifier = Modifier
@@ -194,9 +193,9 @@ fun LoginPage(
         Spacer(modifier = Modifier.height(12.dp))
 
         AppButton(
-            text = if (uiState is LoginUiState.Loading) "Loading..." else "Log In",
+            text = if (uiState.isLoading) "Loading..." else "Log In",
             onClick = { viewModel.login(phone = phoneValue, password = password) },
-            enabled = uiState !is LoginUiState.Loading,
+            enabled = !uiState.isLoading,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp)

@@ -28,6 +28,8 @@ fun AppTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     labelText: String? = null,
+    errorMessage: String? = null,
+    prefix: @Composable (() -> Unit)? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     trailingIcon: @Composable (() -> Unit)? = null,
     textColor: Color = Color.Black,
@@ -39,6 +41,15 @@ fun AppTextField(
     val interRegular = FontFamily(Font(R.font.interregular, FontWeight.Normal))
 
     Column(modifier = modifier) {
+        if (errorMessage != null) {
+            Text(
+                text = errorMessage,
+                color = Color.Red,
+                fontSize = 12.sp,
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+        }
+        
         if (labelText != null) {
             Text(
                 text = labelText,
@@ -55,6 +66,7 @@ fun AppTextField(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth(),
+            isError = errorMessage != null,
             shape = RoundedCornerShape(12.dp),
             textStyle = TextStyle(
                 fontFamily = interRegular,
@@ -62,10 +74,12 @@ fun AppTextField(
                 color = textColor
             ),
             visualTransformation = visualTransformation,
+            prefix = prefix,
             trailingIcon = trailingIcon,
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color(0xFF4ADE80),
-                unfocusedBorderColor = unfocusedBorderColor
+                unfocusedBorderColor = unfocusedBorderColor,
+                errorBorderColor = Color.Red
             )
         )
     }
@@ -77,6 +91,7 @@ fun AppTextFieldPreview() {
     AppTextField(
         value = "Texto de ejemplo",
         onValueChange = {},
-        labelText = "Etiqueta"
+        labelText = "Etiqueta",
+        errorMessage = "Error message"
     )
 }
