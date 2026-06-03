@@ -1,6 +1,7 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,11 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.utils.ImageHelper
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenLight3
@@ -36,6 +39,8 @@ fun LoanListItem(
     feeLabel: String,
     modifier: Modifier = Modifier,
 ) {
+    val localLogo = ImageHelper.getLocalBrandLogo(brandName)
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -51,12 +56,21 @@ fun LoanListItem(
                 .background(Color.White),
             contentAlignment = Alignment.Center
         ) {
-            AsyncImage(
-                model = logoUrl,
-                contentDescription = "$brandName logo",
-                contentScale = ContentScale.Fit,
-                modifier = Modifier.size(24.dp)
-            )
+            if (localLogo != null) {
+                Image(
+                    painter = painterResource(id = localLogo),
+                    contentDescription = "$brandName logo",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.size(28.dp)
+                )
+            } else {
+                AsyncImage(
+                    model = logoUrl,
+                    contentDescription = "$brandName logo",
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
         }
 
         Spacer(modifier = Modifier.size(14.dp))

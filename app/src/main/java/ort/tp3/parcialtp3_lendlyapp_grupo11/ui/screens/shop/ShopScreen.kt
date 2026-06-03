@@ -162,7 +162,7 @@ fun BrandList(brands: List<ProductBrandDto>) {
                     ) {
                         val localImage = ImageHelper.getLocalBrandLogo(brand.name)
                         Image(
-                            painter = painterResource(id = localImage ?: R.drawable.shoes_unsplash),
+                            painter = painterResource(id = localImage ?: R.drawable.zapatillas),
                             contentDescription = null,
                             modifier = Modifier.fillMaxSize(),
                             contentScale = ContentScale.Crop
