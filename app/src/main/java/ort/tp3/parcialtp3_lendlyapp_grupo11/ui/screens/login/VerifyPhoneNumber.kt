@@ -31,7 +31,7 @@ fun VerifyPhoneNumber(
     // fuentes
     val montserratSemiBold = FontFamily(Font(R.font.montserrat_semibold, FontWeight.SemiBold))
     val interRegular = FontFamily(Font(R.font.interregular, FontWeight.Normal))
-    val interMedium = FontFamily(Font(R.font.intermedium, FontWeight.Medium))
+    val interMedium = FontFamily(Font(R.font.inter_medium, FontWeight.Medium))
 
     Column(
         modifier = Modifier

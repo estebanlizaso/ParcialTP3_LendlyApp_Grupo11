@@ -38,7 +38,7 @@ fun ProfileDetailFormPage(
     var phone by remember { mutableStateOf("991251255") }
 
     val montserratSemiBold = FontFamily(Font(R.font.montserrat_semibold, FontWeight.SemiBold))
-    val interMedium = FontFamily(Font(R.font.intermedium, FontWeight.Medium))
+    val interMedium = FontFamily(Font(R.font.inter_medium, FontWeight.Medium))
 
     // colores
     val darkLabelColor = Color(0xFF454745)

@@ -83,7 +83,7 @@ fun ProfileDetailPage(
 
             val montserratSemiBold =
                 FontFamily(Font(R.font.montserrat_semibold, FontWeight.SemiBold))
-            val interMedium = FontFamily(Font(R.font.intermedium, FontWeight.Medium))
+            val interMedium = FontFamily(Font(R.font.inter_medium, FontWeight.Medium))
             val darkLabelColor = Color(0xFF454745)
             val lightLabelColor = Color(0xFF6A6C6A)
             val inputTextGray = Color(0xFF6A6C6A)

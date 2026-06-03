@@ -38,7 +38,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.HomeTopBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.TransactionIconBadge
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.TransactionIconType
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayText
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
@@ -185,7 +185,7 @@ private fun HistoryFilterChip(
 private fun HistorySectionTitle(title: String) {
     Text(
         text = title,
-        color = GrayColor,
+        color = GrayText,
         fontSize = 15.sp,
         fontWeight = FontWeight.SemiBold,
         fontFamily = interFonts,
@@ -213,7 +213,7 @@ private fun HistoryTransactionItem(
         ) {
             Text(
                 text = transaction.time,
-                color = GrayColor,
+                color = GrayText,
                 fontSize = 13.sp,
                 fontFamily = interFonts,
                 fontWeight = FontWeight.SemiBold,
@@ -232,7 +232,7 @@ private fun HistoryTransactionItem(
             if (transaction.merchant.isNotBlank()) {
                 Text(
                     text = transaction.merchant,
-                    color = GrayColor,
+                    color = GrayText,
                     fontSize = 13.sp,
                     fontFamily = interFonts,
                     fontWeight = FontWeight.SemiBold,
@@ -267,7 +267,7 @@ private fun RecentLoanHistoryItem(loan: RecentLoanHistoryUi) {
         ) {
             Text(
                 text = loan.date,
-                color = GrayColor,
+                color = GrayText,
                 fontSize = 13.sp,
                 fontFamily = interFonts,
                 fontWeight = FontWeight.SemiBold,
@@ -285,7 +285,7 @@ private fun RecentLoanHistoryItem(loan: RecentLoanHistoryUi) {
         Column(horizontalAlignment = Alignment.End) {
             Text(
                 text = loan.merchant,
-                color = GrayColor,
+                color = GrayText,
                 fontSize = 13.sp,
                 fontFamily = interFonts,
                 fontWeight = FontWeight.SemiBold,

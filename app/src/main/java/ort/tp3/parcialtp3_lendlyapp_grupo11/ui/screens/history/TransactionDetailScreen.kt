@@ -28,8 +28,8 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.TransactionDetailRow
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.TransactionIconBadge
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.TransactionIconType
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenLight3
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayText
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Neutral98
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
@@ -55,7 +55,7 @@ fun TransactionDetailScreen(
             TransactionDetailHeader(onBackClick = onBackClick)
             Text(
                 text = if (uiState.isLoading) "Loading transaction..." else uiState.error.orEmpty(),
-                color = if (uiState.error == null) GrayColor else Color.Red,
+                color = if (uiState.error == null) GrayText else Color.Red,
                 fontSize = 14.sp,
                 fontFamily = interFonts,
                 fontWeight = FontWeight.SemiBold,
@@ -114,7 +114,7 @@ private fun TransactionDetailHeader(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(GreenLight3)
+            .background(Neutral98)
             .padding(horizontal = 24.dp, vertical = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -141,7 +141,7 @@ private fun TransactionDetailHeader(
             Spacer(modifier = Modifier.height(14.dp))
             Text(
                 text = detail.title,
-                color = GrayColor,
+                color = GrayText,
                 fontSize = 14.sp,
                 fontFamily = interFonts,
                 fontWeight = FontWeight.SemiBold,
@@ -155,7 +155,7 @@ private fun TransactionDetailHeader(
             )
             Text(
                 text = detail.destination,
-                color = GrayColor,
+                color = GrayText,
                 fontSize = 14.sp,
                 fontFamily = interFonts,
                 fontWeight = FontWeight.SemiBold,
@@ -168,9 +168,9 @@ private fun TransactionDetailHeader(
                 fillMaxWidth = false,
                 height = 34.dp,
                 horizontalPadding = 16.dp,
-                borderColor = GrayColor,
+                borderColor = GrayText,
                 backgroundColor = Color.Transparent,
-                textColor = GrayColor
+                textColor = GrayText
             )
         }
     }
@@ -184,7 +184,7 @@ private fun HelpCenterText() {
     ) {
         Text(
             text = "Didn't find what you were looking for?",
-            color = GrayColor,
+            color = GrayText,
             fontSize = 13.sp,
             fontFamily = interFonts,
             fontWeight = FontWeight.SemiBold,

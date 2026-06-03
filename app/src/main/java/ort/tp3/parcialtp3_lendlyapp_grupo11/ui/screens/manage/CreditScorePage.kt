@@ -42,7 +42,7 @@ fun CreditScorePage(
     val montserratSemiBold = FontFamily(Font(R.font.montserrat_semibold, FontWeight.SemiBold))
     val montserratBold = FontFamily(Font(R.font.montserratbold, FontWeight.Bold))
     val interSemiBold = FontFamily(Font(R.font.intersemibold, FontWeight.SemiBold))
-    val interMedium = FontFamily(Font(R.font.intermedium, FontWeight.Medium))
+    val interMedium = FontFamily(Font(R.font.inter_medium, FontWeight.Medium))
     val interRegular = FontFamily(Font(R.font.interregular, FontWeight.Normal))
     val uiState by viewModel.uiState.collectAsState() //estado API
 

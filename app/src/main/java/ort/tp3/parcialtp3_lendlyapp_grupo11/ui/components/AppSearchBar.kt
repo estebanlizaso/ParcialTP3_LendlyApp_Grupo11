@@ -22,7 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayText
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
 @Composable
@@ -62,7 +62,7 @@ fun AppSearchBar(
                     if (value.isEmpty()) {
                         Text(
                             text = placeholder,
-                            color = GrayColor,
+                            color = GrayText,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.SemiBold,
                             fontFamily = interFonts
@@ -80,12 +80,12 @@ private fun SearchIcon() {
     Canvas(modifier = Modifier.size(18.dp)) {
         val stroke = 1.7.dp.toPx()
         drawCircle(
-            color = GrayColor,
+            color = GrayText,
             radius = size.minDimension * 0.32f,
             style = Stroke(width = stroke)
         )
         drawLine(
-            color = GrayColor,
+            color = GrayText,
             start = center.copy(
                 x = center.x + size.width * 0.22f,
                 y = center.y + size.height * 0.22f

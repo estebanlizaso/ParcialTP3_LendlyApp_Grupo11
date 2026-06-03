@@ -27,8 +27,8 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.TransactionDetailRow
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.TransactionIconBadge
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.TransactionIconType
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenLight3
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayText
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Neutral98
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
@@ -47,7 +47,7 @@ fun CashInSuccessScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(GreenLight3)
+                .background(Neutral98)
                 .padding(horizontal = 24.dp, vertical = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -73,7 +73,7 @@ fun CashInSuccessScreen(
             Spacer(modifier = Modifier.height(14.dp))
             Text(
                 text = "Added to your account",
-                color = GrayColor,
+                color = GrayText,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.SemiBold,
                 fontFamily = interFonts
@@ -87,7 +87,7 @@ fun CashInSuccessScreen(
             )
             Text(
                 text = "From $sourceName",
-                color = GrayColor,
+                color = GrayText,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.SemiBold,
                 fontFamily = interFonts
@@ -100,9 +100,9 @@ fun CashInSuccessScreen(
                 fillMaxWidth = false,
                 height = 34.dp,
                 horizontalPadding = 16.dp,
-                borderColor = GrayColor,
+                borderColor = GrayText,
                 backgroundColor = Color.Transparent,
-                textColor = GrayColor
+                textColor = GrayText
             )
         }
 

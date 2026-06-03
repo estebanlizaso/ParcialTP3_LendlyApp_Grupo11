@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.BottomNavBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.HomeTopBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.manage.ManageOptionItem
 
@@ -39,7 +38,7 @@ fun ProfilePage(
     viewModel: ManageViewModel = viewModel()
 ) {
     val montserratSemiBold = FontFamily(Font(R.font.montserrat_semibold, FontWeight.SemiBold))
-    val interMedium = FontFamily(Font(R.font.intermedium, FontWeight.Medium))
+    val interMedium = FontFamily(Font(R.font.inter_medium, FontWeight.Medium))
     val interRegular = FontFamily(Font(R.font.interregular, FontWeight.Normal))
     val uiState by viewModel.uiState.collectAsState() //estado API
 

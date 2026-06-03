@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayText
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.DarkGreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
@@ -54,14 +54,14 @@ fun AppBottomNavigationBar(
             ) {
                 Text(
                     text = item.iconText,
-                    color = if (isSelected) BlackFont else GrayColor,
+                    color = if (isSelected) BlackFont else GrayText,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.SemiBold,
                     fontFamily = interFonts
                 )
                 Text(
                     text = item.label,
-                    color = if (isSelected) BlackFont else GrayColor,
+                    color = if (isSelected) BlackFont else GrayText,
                     fontSize = 10.sp,
                     fontWeight = FontWeight.SemiBold,
                     fontFamily = interFonts
