@@ -67,7 +67,11 @@ class LoanViewModel(
             _loansState.value = LoanUiState.Loading
             repository.getLoans()
                 .onSuccess {
-                    _loansState.value = LoanUiState.Success(it)
+                    if (it.success) {
+                        _loansState.value = LoanUiState.Success(it)
+                    } else {
+                        _loansState.value = LoanUiState.Error("Failed to fetch loans")
+                    }
                 }
                 .onFailure {
                     _loansState.value = LoanUiState.Error(it.message ?: "Unknown error")

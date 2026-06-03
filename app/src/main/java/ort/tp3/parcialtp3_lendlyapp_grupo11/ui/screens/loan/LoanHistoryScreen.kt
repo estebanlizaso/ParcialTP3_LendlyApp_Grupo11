@@ -16,12 +16,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import java.util.Locale
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto
@@ -75,13 +77,21 @@ fun LoanHistoryScreen(
                     }
                 }
                 is LoanUiState.Success -> {
-                    val activeLoans = state.data.loans.filter { it.status == "Active" }
-                    val historyLoans = state.data.loans.filter { it.status == "Paid" }.take(3)
+                    val activeLoans = state.data.loans.filter { it.status.equals("ACTIVE", ignoreCase = true) }
+                    val historyLoans = state.data.loans.filter { it.status.equals("PAID", ignoreCase = true) }.take(3)
 
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(bottom = 24.dp)
-                    ) {
+                    if (activeLoans.isEmpty() && historyLoans.isEmpty()) {
+                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Text(
+                                text = "No loans found",
+                                style = TextStyle(fontFamily = interFonts, color = GrayText)
+                            )
+                        }
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(bottom = 24.dp)
+                        ) {
                         // Present Section
                         item {
                             SectionHeader(title = "Present")
@@ -107,6 +117,7 @@ fun LoanHistoryScreen(
                                 thickness = 0.5.dp,
                                 color = GreyDivider
                             )
+                        }
                         }
                     }
                 }
@@ -153,10 +164,12 @@ fun ActiveLoanItem(loan: LoanDto) {
                 .background(Color(0xFFF9F9F9), CircleShape),
             contentAlignment = Alignment.Center
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.brand_apple),
+            AsyncImage(
+                model = loan.lenderLogo,
                 contentDescription = null,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(24.dp),
+                contentScale = ContentScale.Fit,
+                error = painterResource(id = R.drawable.brand_apple) // Fallback
             )
         }
         
