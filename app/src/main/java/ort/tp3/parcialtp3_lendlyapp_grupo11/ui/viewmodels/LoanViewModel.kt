@@ -10,6 +10,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanApplyRequest
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanApplyResponse
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoansResponse
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.LoanRepository
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.loan.LoanOptionData
 
 sealed class LoanUiState {
     object Idle : LoanUiState()
@@ -35,6 +36,12 @@ class LoanViewModel(
     private val _applyState = MutableStateFlow<LoanApplyUiState>(LoanApplyUiState.Idle)
     val applyState: StateFlow<LoanApplyUiState> = _applyState.asStateFlow()
 
+    private val _selectedLoanOption = MutableStateFlow<LoanOptionData?>(null)
+    val selectedLoanOption: StateFlow<LoanOptionData?> = _selectedLoanOption.asStateFlow()
+
+    private val _appliedAmount = MutableStateFlow<String>("")
+    val appliedAmount: StateFlow<String> = _appliedAmount.asStateFlow()
+
     fun fetchLoans() {
         viewModelScope.launch {
             _loansState.value = LoanUiState.Loading
@@ -48,10 +55,12 @@ class LoanViewModel(
         }
     }
 
-    fun applyLoan(amount: Double, installmentPlan: String, purpose: String) {
+    fun applyLoan(amount: Double, loanOption: LoanOptionData, purpose: String) {
         viewModelScope.launch {
+            _appliedAmount.value = amount.toString()
+            _selectedLoanOption.value = loanOption
             _applyState.value = LoanApplyUiState.Loading
-            repository.applyLoan(LoanApplyRequest(amount, installmentPlan, purpose))
+            repository.applyLoan(LoanApplyRequest(amount, loanOption.title, purpose))
                 .onSuccess {
                     if (it.success) {
                         _applyState.value = LoanApplyUiState.Success(it)

@@ -31,8 +31,12 @@ fun LoanApplyScreen(
     onBack: () -> Unit,
     onSuccess: () -> Unit
 ) {
-    var amount by remember { mutableStateOf("2000") }
-    var selectedPlan by remember { mutableStateOf("6 Months") }
+    var amount by remember { mutableStateOf("2,000.00") }
+    val plans = listOf(
+        LoanOptionData("6 Months", "2.99% Interest", "₱ 982.12/mo"),
+        LoanOptionData("12 Months", "1.99% Interest", "₱ 491.06/mo")
+    )
+    var selectedPlan by remember { mutableStateOf(plans[0]) }
     var selectedPurpose by remember { mutableStateOf("Educational") }
     
     val applyState by viewModel.applyState.collectAsState()
@@ -104,15 +108,11 @@ fun LoanApplyScreen(
                     description = stringResource(R.string.loan_apply_select_plan)
                 ) {
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        val plans = listOf(
-                            LoanOptionData("6 Months", "2.99% Interest", "₱ 982.12/mo"),
-                            LoanOptionData("12 Months", "1.99% Interest", "₱ 491.06/mo")
-                        )
                         plans.forEach { plan ->
                             SelectableLoanOption(
                                 data = plan,
-                                isSelected = selectedPlan == plan.title,
-                                onClick = { selectedPlan = plan.title }
+                                isSelected = selectedPlan.title == plan.title,
+                                onClick = { selectedPlan = plan }
                             )
                         }
                     }
@@ -139,7 +139,7 @@ fun LoanApplyScreen(
                 amount = amount,
                 onApplyClick = {
                     viewModel.applyLoan(
-                        amount.toDouble(),
+                        amount.replace(",", "").toDouble(),
                         selectedPlan,
                         selectedPurpose
                     )

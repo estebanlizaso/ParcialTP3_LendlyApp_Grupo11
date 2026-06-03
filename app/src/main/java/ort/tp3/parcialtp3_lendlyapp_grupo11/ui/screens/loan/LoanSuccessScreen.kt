@@ -1,20 +1,27 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.transaction.*
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.LoanViewModel
 
 @Composable
 fun LoanSuccessScreen(
+    viewModel: LoanViewModel,
     onDone: () -> Unit
 ) {
+    val selectedOption by viewModel.selectedLoanOption.collectAsState()
+    val appliedAmount by viewModel.appliedAmount.collectAsState()
+
     TransactionPage(
         onClose = onDone,
         onDoneClick = onDone,
         transactionContent = {
             AppTransaction(
-                amount = stringResource(id = R.string.loan_success_amount_value),
+                amount = appliedAmount,
                 statusText = stringResource(id = R.string.loan_success_added_to_account),
                 originText = stringResource(id = R.string.loan_success_origin),
                 typeLabel = stringResource(id = R.string.loan_success_type_label)
@@ -26,15 +33,15 @@ fun LoanSuccessScreen(
                 details = listOf(
                     TransactionDetail(
                         stringResource(id = R.string.loan_success_monthly_fee),
-                        stringResource(id = R.string.loan_success_monthly_fee_value)
+                        selectedOption?.rightValue ?: stringResource(id = R.string.loan_success_monthly_fee_value)
                     ),
                     TransactionDetail(
                         stringResource(id = R.string.loan_success_interest),
-                        stringResource(id = R.string.loan_success_interest_value)
+                        selectedOption?.subtitle ?: stringResource(id = R.string.loan_success_interest_value)
                     ),
                     TransactionDetail(
                         stringResource(id = R.string.loan_success_installment_plan),
-                        stringResource(id = R.string.loan_success_installment_value)
+                        selectedOption?.title ?: stringResource(id = R.string.loan_success_installment_value)
                     ),
                     TransactionDetail(
                         stringResource(id = R.string.loan_success_date_time),

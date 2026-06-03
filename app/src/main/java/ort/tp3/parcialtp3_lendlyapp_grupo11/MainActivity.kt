@@ -278,6 +278,7 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(Screen.LoanSuccess.route) {
                             LoanSuccessScreen(
+                                viewModel = loanViewModel,
                                 onDone = { navController.navigate(Screen.LoanHistory.route) }
                             )
                         }
