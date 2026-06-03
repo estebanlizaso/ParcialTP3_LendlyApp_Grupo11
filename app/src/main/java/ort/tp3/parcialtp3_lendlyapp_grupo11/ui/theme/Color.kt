@@ -37,7 +37,12 @@ val GrayText = Color(0xFF6A6C6A)
 val DarkGreyText = Color(0xFF454745)
 val MediumDarkGreenText = Color(0xFF4C662B)
 
+val BlackTopBarFont = Color(0xFF1D1B20)
+
 //colores accountBalance
 
 val Neutral98 = Color(0xFFFCF8F8)
+
+// Colores iconos
+val BlackIcon = Color(0xFF171D1E)
 
