@@ -46,7 +46,7 @@ private fun NavItem(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    val interMedium = FontFamily(Font(R.font.intermedium, FontWeight.Medium))
+    val interMedium = FontFamily(Font(R.font.inter_medium, FontWeight.Medium))
     val interSemiBold = FontFamily(Font(R.font.intersemibold, FontWeight.SemiBold))
 
     Column(

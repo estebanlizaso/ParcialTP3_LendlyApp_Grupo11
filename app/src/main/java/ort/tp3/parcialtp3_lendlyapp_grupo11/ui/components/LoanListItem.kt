@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.utils.ImageHelper
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GreenLight3
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayText
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Neutral98
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 
 @Composable
@@ -45,7 +45,7 @@ fun LoanListItem(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(14.dp))
-            .background(GreenLight3)
+            .background(Neutral98)
             .padding(horizontal = 14.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -98,7 +98,7 @@ fun LoanListItem(
             )
             Text(
                 text = feeLabel,
-                color = GrayColor,
+                color = GrayText,
                 fontSize = 11.sp,
                 fontFamily = interFonts,
                 textAlign = TextAlign.End

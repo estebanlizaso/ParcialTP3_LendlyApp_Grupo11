@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.manage.AppTopBar
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.manage.AppBottomBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.manage.AppTextField
 
@@ -106,6 +106,9 @@ fun ProfileDetailPage(
                     .verticalScroll(rememberScrollState())
                     .padding(horizontal = 24.dp)
             ) {
+                Box(modifier = Modifier.padding(horizontal = 12.dp)) {
+                    AppTopBar(onLeftClick = onBackClick)
+                }
                 Text(
                     text = "Enter your personal\ndetails",
                     fontFamily = montserratSemiBold,

@@ -37,7 +37,7 @@ fun AppTextField(
     labelColor: Color = Color(0xFF454745),
     unfocusedBorderColor: Color = Color(0xFF6A6C6A)
 ) {
-    val interMedium = FontFamily(Font(R.font.intermedium, FontWeight.Medium))
+    val interMedium = FontFamily(Font(R.font.inter_medium, FontWeight.Medium))
     val interRegular = FontFamily(Font(R.font.interregular, FontWeight.Normal))
 
     Column(modifier = modifier) {

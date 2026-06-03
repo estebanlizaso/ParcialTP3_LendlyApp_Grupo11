@@ -39,7 +39,7 @@ fun ProfilePage(
     viewModel: ManageViewModel = viewModel()
 ) {
     val montserratSemiBold = FontFamily(Font(R.font.montserrat_semibold, FontWeight.SemiBold))
-    val interMedium = FontFamily(Font(R.font.intermedium, FontWeight.Medium))
+    val interMedium = FontFamily(Font(R.font.inter_medium, FontWeight.Medium))
     val interRegular = FontFamily(Font(R.font.interregular, FontWeight.Normal))
     val uiState = viewModel.uiState //estado API
 
@@ -78,12 +78,20 @@ fun ProfilePage(
 
             Column(
                 modifier = Modifier
+              //TODO desde acá
+                    .fillMaxSize()
+                    .background(Color.White)
+                    .padding(top = 24.dp)
+            ) {
+                Box(modifier = Modifier.padding(horizontal = 24.dp)) {
+                    HomeTopBar(avatarUrl = "", onNotificationClick = { })
+                }
                     .fillMaxWidth()
                     .weight(1f)
                     .verticalScroll(rememberScrollState())
             ) {
                 Spacer(modifier = Modifier.height(24.dp))
-
+//TODO hasta acá
                 Text(
                     text = "Manage",
                     fontFamily = montserratSemiBold,

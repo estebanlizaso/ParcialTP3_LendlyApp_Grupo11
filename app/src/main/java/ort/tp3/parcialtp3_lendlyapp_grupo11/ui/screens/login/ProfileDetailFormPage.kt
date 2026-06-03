@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppBottomBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppTextField
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppTopBar
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
 
 @Composable
 fun ProfileDetailFormPage(
@@ -26,7 +26,7 @@ fun ProfileDetailFormPage(
     onNextClick: () -> Unit
 ) {
     val montserratSemiBold = FontFamily(Font(R.font.montserrat_semibold, FontWeight.SemiBold))
-    val interMedium = FontFamily(Font(R.font.intermedium, FontWeight.Medium))
+    val interMedium = FontFamily(Font(R.font.inter_medium, FontWeight.Medium))
     val uiState = viewModel.uiState
 
     // colores
@@ -43,7 +43,7 @@ fun ProfileDetailFormPage(
             .padding(top = 32.dp, bottom = 24.dp)
     ) {
         Box(modifier = Modifier.padding(horizontal = 12.dp)) {
-            AppTopBar(onBackClick = onBackClick)
+            AppTopBar(onLeftClick = onBackClick)
         }
 
         Spacer(modifier = Modifier.height(24.dp))

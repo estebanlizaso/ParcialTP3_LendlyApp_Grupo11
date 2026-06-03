@@ -54,8 +54,8 @@ fun CreatePasswordPage(
     ) {
         Box(modifier = Modifier.padding(horizontal = 12.dp)) {
             AppTopBar(
-                onBackClick = onBackClick,
-                onInfoClick = { /* Info */ }
+                onLeftClick = onBackClick,
+                rightIcon = { InfoIcon(onClick = { /* Info */ }) }
             )
         }
 

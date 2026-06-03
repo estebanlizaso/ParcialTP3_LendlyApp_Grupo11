@@ -16,6 +16,76 @@
     <string name="onboarding3_login_button">Log In</string>
     <string name="onboarding3_register_button">Sign up for free</string>
 
+    <!-- Loan Screen -->
+    <string name="loan_title">Loan</string>
+    <string name="loan_limited_time_offer">Limited Time Offer</string>
+    <string name="loan_safe_secure_title">Safe and\nsecure loans</string>
+    <string name="loan_rayland_subtitle">All here in Rayland</string>
+    <string name="loan_borrow_up_to">You can borrow up to</string>
+    <string name="loan_borrow_amount">₱ 30,000.00</string>
+    <string name="loan_subject_to_evaluation">*Subject to evaluation</string>
+    <string name="loan_details_title">Loan Details</string>
+    <string name="loan_what_is_this">What is this?</string>
+
+    <!-- Loan Details Metrics -->
+    <string name="loan_payable_in">Payable in</string>
+    <string name="loan_payable_value">6 - 12</string>
+    <string name="loan_months">months</string>
+    <string name="loan_interest_rate">Interest Rate</string>
+    <string name="loan_interest_value">1.99%</string>
+    <string name="loan_interest_label">ave per mo.</string>
+    <string name="loan_process_fee">Process Fee</string>
+    <string name="loan_process_value">3%</string>
+    <string name="loan_process_label">as low as</string>
+
+    <!-- How it works -->
+    <string name="loan_how_it_works_title">How it works</string>
+    <string name="loan_how_credit_title">Keep your credit score high</string>
+    <string name="loan_how_credit_desc">The offered loan amount is based on your credit score</string>
+    <string name="loan_how_approval_title">Get instant approval</string>
+    <string name="loan_how_approval_desc">Everything we need to process is already in the application</string>
+    <string name="loan_how_payments_title">Easy payments option available</string>
+    <string name="loan_how_payments_desc">Skip the queue and pay your due on the application</string>
+    <string name="loan_how_safe_title">Safe and secure</string>
+    <string name="loan_how_safe_desc">Rayland is working with trusted partners to provide this services</string>
+
+    <string name="loan_get_loan_button">Get This Loan</string>
+
+    <!-- Loan Apply Screen -->
+    <string name="loan_apply_header_title">Please provide your details\nfor your loan</string>
+    <string name="loan_apply_header_subtitle">Please provide your details for your loan</string>
+    <string name="loan_apply_step_1">Step 1</string>
+    <string name="loan_apply_enter_amount">Enter loan amount</string>
+    <string name="loan_apply_step_2">Step 2</string>
+    <string name="loan_apply_select_plan">Select an installment plan</string>
+    <string name="loan_apply_step_3">Step 3</string>
+    <string name="loan_apply_select_purpose">Select your loan purpose</string>
+    <string name="loan_apply_summary">Summary</string>
+    <string name="loan_apply_lender">Lender</string>
+    <string name="loan_apply_amount_label">Loan Amount</string>
+    <string name="loan_apply_fee_label">3% Processing Fee</string>
+    <string name="loan_apply_total_receive">Total amount to Receive</string>
+
+    <!-- Loan Success Screen -->
+    <string name="loan_success_added_to_account">Added to your account</string>
+    <string name="loan_success_amount_value">2,000.00</string>
+    <string name="loan_success_origin">From Apple Inc.</string>
+    <string name="loan_success_type_label">Loan Amount</string>
+    <string name="loan_success_details_title">Transaction Details</string>
+    <string name="loan_success_monthly_fee">Monthly Fee</string>
+    <string name="loan_success_monthly_fee_value">₱ 982.12</string>
+    <string name="loan_success_interest">Interest</string>
+    <string name="loan_success_interest_value">2.99%</string>
+    <string name="loan_success_installment_plan">Installment plan</string>
+    <string name="loan_success_installment_value">6 Months</string>
+    <string name="loan_success_date_time">Date &amp; Time</string>
+    <string name="loan_success_date_time_value">Jul 15, 2024 9:12 AM</string>
+    <string name="loan_success_transaction_number">Transaction Number</string>
+    <string name="loan_success_transaction_number_value">#200412312551</string>
+    <string name="loan_success_need_help">Need help?</string>
+    <string name="loan_success_go_to_help_center">Go to Help Center</string>
+    <string name="loan_success_done">Done</string>
+
 
 
 </resources>

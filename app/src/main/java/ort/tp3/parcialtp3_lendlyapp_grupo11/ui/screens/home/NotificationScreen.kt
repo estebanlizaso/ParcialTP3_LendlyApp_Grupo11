@@ -33,7 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayColor
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayText
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.ParcialTP3_LendlyApp_Grupo11Theme
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
@@ -155,7 +155,7 @@ private fun CalendarIcon(onClick: () -> Unit) {
 private fun NotificationSection(title: String) {
     Text(
         text = title,
-        color = GrayColor,
+        color = GrayText,
         fontSize = 13.sp,
         fontFamily = interFonts,
         fontWeight = FontWeight.SemiBold
@@ -187,12 +187,12 @@ private fun NotificationItem(
                     fontFamily = interFonts,
                     modifier = Modifier.weight(1f)
                 )
-                Text(text = "Mar 8", color = GrayColor, fontSize = 11.sp, fontFamily = interFonts,fontWeight = FontWeight.SemiBold,)
+                Text(text = "Mar 8", color = GrayText, fontSize = 11.sp, fontFamily = interFonts,fontWeight = FontWeight.SemiBold,)
             }
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "We'd like to remind you about your due date this month. Please pay this balance within the date to keep your credit score. Tap to pay.",
-                color = GrayColor,
+                color = GrayText,
                 fontSize = 11.sp,
                 lineHeight = 14.sp,
                 fontFamily = interFonts

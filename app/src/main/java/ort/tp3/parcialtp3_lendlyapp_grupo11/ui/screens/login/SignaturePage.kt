@@ -22,6 +22,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.icons.InfoIcon
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppBottomBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppTopBar
 
@@ -32,7 +35,7 @@ fun SignaturePage(
 ) {
     val montserratSemiBold = FontFamily(Font(R.font.montserrat_semibold, FontWeight.SemiBold))
     val interRegular = FontFamily(Font(R.font.interregular, FontWeight.Normal))
-    val interMedium = FontFamily(Font(R.font.intermedium, FontWeight.Medium))
+    val interMedium = FontFamily(Font(R.font.inter_medium, FontWeight.Medium))
 
     val path = remember { Path() }
     var hasDrawn by remember { mutableStateOf(false) }
@@ -52,8 +55,8 @@ fun SignaturePage(
                 .padding(horizontal = 12.dp)
         ) {
             AppTopBar(
-                onBackClick = onBackClick,
-                onInfoClick = { /* Acción de Info */ }
+                onLeftClick = onBackClick,
+                rightIcon = { InfoIcon(onClick = { /* Acción de Info */ }) }
             )
         }
 
