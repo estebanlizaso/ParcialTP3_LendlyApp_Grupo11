@@ -1,11 +1,11 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import java.util.Locale
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.HomeRepository
 
@@ -13,8 +13,8 @@ class HomeViewModel(
     private val repository: HomeRepository = HomeRepository()
 ) : ViewModel() {
 
-    var uiState by mutableStateOf(HomeUiState())
-        private set
+    private val _uiState = MutableStateFlow(HomeUiState())
+    val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     init {
         loadHome()
@@ -49,7 +49,7 @@ class HomeViewModel(
                 } ?: HomeProductUi("Nike Air Max", "", formatMoney(1200.0), "24 mo")
                 val recommendedProducts = listOf(phoneProduct, headphonesProduct, shoesProduct)
 
-                uiState = HomeUiState(
+                _uiState.value = HomeUiState(
                     isLoading = false,
                     avatarUrl = userResponse.user.avatar,
                     balance = formatMoney(userResponse.user.availableBalance),
@@ -72,7 +72,7 @@ class HomeViewModel(
                     products = recommendedProducts
                 )
             } catch (e: Exception) {
-                uiState = HomeUiState(
+                _uiState.value = HomeUiState(
                     isLoading = false,
                     error = "No se pudo cargar el Home"
                 )

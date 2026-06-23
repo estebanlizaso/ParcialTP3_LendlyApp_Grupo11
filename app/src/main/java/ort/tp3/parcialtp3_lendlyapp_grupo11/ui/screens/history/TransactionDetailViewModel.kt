@@ -1,14 +1,14 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.history
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
 import kotlin.math.abs
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.TransactionDto
@@ -19,24 +19,23 @@ class TransactionDetailViewModel(
     private val repository: HomeRepository = HomeRepository()
 ) : ViewModel() {
 
-    var uiState by mutableStateOf(TransactionDetailUiState())
-        private set
+    private val _uiState = MutableStateFlow(TransactionDetailUiState())
+    val uiState: StateFlow<TransactionDetailUiState> = _uiState.asStateFlow()
 
     private var loadedTransactionId: String? = null
 
     fun loadTransaction(transactionId: String) {
-        if (transactionId == loadedTransactionId && uiState.detail != null) return
+        if (transactionId == loadedTransactionId && _uiState.value.detail != null) return
 
         loadedTransactionId = transactionId
-        uiState = TransactionDetailUiState(isLoading = true)
+        _uiState.value = TransactionDetailUiState(isLoading = true)
 
         viewModelScope.launch {
             try {
                 val transactions = repository.getTransactions().transactions
                 val loans = repository.getLoans().loans
                 val transaction = transactions.firstOrNull { it.id == transactionId }
-
-                uiState = if (transaction != null) {
+                _uiState.value = if (transaction != null) {
                     TransactionDetailUiState(
                         isLoading = false,
                         detail = transaction.toDetailUi(loans)
@@ -48,7 +47,7 @@ class TransactionDetailViewModel(
                     )
                 }
             } catch (e: Exception) {
-                uiState = TransactionDetailUiState(
+                _uiState.value = TransactionDetailUiState(
                     isLoading = false,
                     error = "No se pudo cargar el detalle"
                 )

@@ -107,12 +107,16 @@ fun HistoryScreen(
             HistorySectionTitle(title = "Today")
             HorizontalDivider(color = Color(0xFFE6E6E6))
 
-            Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
-                filteredTransactions.forEach { transaction ->
-                    HistoryTransactionItem(
-                        transaction = transaction,
-                        onClick = { onTransactionClick(transaction.id) }
-                    )
+            HistoryStatusMessage(uiState = uiState)
+
+            if (!uiState.isLoading && uiState.error == null) {
+                Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
+                    filteredTransactions.forEach { transaction ->
+                        HistoryTransactionItem(
+                            transaction = transaction,
+                            onClick = { onTransactionClick(transaction.id) }
+                        )
+                    }
                 }
             }
 
@@ -120,14 +124,36 @@ fun HistoryScreen(
             HistorySectionTitle(title = "Recent Loans")
             HorizontalDivider(color = Color(0xFFE6E6E6))
 
-            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                filteredLoans.forEach { loan ->
-                    RecentLoanHistoryItem(loan = loan)
+            if (!uiState.isLoading && uiState.error == null) {
+                Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                    filteredLoans.forEach { loan ->
+                        RecentLoanHistoryItem(loan = loan)
+                    }
                 }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
         }
+    }
+}
+
+@Composable
+private fun HistoryStatusMessage(uiState: HistoryUiState) {
+    val message = when {
+        uiState.isLoading -> "Loading history..."
+        uiState.error != null -> uiState.error
+        else -> null
+    }
+
+    message?.let {
+        Text(
+            text = it,
+            color = if (uiState.error != null) Color.Red else GrayText,
+            fontSize = 15.sp,
+            fontWeight = FontWeight.SemiBold,
+            fontFamily = interFonts,
+            modifier = Modifier.padding(top = 18.dp)
+        )
     }
 }
 
@@ -370,6 +396,6 @@ private fun HistoryIcon(
 @Composable
 fun HistoryScreenPreview() {
     ParcialTP3_LendlyApp_Grupo11Theme {
-        HistoryScreen(uiState = sampleHistoryUiState())
+        HistoryScreen(uiState = HistoryUiState())
     }
 }
