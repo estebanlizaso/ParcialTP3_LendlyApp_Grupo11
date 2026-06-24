@@ -2,14 +2,19 @@ package ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository
 
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.ProductDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.ProductsResponse
-import ort.tp3.parcialtp3_lendlyapp_grupo11.network.remote.ApiClient
+import ort.tp3.parcialtp3_lendlyapp_grupo11.network.remote.LendlyApi
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object ShopRepository {
+@Singleton
+class ShopRepository @Inject constructor(
+    private val api: LendlyApi
+) {
     private var cachedResponse: ProductsResponse? = null
 
     suspend fun getProducts(): ProductsResponse {
         if (cachedResponse == null) {
-            cachedResponse = ApiClient.api.getProducts()
+            cachedResponse = api.getProducts()
         }
         return cachedResponse!!
     }

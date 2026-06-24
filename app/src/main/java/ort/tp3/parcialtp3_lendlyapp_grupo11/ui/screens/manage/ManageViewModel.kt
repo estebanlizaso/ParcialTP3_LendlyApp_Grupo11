@@ -5,6 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.UserDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.HomeRepository
@@ -18,8 +20,9 @@ data class ManageUiState(
     val errorMessage: String? = null
 )
 
-class ManageViewModel(
-    private val repository: HomeRepository = HomeRepository()
+@HiltViewModel
+class ManageViewModel @Inject constructor(
+    private val repository: HomeRepository
 ) : ViewModel() {
 
     var uiState by mutableStateOf(ManageUiState())

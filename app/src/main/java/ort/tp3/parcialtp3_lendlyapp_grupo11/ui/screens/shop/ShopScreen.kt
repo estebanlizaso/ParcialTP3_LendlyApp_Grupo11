@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.ProductBrandDto
@@ -39,7 +39,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.utils.PriceHelper
 
 @Composable
 fun ShopScreen(
-    viewModel: ShopViewModel = viewModel(),
+    viewModel: ShopViewModel = hiltViewModel(),
     onSearchClick: () -> Unit = {},
     onFilterClick: () -> Unit = {},
     onProductClick: (String) -> Unit = {},

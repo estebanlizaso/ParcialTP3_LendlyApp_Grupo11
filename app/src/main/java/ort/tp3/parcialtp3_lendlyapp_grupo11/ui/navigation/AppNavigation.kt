@@ -175,6 +175,7 @@ fun AppNavigation(
             }
             composable(AppRoute.VERIFY_PHONE_NUMBER) {
                 VerifyPhoneNumber(
+                    viewModel = registerViewModel,
                     onBackClick = { navController.popBackStack() },
                     onSendCodeClick = { navController.navigate(AppRoute.SMS_VERIFICATION) }
                 )

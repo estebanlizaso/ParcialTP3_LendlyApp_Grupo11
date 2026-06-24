@@ -1,5 +1,6 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.manage
 
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -25,7 +26,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.manage.ManageOptionItem
@@ -34,7 +34,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.manage.ManageOptionIte
 fun CreditScorePage(
     onBackClick: () -> Unit,
     onOptionClick: (String) -> Unit,
-    viewModel: ManageViewModel = viewModel(),
+    viewModel: ManageViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
     val montserratSemiBold = FontFamily(Font(R.font.montserrat_semibold, FontWeight.SemiBold))

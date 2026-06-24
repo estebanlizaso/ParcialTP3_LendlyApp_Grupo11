@@ -37,7 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
@@ -53,7 +53,7 @@ fun ProductDetailScreen(
     productId: String,
     onBackClick: () -> Unit = {},
     onContinueClick: () -> Unit = {},
-    viewModel: ProductDetailViewModel = viewModel()
+    viewModel: ProductDetailViewModel = hiltViewModel()
 ) {
     val productState by viewModel.product.collectAsState()
 

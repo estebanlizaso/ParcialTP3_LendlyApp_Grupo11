@@ -2,6 +2,7 @@ package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,6 +13,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoansResponse
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.LoanRepository
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.loan.LoanOptionData
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.HomeRepository
+import javax.inject.Inject
 
 sealed class LoanUiState {
     object Idle : LoanUiState()
@@ -27,9 +29,10 @@ sealed class LoanApplyUiState {
     data class Error(val message: String) : LoanApplyUiState()
 }
 
-class LoanViewModel(
-    private val repository: LoanRepository = LoanRepository(),
-    private val homeRepository: HomeRepository = HomeRepository()
+@HiltViewModel
+class LoanViewModel @Inject constructor(
+    private val repository: LoanRepository,
+    private val homeRepository: HomeRepository
 ) : ViewModel() {
 
     private val _loansState = MutableStateFlow<LoanUiState>(LoanUiState.Idle)

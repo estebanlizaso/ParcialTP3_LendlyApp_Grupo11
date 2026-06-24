@@ -2,6 +2,7 @@ package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.shop.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -10,9 +11,12 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.ProductDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.ShopRepository
 import android.util.Log
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.HomeRepository
+import javax.inject.Inject
 
-class ShopViewModel(
-    private val repository: HomeRepository = HomeRepository()
+@HiltViewModel
+class ShopViewModel @Inject constructor(
+    private val repository: HomeRepository,
+    private val shopRepository: ShopRepository
 ) : ViewModel() {
 
     private val mockBrands = listOf(
@@ -46,7 +50,7 @@ class ShopViewModel(
                 _avatarUrl.value = userResponse.user.avatar
 
                 // Fetch products
-                val response = ShopRepository.getProducts()
+                val response = shopRepository.getProducts()
                 if (response.brands.isNotEmpty()) {
                     _brands.value = response.brands
                 }

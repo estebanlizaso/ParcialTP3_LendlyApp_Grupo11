@@ -4,11 +4,13 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoansResponse
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.ProductsResponse
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.TransactionsResponse
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.UserResponse
-import ort.tp3.parcialtp3_lendlyapp_grupo11.network.remote.ApiClient
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.remote.LendlyApi
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class HomeRepository(
-    private val api: LendlyApi = ApiClient.api
+@Singleton
+class HomeRepository @Inject constructor(
+    private val api: LendlyApi
 ) {
     suspend fun getUser(id: Int = 1): UserResponse = api.getUser(id)
 

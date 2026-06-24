@@ -22,13 +22,10 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.icons.InfoIcon
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VerifyPhoneNumber(
+    viewModel: RegisterViewModel,
     onBackClick: () -> Unit,
     onSendCodeClick: () -> Unit
 ) {
-    var countryCode by remember { mutableStateOf("+65") }
-    var phoneNumber by remember { mutableStateOf("991251255") }
-
-
     // fuentes
     val montserratSemiBold = FontFamily(Font(R.font.montserrat_semibold, FontWeight.SemiBold))
     val interRegular = FontFamily(Font(R.font.interregular, FontWeight.Normal))
@@ -84,22 +81,25 @@ fun VerifyPhoneNumber(
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.Bottom
             ) {
                 AppTextField(
-                    value = countryCode,
-                    onValueChange = { countryCode = it },
-                    modifier = Modifier.width(80.dp),
-                    textColor = Color(0xFF454745) // El gris del Figma para el texto ingresado
+                    value = viewModel.countryCode,
+                    onValueChange = { if (it.length <= 3 && it.all { char -> char.isDigit() }) viewModel.countryCode = it },
+                    modifier = Modifier.width(85.dp),
+                    prefix = { Text("+") },
+                    errorMessage = viewModel.countryCodeError,
+                    textColor = Color(0xFF454745)
                 )
 
                 Spacer(modifier = Modifier.width(12.dp))
 
                 AppTextField(
-                    value = phoneNumber,
-                    onValueChange = { phoneNumber = it },
+                    value = viewModel.phone,
+                    onValueChange = { if (it.length <= 8 && it.all { char -> char.isDigit() }) viewModel.phone = it },
                     modifier = Modifier.weight(1f),
-                    textColor = Color(0xFF454745) // El gris del Figma para el texto ingresado
+                    errorMessage = viewModel.phoneError,
+                    textColor = Color(0xFF454745)
                 )
             }
         }
@@ -110,17 +110,20 @@ fun VerifyPhoneNumber(
         Box(modifier = Modifier.padding(horizontal = 24.dp)) {
             AppBottomBar(
                 buttonText = "Send Code",
-                onClick = { onSendCodeClick() }
+                onClick = { 
+                    if (viewModel.validatePhoneNumber()) {
+                        onSendCodeClick()
+                    }
+                }
             )
         }
     }
 }
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun VerifyPhoneNumberPreview() {
-    VerifyPhoneNumber(
-        onBackClick = { },
-        onSendCodeClick = { }
-    )
+    // Para previsualizar, se requeriría un mock de RegisterViewModel
 }
+*/
