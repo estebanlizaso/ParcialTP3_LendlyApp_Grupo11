@@ -8,16 +8,12 @@ plugins {
 
 android {
     namespace = "ort.tp3.parcialtp3_lendlyapp_grupo11"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "ort.tp3.parcialtp3_lendlyapp_grupo11"
         minSdk = 25
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
 
@@ -76,6 +72,11 @@ dependencies {
     
     // Image Loading
     implementation(libs.coil.compose)
+
+    // Room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -4,15 +4,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
-import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoginRequestDto
-import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.AuthRepository
 import ort.tp3.parcialtp3_lendlyapp_grupo11.SessionManager
-import retrofit2.HttpException
-import java.io.IOException
 import javax.inject.Inject
 
 data class LoginUiState(
@@ -23,7 +17,6 @@ data class LoginUiState(
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val repository: AuthRepository,
     private val sessionManager: SessionManager
 ) : ViewModel() {
 

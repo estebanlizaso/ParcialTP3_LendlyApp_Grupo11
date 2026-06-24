@@ -48,7 +48,7 @@ fun ShopScreen(
     var searchQuery by remember { mutableStateOf("") }
     val brands by viewModel.brands.collectAsState()
     val featuredProducts by viewModel.featuredProducts.collectAsState()
-    val allProducts by viewModel.allProducts.collectAsState()
+    val recommendedProducts by viewModel.recommendedProducts.collectAsState()
     val avatarUrl by viewModel.avatarUrl.collectAsState()
 
     Column(
@@ -117,7 +117,7 @@ fun ShopScreen(
             }
             
             ShopSection("Recommended For You") {
-                ProductList(allProducts, onProductClick, cardWidth = 132.dp)
+                ProductList(recommendedProducts, onProductClick, cardWidth = 132.dp)
             }
             ShopSection("Best Sellers") {
                 ProductList(featuredProducts, onProductClick, cardWidth = 127.dp)
