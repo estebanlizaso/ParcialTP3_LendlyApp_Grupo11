@@ -4,11 +4,14 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoginRequestDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoginResponseDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.RegisterRequestDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.RegisterResponseDto
-import ort.tp3.parcialtp3_lendlyapp_grupo11.network.remote.ApiClient
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.remote.LendlyApi
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class AuthRepository {
-    private val api: LendlyApi = ApiClient.api
+@Singleton
+class AuthRepository @Inject constructor(
+    private val api: LendlyApi
+) {
 
     suspend fun login(request: LoginRequestDto): LoginResponseDto {
         return api.login(request)

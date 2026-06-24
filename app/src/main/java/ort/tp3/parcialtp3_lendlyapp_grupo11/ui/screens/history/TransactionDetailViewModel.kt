@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -14,9 +15,11 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.TransactionDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.HomeRepository
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.TransactionIconType
+import javax.inject.Inject
 
-class TransactionDetailViewModel(
-    private val repository: HomeRepository = HomeRepository()
+@HiltViewModel
+class TransactionDetailViewModel @Inject constructor(
+    private val repository: HomeRepository
 ) : ViewModel() {
 
     var uiState by mutableStateOf(TransactionDetailUiState())

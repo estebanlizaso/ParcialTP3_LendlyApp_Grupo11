@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1058633016199",
+    "project_id": "lendlyapp-c75bb",
+    "storage_bucket": "lendlyapp-c75bb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1058633016199:android:a610dc7b9a320fd4976922",
+        "android_client_info": {
+          "package_name": "ort.tp3.parcialtp3_lendlyapp_grupo11"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBb4vjtRczDIAj0whz98__Gw3jC4zbleuQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

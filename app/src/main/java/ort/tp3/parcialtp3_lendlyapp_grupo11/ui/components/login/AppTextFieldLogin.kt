@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -32,6 +33,7 @@ fun AppTextField(
     prefix: @Composable (() -> Unit)? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     trailingIcon: @Composable (() -> Unit)? = null,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     textColor: Color = Color.Black,
     labelColor: Color = Color(0xFF454745),
     unfocusedBorderColor: Color = Color(0xFF6A6C6A)
@@ -75,6 +77,7 @@ fun AppTextField(
             visualTransformation = visualTransformation,
             prefix = prefix,
             trailingIcon = trailingIcon,
+            keyboardOptions = keyboardOptions,
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color(0xFF4ADE80),
                 unfocusedBorderColor = unfocusedBorderColor,

@@ -4,13 +4,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
-import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoginRequestDto
-import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.AuthRepository
+import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ort.tp3.parcialtp3_lendlyapp_grupo11.SessionManager
-import retrofit2.HttpException
-import java.io.IOException
+import javax.inject.Inject
 
 data class LoginUiState(
     val isLoading: Boolean = false,
@@ -18,55 +15,47 @@ data class LoginUiState(
     val errorMessage: String? = null
 )
 
-class LoginViewModel(
-    private val repository: AuthRepository = AuthRepository(),
+@HiltViewModel
+class LoginViewModel @Inject constructor(
     private val sessionManager: SessionManager
 ) : ViewModel() {
 
     var uiState by mutableStateOf(LoginUiState())
         private set
 
-    fun login(phone: String, password: String) {
+    fun login(email: String, password: String) {
         // Validaciones locales
-        if (phone.isBlank() || password.isBlank()) {
+        if (email.isBlank() || password.isBlank()) {
             uiState = uiState.copy(errorMessage = "Please fill in all fields")
             return
         }
 
-        if (phone.length < 8) {
-            uiState = uiState.copy(errorMessage = "Phone must be at least 8 digits long")
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            uiState = uiState.copy(errorMessage = "Please enter a valid email")
             return
         }
 
-
-
         uiState = LoginUiState(isLoading = true)
 
-        viewModelScope.launch {
-            try {
-                val request = LoginRequestDto(phone = phone, password = password)
-                val response = repository.login(request)
-
-                if (response.success) {
-                    sessionManager.saveToken(response.token)
-                    uiState = LoginUiState(isSuccess = true)
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val uid = task.result?.user?.uid
+                    if (uid != null) {
+                        sessionManager.saveToken(uid)
+                        uiState = LoginUiState(isSuccess = true)
+                    } else {
+                        uiState = LoginUiState(errorMessage = "User not found")
+                    }
                 } else {
-                    uiState = LoginUiState(errorMessage = "Incorrect phone or password")
+                    val message = when (val exception = task.exception) {
+                        is com.google.firebase.auth.FirebaseAuthInvalidUserException -> "User does not exist"
+                        is com.google.firebase.auth.FirebaseAuthInvalidCredentialsException -> "Incorrect email or password"
+                        else -> exception?.localizedMessage ?: "Login failed"
+                    }
+                    uiState = LoginUiState(errorMessage = message)
                 }
-            } catch (e: HttpException) {
-                val message = when (e.code()) {
-                    401 -> "Invalid credentials"
-                    400 -> "Incorrect data"
-                    500 -> "Server error, please try again later"
-                    else -> "Unexpected error: ${e.code()}"
-                }
-                uiState = LoginUiState(errorMessage = message)
-            } catch (e: IOException) {
-                uiState = LoginUiState(errorMessage = "No internet connection")
-            } catch (e: Exception) {
-                uiState = LoginUiState(errorMessage = e.localizedMessage ?: "Unknown error")
             }
-        }
     }
 
     fun resetState() {

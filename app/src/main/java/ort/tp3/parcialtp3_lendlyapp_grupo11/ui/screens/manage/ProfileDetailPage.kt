@@ -1,5 +1,6 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.manage
 
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -16,7 +17,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
@@ -27,7 +27,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.manage.AppTextField
 fun ProfileDetailPage(
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
-    viewModel: ManageViewModel = viewModel()
+    viewModel: ManageViewModel = hiltViewModel()
 ) {
     val uiState = viewModel.uiState
 
