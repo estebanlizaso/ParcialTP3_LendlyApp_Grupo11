@@ -25,7 +25,6 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.cashin.OverTheCounterPart
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.history.HistoryRoute
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.history.TransactionDetailRoute
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home.HomeRoute
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home.NotificationScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan.LoanApplyScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan.LoanHistoryScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan.LoanScreen
@@ -53,6 +52,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.shop.ProductDetailScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.shop.ShopScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.shop.ShopSearchScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.LoanViewModel
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home.notifications.NotificationRoute
 
 @Composable
 fun AppNavigation(
@@ -308,7 +308,7 @@ fun AppNavigation(
             }
 
             composable(AppRoute.NOTIFICATIONS) {
-                NotificationScreen(onBackClick = { navController.popBackStack() })
+                NotificationRoute(onBackClick = { navController.popBackStack() })
             }
 
             composable(AppRoute.CASH_IN_OPTIONS) {
