@@ -40,15 +40,29 @@ fun LoanApplyScreen(
     var selectedPurpose by remember { mutableStateOf("Educational") }
     
     val applyState by viewModel.applyState.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(applyState) {
-        if (applyState is LoanApplyUiState.Success) {
-            onSuccess()
-            viewModel.resetApplyState()
+        when (applyState) {
+            is LoanApplyUiState.Success -> {
+                onSuccess()
+                viewModel.resetApplyState()
+            }
+            is LoanApplyUiState.Error -> {
+                snackbarHostState.showSnackbar((applyState as LoanApplyUiState.Error).message)
+                viewModel.resetApplyState()
+            }
+            is LoanApplyUiState.ValidationSuccess -> {
+                // Si la validación local pasa, procedemos con el préstamo real
+                val amountValue = amount.replace(",", "").toDoubleOrNull() ?: 0.0
+                viewModel.applyLoan(amountValue, selectedPlan, selectedPurpose)
+            }
+            else -> {}
         }
     }
 
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             AppTopBar(
                 onLeftClick = onBack,
@@ -143,9 +157,11 @@ fun LoanApplyScreen(
                         selectedPlan,
                         selectedPurpose
                     )
+                    val amountValue = amount.replace(",", "").toDoubleOrNull() ?: 0.0
+                    viewModel.validateLoanRequest(amountValue)
                 },
                 isLoading = applyState is LoanApplyUiState.Loading,
-                errorMessage = (applyState as? LoanApplyUiState.Error)?.message
+                errorMessage = null // Ya no lo mostramos aquí, usamos snackbar
             )
         }
     }

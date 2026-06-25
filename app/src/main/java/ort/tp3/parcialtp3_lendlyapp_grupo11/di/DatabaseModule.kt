@@ -15,7 +15,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ort.tp3.parcialtp3_lendlyapp_grupo11.data.local.AppDatabase
+import ort.tp3.parcialtp3_lendlyapp_grupo11.data.local.LendlyDatabase
 import ort.tp3.parcialtp3_lendlyapp_grupo11.data.local.dao.ProductDao
+import ort.tp3.parcialtp3_lendlyapp_grupo11.data.local.dao.UserDao
+import ort.tp3.parcialtp3_lendlyapp_grupo11.data.local.entity.UserEntity
 import ort.tp3.parcialtp3_lendlyapp_grupo11.data.local.entities.BrandEntity
 import ort.tp3.parcialtp3_lendlyapp_grupo11.data.local.entities.CategoryEntity
 import ort.tp3.parcialtp3_lendlyapp_grupo11.data.local.entities.ProductEntity
@@ -26,6 +29,46 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
+
+    @Provides
+    @Singleton
+    fun provideLendlyDatabase(
+        @ApplicationContext context: Context,
+        userDaoProvider: Provider<UserDao>
+    ): LendlyDatabase {
+        return Room.databaseBuilder(
+            context,
+            LendlyDatabase::class.java,
+            "lendly_user_database"
+        ).addCallback(object : RoomDatabase.Callback() {
+            override fun onCreate(db: SupportSQLiteDatabase) {
+                super.onCreate(db)
+                CoroutineScope(Dispatchers.IO).launch {
+                    val dao = userDaoProvider.get()
+                    prepopulateUsersFromJson(context, dao)
+                }
+            }
+        })
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+    private suspend fun prepopulateUsersFromJson(context: Context, dao: UserDao) {
+        try {
+            val inputStream = context.assets.open("initial_users.json")
+            val reader = InputStreamReader(inputStream)
+            val users: List<UserEntity> = Gson().fromJson(reader, object : TypeToken<List<UserEntity>>() {}.type)
+            dao.insertUsers(users)
+            reader.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    @Provides
+    fun provideUserDao(database: LendlyDatabase): UserDao {
+        return database.userDao()
+    }
 
     @Provides
     @Singleton

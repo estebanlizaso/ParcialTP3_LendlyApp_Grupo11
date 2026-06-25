@@ -78,12 +78,12 @@ fun ProfilePage(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.White)
-                .padding(horizontal = 24.dp)
         ) {
             Spacer(modifier = Modifier.height(24.dp))
             
             HomeTopBar(
                 avatarUrl = user.avatar,
+                modifier = Modifier.padding(horizontal = 24.dp),
                 onNotificationClick = onNotificationClick
             )
 
@@ -92,6 +92,7 @@ fun ProfilePage(
                     .fillMaxWidth()
                     .weight(1f)
                     .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 24.dp)
             ) {
                 Spacer(modifier = Modifier.height(24.dp))
                 Text(

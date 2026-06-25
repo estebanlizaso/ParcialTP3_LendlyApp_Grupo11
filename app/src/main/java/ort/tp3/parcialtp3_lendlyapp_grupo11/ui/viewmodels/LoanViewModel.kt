@@ -6,13 +6,17 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.util.Locale
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import ort.tp3.parcialtp3_lendlyapp_grupo11.SessionManager
+import ort.tp3.parcialtp3_lendlyapp_grupo11.data.local.dao.UserDao
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanApplyRequest
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanApplyResponse
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoansResponse
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.LoanRepository
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.loan.LoanOptionData
-import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.HomeRepository
 import javax.inject.Inject
 
 sealed class LoanUiState {
@@ -25,6 +29,7 @@ sealed class LoanUiState {
 sealed class LoanApplyUiState {
     object Idle : LoanApplyUiState()
     object Loading : LoanApplyUiState()
+    object ValidationSuccess : LoanApplyUiState()
     data class Success(val response: LoanApplyResponse) : LoanApplyUiState()
     data class Error(val message: String) : LoanApplyUiState()
 }
@@ -32,7 +37,8 @@ sealed class LoanApplyUiState {
 @HiltViewModel
 class LoanViewModel @Inject constructor(
     private val repository: LoanRepository,
-    private val homeRepository: HomeRepository
+    private val userDao: UserDao,
+    private val sessionManager: SessionManager
 ) : ViewModel() {
 
     private val _loansState = MutableStateFlow<LoanUiState>(LoanUiState.Idle)
@@ -51,16 +57,18 @@ class LoanViewModel @Inject constructor(
     val avatarUrl: StateFlow<String> = _avatarUrl.asStateFlow()
 
     init {
-        fetchAvatar()
+        observeUser()
     }
 
-    private fun fetchAvatar() {
-        viewModelScope.launch {
-            try {
-                val response = homeRepository.getUser()
-                _avatarUrl.value = response.user.avatar
-            } catch (e: Exception) {
-                // Ignore error for avatar
+    private fun observeUser() {
+        val uid = sessionManager.getToken()
+        if (uid != null) {
+            viewModelScope.launch {
+                userDao.getUserById(uid).collectLatest { user ->
+                    user?.let {
+                        _avatarUrl.value = it.avatar
+                    }
+                }
             }
         }
     }
@@ -79,6 +87,40 @@ class LoanViewModel @Inject constructor(
                 .onFailure {
                     _loansState.value = LoanUiState.Error(it.message ?: "Unknown error")
                 }
+        }
+    }
+
+    fun validateLoanRequest(requestedAmount: Double) {
+        viewModelScope.launch {
+            val uid = sessionManager.getToken()
+            if (uid == null) {
+                _applyState.value = LoanApplyUiState.Error("Session not found")
+                return@launch
+            }
+
+            val user = userDao.getUserById(uid).firstOrNull()
+            if (user == null) {
+                _applyState.value = LoanApplyUiState.Error("User data not found")
+                return@launch
+            }
+
+            if (user.creditScore < 500) {
+                _applyState.value = LoanApplyUiState.Error("Credit score too low for loans")
+                return@launch
+            }
+
+            val maxAllowed = if (user.creditScore <= 700) {
+                user.accountBalance * 1.5
+            } else {
+                user.accountBalance * 3.0
+            }
+
+            if (requestedAmount > maxAllowed) {
+                _applyState.value = LoanApplyUiState.Error("Amount exceeds your maximum allowed limit of $${String.format(Locale.US, "%.2f", maxAllowed)}")
+                return@launch
+            }
+
+            _applyState.value = LoanApplyUiState.ValidationSuccess
         }
     }
 

@@ -111,7 +111,7 @@ fun CreditScorePage(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // sacamos puntaje de la API
+                    // sacamos puntaje de la Fuente de Verdad (Room + JSON sync)
                     Text(
                         text = user.creditScore.toString(),
                         fontFamily = montserratBold,

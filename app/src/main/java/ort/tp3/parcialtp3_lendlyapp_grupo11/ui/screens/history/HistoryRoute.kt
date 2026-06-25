@@ -1,16 +1,16 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.history
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun HistoryRoute(
     onNotificationClick: () -> Unit,
     onTransactionClick: (String) -> Unit,
-    uiState: HistoryUiState = remember { sampleHistoryUiState() }
+    viewModel: HistoryViewModel = hiltViewModel()
 ) {
     HistoryScreen(
-        uiState = uiState,
+        uiState = viewModel.uiState,
         onNotificationClick = onNotificationClick,
         onTransactionClick = onTransactionClick
     )

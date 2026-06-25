@@ -41,11 +41,11 @@ fun HomeScreen(
             .fillMaxSize()
             .background(Color.White)
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 24.dp)
         ) {
             Spacer(modifier = Modifier.height(24.dp))
         HomeTopBar(
             avatarUrl = uiState.avatarUrl,
+            modifier = Modifier.padding(horizontal = 24.dp),
             onNotificationClick = onNotificationClick
         )
 
@@ -55,13 +55,15 @@ fun HomeScreen(
             color = BlackFont,
             fontSize = 24.sp,
             fontWeight = FontWeight.SemiBold,
-            fontFamily = interFonts
+            fontFamily = interFonts,
+            modifier = Modifier.padding(horizontal = 24.dp)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
         AccountBalanceCard(
             balance = uiState.balance,
-            onCashInClick = onCashInClick
+            onCashInClick = onCashInClick,
+            modifier = Modifier.padding(horizontal = 24.dp)
         )
 
         if (uiState.isLoading) {
@@ -70,7 +72,8 @@ fun HomeScreen(
                 text = "Loading home data...",
                 color = BlackFont,
                 fontSize = 13.sp,
-                fontFamily = interFonts
+                fontFamily = interFonts,
+                modifier = Modifier.padding(horizontal = 24.dp)
             )
         }
 
@@ -80,15 +83,22 @@ fun HomeScreen(
                 text = uiState.error,
                 color = Color.Red,
                 fontSize = 13.sp,
-                fontFamily = interFonts
+                fontFamily = interFonts,
+                modifier = Modifier.padding(horizontal = 24.dp)
             )
         }
 
         Spacer(modifier = Modifier.height(24.dp))
-        SectionHeader(title = "Unpaid Loans")
+        SectionHeader(
+            title = "Unpaid Loans",
+            modifier = Modifier.padding(horizontal = 24.dp)
+        )
 
         Spacer(modifier = Modifier.height(12.dp))
-        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Column(
+            modifier = Modifier.padding(horizontal = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
             uiState.loans.forEach { loan ->
                 LoanListItem(
                     brandName = loan.lender,
@@ -100,13 +110,17 @@ fun HomeScreen(
         }
 
         Spacer(modifier = Modifier.height(24.dp))
-        SectionHeader(title = "Recommended For You")
+        SectionHeader(
+            title = "Recommended For You",
+            modifier = Modifier.padding(horizontal = 24.dp)
+        )
 
         Spacer(modifier = Modifier.height(12.dp))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .horizontalScroll(rememberScrollState()),
+                .horizontalScroll(rememberScrollState())
+                .padding(horizontal = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             uiState.products.forEach { product ->

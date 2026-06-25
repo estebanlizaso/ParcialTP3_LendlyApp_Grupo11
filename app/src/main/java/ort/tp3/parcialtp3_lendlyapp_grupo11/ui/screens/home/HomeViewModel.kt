@@ -1,14 +1,22 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import java.io.InputStreamReader
 import java.util.Locale
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ort.tp3.parcialtp3_lendlyapp_grupo11.SessionManager
+import ort.tp3.parcialtp3_lendlyapp_grupo11.data.local.dao.UserDao
+import ort.tp3.parcialtp3_lendlyapp_grupo11.data.local.entity.UserEntity
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.HomeRepository
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.ShopRepository
 import javax.inject.Inject
@@ -16,7 +24,10 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val repository: HomeRepository,
-    private val shopRepository: ShopRepository
+    private val shopRepository: ShopRepository,
+    private val userDao: UserDao,
+    private val sessionManager: SessionManager,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     var uiState by mutableStateOf(HomeUiState())
@@ -24,7 +35,40 @@ class HomeViewModel @Inject constructor(
 
     init {
         observeRecommendedProducts()
+        observeUser()
         loadHomeData()
+    }
+
+    private fun observeUser() {
+        val uid = sessionManager.getToken()
+        if (uid != null) {
+            viewModelScope.launch {
+                // Sync data from JSON to Room once on start
+                try {
+                    val inputStream = context.assets.open("initial_users.json")
+                    val reader = InputStreamReader(inputStream)
+                    val users: List<UserEntity> = Gson().fromJson(reader, object : TypeToken<List<UserEntity>>() {}.type)
+                    reader.close()
+                    
+                    val currentUserData = users.find { it.uid == uid }
+                    if (currentUserData != null) {
+                        userDao.updateCreditScore(uid, currentUserData.creditScore)
+                        userDao.updateAvatar(uid, currentUserData.avatar)
+                    }
+                } catch (e: Exception) {
+                    // Ignore sync errors
+                }
+
+                userDao.getUserById(uid).collectLatest { user ->
+                    user?.let {
+                        uiState = uiState.copy(
+                            balance = formatMoney(it.accountBalance),
+                            avatarUrl = it.avatar
+                        )
+                    }
+                }
+            }
+        }
     }
 
     private fun observeRecommendedProducts() {
@@ -56,8 +100,6 @@ class HomeViewModel @Inject constructor(
 
                 uiState = uiState.copy(
                     isLoading = false,
-                    avatarUrl = userResponse.user.avatar,
-                    balance = formatMoney(userResponse.user.availableBalance),
                     loans = loansResponse.loans
                         .filter { it.status == "ACTIVE" }
                         .map { loan ->
