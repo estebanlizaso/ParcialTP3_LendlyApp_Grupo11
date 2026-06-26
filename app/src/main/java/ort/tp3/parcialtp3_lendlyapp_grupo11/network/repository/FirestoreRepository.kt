@@ -41,9 +41,14 @@ class FirestoreRepository {
      */
     suspend fun createInitialScoring(uid: String, initialBalance: Double) {
         try {
+            // Generar credit score aleatorio entre 100 y 850, múltiplo de 10
+            val randomScore = (10..85).random() * 10
+            // Calcular límite: 15000 * (score / 100)
+            val calculatedLimit = 15000.0 * (randomScore.toDouble() / 100.0)
+
             val initialScoring = UserScoring(
-                creditScore = 500,
-                loanLimit = 15000.0,
+                creditScore = randomScore,
+                loanLimit = calculatedLimit,
                 availableBalance = initialBalance,
                 eligible = true
             )
@@ -130,6 +135,17 @@ class FirestoreRepository {
                 .document(loan.id)
                 .set(loan)
                 .await()
+        } catch (e: Exception) {
+            // Manejo de error
+        }
+    }
+
+    /**
+     * Actualiza el scoring de un usuario en Firestore.
+     */
+    suspend fun updateScoring(uid: String, scoring: UserScoring) {
+        try {
+            db.collection("users").document(uid).set(scoring).await()
         } catch (e: Exception) {
             // Manejo de error
         }

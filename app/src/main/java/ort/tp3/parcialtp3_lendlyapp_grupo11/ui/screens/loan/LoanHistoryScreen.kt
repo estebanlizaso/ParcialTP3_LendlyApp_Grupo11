@@ -1,5 +1,6 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -21,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -35,6 +37,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.icons.CalendarIcon
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.*
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.utils.ImageHelper
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.LoanUiState
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.LoanViewModel
 
@@ -172,20 +175,30 @@ fun ActiveLoanItem(loan: LoanDto, onClick: () -> Unit) {
             contentAlignment = Alignment.Center
         ) {
             var isError by remember { mutableStateOf(false) }
-            
-            AsyncImage(
-                model = loan.lenderLogo,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(24.dp)
-                    .then(
-                        if (isError) Modifier.border(0.5.dp, Color.Red, CircleShape) else Modifier
-                    ),
-                contentScale = ContentScale.Fit,
-                onState = { state ->
-                    isError = state is coil.compose.AsyncImagePainter.State.Error
-                }
-            )
+            val localLogo = remember(loan.lender) { ImageHelper.getLocalBrandLogo(loan.lender) }
+
+            if (isError && localLogo != null) {
+                Image(
+                    painter = painterResource(id = localLogo),
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp),
+                    contentScale = ContentScale.Fit
+                )
+            } else {
+                AsyncImage(
+                    model = loan.lenderLogo,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .then(
+                            if (isError && localLogo == null) Modifier.border(0.5.dp, Color.Red, CircleShape) else Modifier
+                        ),
+                    contentScale = ContentScale.Fit,
+                    onState = { state ->
+                        isError = state is coil.compose.AsyncImagePainter.State.Error
+                    }
+                )
+            }
         }
         
         Spacer(Modifier.width(16.dp))

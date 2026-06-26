@@ -160,6 +160,15 @@ class LoanViewModel @Inject constructor(
                 return@launch
             }
 
+            // Validación de cantidad de préstamos activos (máximo 5)
+            if (uid != null) {
+                val activeLoans = firestoreRepository.getUserLoans(uid).count { it.status.equals("ACTIVE", ignoreCase = true) }
+                if (activeLoans >= 5) {
+                    _applyState.value = LoanApplyUiState.Error("You have reached the limit of 5 active loans. Please pay one to apply for a new one.")
+                    return@launch
+                }
+            }
+
             // Validación del monto máximo permitido por Firestore
             if (requestedAmount > 0 && requestedAmount > scoring.loanLimit) {
                 _applyState.value = LoanApplyUiState.Error("Amount exceeds your maximum allowed limit of ${String.format(Locale.US, "₱%,.2f", scoring.loanLimit)}")
@@ -206,7 +215,16 @@ class LoanViewModel @Inject constructor(
                                 val newBalance = currentBalance + amount
                                 
                                 // Actualizamos ambas fuentes de verdad
-                                firestoreRepository.updateBalance(uid, newBalance)
+                                val scoring = _userScoring.value
+                                if (scoring != null) {
+                                    val updatedScoring = scoring.copy(
+                                        availableBalance = newBalance,
+                                        loanLimit = 15000.0 * (scoring.creditScore.toDouble() / 100.0)
+                                    )
+                                    firestoreRepository.updateScoring(uid, updatedScoring)
+                                } else {
+                                    firestoreRepository.updateBalance(uid, newBalance)
+                                }
                                 userDao.updateAccountBalance(uid, newBalance)
 
                                 // Guardamos el nuevo préstamo en la sub-colección de Firestore
@@ -297,7 +315,15 @@ class LoanViewModel @Inject constructor(
             
             // 1. Actualizar balance
             val newBalance = scoring.availableBalance - loan.installmentAmount
-            firestoreRepository.updateBalance(uid, newBalance)
+            
+            // Recalcular scoring y límite (en caso de que el score cambie en el futuro, 
+            // por ahora mantenemos la lógica de límite = 15000 * (score/100))
+            val updatedScoring = scoring.copy(
+                availableBalance = newBalance,
+                loanLimit = 15000.0 * (scoring.creditScore.toDouble() / 100.0)
+            )
+            
+            firestoreRepository.updateScoring(uid, updatedScoring)
             userDao.updateAccountBalance(uid, newBalance)
             
             // 2. Actualizar préstamo

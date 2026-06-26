@@ -193,15 +193,18 @@ class RegisterViewModel @Inject constructor(
                                 
                                 // Crear scoring y balance inicial en Firestore
                                 firestoreRepository.createInitialScoring(uid, initialBalance)
+                                
+                                // Obtener el scoring recién creado de Firestore para sincronizar Room
+                                val scoring = firestoreRepository.getUserScoring(uid)
 
                                 userDao.insertUser(
                                     UserEntity(
                                         uid = uid,
                                         email = email,
                                         fullName = "$firstName $lastName",
-                                    avatar = initialData["avatar"] as? String ?: "https://i.pravatar.cc/150?img=3",
-                                    creditScore = (initialData["creditScore"] as? Double)?.toInt() ?: 720,
-                                        accountBalance = initialBalance,
+                                        avatar = initialData["avatar"] as? String ?: "https://i.pravatar.cc/150?img=3",
+                                        creditScore = scoring?.creditScore ?: 500,
+                                        accountBalance = scoring?.availableBalance ?: initialBalance,
                                         birthDate = "$year-$month-$day",
                                         address = "$address, $city",
                                         phone = "+$countryCode-$phone"
