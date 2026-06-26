@@ -17,7 +17,16 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanApplyResponse
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoansResponse
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.LoanRepository
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.loan.LoanOptionData
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.TimeZone
 import javax.inject.Inject
+import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanBusinessRules
+import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto
+import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoansSummaryDto
+import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.UserScoring
+import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.FirestoreRepository
 
 sealed class LoanUiState {
     object Idle : LoanUiState()
@@ -39,7 +48,7 @@ class LoanViewModel @Inject constructor(
     private val repository: LoanRepository,
     private val userDao: UserDao,
     private val sessionManager: SessionManager,
-    private val firestoreRepository: ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.FirestoreRepository
+    private val firestoreRepository: FirestoreRepository
 ) : ViewModel() {
 
     private val _loansState = MutableStateFlow<LoanUiState>(LoanUiState.Idle)
@@ -51,26 +60,26 @@ class LoanViewModel @Inject constructor(
     private val _selectedLoanOption = MutableStateFlow<LoanOptionData?>(null)
     val selectedLoanOption: StateFlow<LoanOptionData?> = _selectedLoanOption.asStateFlow()
 
-    private val _appliedAmount = MutableStateFlow<String>("")
+    private val _appliedAmount = MutableStateFlow("")
     val appliedAmount: StateFlow<String> = _appliedAmount.asStateFlow()
 
-    private val _selectedLenderName = MutableStateFlow<String>("")
+    private val _selectedLenderName = MutableStateFlow("")
     val selectedLenderName: StateFlow<String> = _selectedLenderName.asStateFlow()
 
-    private val _appliedDateTime = MutableStateFlow<String>("")
+    private val _appliedDateTime = MutableStateFlow("")
     val appliedDateTime: StateFlow<String> = _appliedDateTime.asStateFlow()
 
-    private val _appliedTransactionNumber = MutableStateFlow<String>("")
+    private val _appliedTransactionNumber = MutableStateFlow("")
     val appliedTransactionNumber: StateFlow<String> = _appliedTransactionNumber.asStateFlow()
 
-    private val _avatarUrl = MutableStateFlow<String>("")
+    private val _avatarUrl = MutableStateFlow("")
     val avatarUrl: StateFlow<String> = _avatarUrl.asStateFlow()
 
-    private val _userScoring = MutableStateFlow<ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.UserScoring?>(null)
-    val userScoring: StateFlow<ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.UserScoring?> = _userScoring.asStateFlow()
+    private val _userScoring = MutableStateFlow<UserScoring?>(null)
+    val userScoring: StateFlow<UserScoring?> = _userScoring.asStateFlow()
 
-    private val _selectedLoanForPayment = MutableStateFlow<ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto?>(null)
-    val selectedLoanForPayment: StateFlow<ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto?> = _selectedLoanForPayment.asStateFlow()
+    private val _selectedLoanForPayment = MutableStateFlow<LoanDto?>(null)
+    val selectedLoanForPayment: StateFlow<LoanDto?> = _selectedLoanForPayment.asStateFlow()
 
     private val _paymentState = MutableStateFlow<LoanApplyUiState>(LoanApplyUiState.Idle)
     val paymentState: StateFlow<LoanApplyUiState> = _paymentState.asStateFlow()
@@ -128,7 +137,7 @@ class LoanViewModel @Inject constructor(
                     val response = LoansResponse(
                         success = true,
                         loans = loans,
-                        summary = ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoansSummaryDto(
+                        summary = LoansSummaryDto(
                             totalActive = loans.count { it.status.equals("ACTIVE", ignoreCase = true) },
                             totalPaid = loans.count { it.status.equals("PAID", ignoreCase = true) },
                             totalAmountDue = loans.sumOf { it.amountDue }
@@ -200,14 +209,14 @@ class LoanViewModel @Inject constructor(
 
     fun applyLoan(amount: Double, loanOption: LoanOptionData, purpose: String) {
         viewModelScope.launch {
-            val lenderConfig = ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanBusinessRules.lendersByPurpose[purpose]
+            val lenderConfig = LoanBusinessRules.lendersByPurpose[purpose]
             val lenderName = lenderConfig?.name ?: "Rayland Partners"
             
             // Configuramos la zona horaria de Buenos Aires
-            val now = java.util.Date()
-            val argTimeZone = java.util.TimeZone.getTimeZone("America/Argentina/Buenos_Aires")
+            val now = Date()
+            val argTimeZone = TimeZone.getTimeZone("America/Argentina/Buenos_Aires")
             
-            val dateTimeFormat = java.text.SimpleDateFormat("MMM dd, yyyy h:mm a", java.util.Locale.US)
+            val dateTimeFormat = SimpleDateFormat("MMM dd, yyyy h:mm a", Locale.US)
             dateTimeFormat.timeZone = argTimeZone
             val formattedDate = dateTimeFormat.format(now)
             
@@ -215,7 +224,7 @@ class LoanViewModel @Inject constructor(
             val transactionNumber = (1..12).map { (0..9).random() }.joinToString("", prefix = "#")
             
             // Formateamos el monto para que se vea con comas y 2 decimales en la pantalla de éxito
-            _appliedAmount.value = String.format(java.util.Locale.US, "%,.2f", amount)
+            _appliedAmount.value = String.format(Locale.US, "%,.2f", amount)
             _selectedLoanOption.value = loanOption
             _selectedLenderName.value = lenderName
             _appliedDateTime.value = formattedDate
@@ -252,19 +261,19 @@ class LoanViewModel @Inject constructor(
                                     val interestRate = loanOption.config?.interestRate ?: 2.99
                                     val installmentAmount = (amount * (1 + interestRate / 100)) / totalMonths
                                     
-                                    val startDateFormat = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US)
+                                    val startDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
                                     startDateFormat.timeZone = argTimeZone
                                     val startDateStr = startDateFormat.format(now)
                                     
                                     val nextPaymentLabel = calculateNextPaymentLabel(startDateStr, 0)
                                     
                                     // Calcular nextPaymentDate (1 mes después de startDate)
-                                    val calendar = java.util.Calendar.getInstance(argTimeZone)
+                                    val calendar = Calendar.getInstance(argTimeZone)
                                     calendar.time = now
-                                    calendar.add(java.util.Calendar.MONTH, 1)
+                                    calendar.add(Calendar.MONTH, 1)
                                     val nextPaymentDateStr = startDateFormat.format(calendar.time)
 
-                                    val newLoan = ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto(
+                                    val newLoan = LoanDto(
                                         id = response.loan?.id ?: "", 
                                         lender = lenderName, // Usamos el nombre calculado al inicio
                                         lenderLogo = lenderConfig?.logo ?: "https://favicon.im/apple.com?larger=true",
@@ -305,13 +314,13 @@ class LoanViewModel @Inject constructor(
         _paymentState.value = LoanApplyUiState.Idle
     }
 
-    fun selectLoanForPayment(loan: ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto) {
+    fun selectLoanForPayment(loan: LoanDto) {
         _selectedLoanForPayment.value = loan
         
         // Preparar detalles de la transacción
-        val now = java.util.Date()
-        val argTimeZone = java.util.TimeZone.getTimeZone("America/Argentina/Buenos_Aires")
-        val dateTimeFormat = java.text.SimpleDateFormat("MMM dd, yyyy h:mm a", java.util.Locale.US)
+        val now = Date()
+        val argTimeZone = TimeZone.getTimeZone("America/Argentina/Buenos_Aires")
+        val dateTimeFormat = SimpleDateFormat("MMM dd, yyyy h:mm a", Locale.US)
         dateTimeFormat.timeZone = argTimeZone
         
         _appliedDateTime.value = dateTimeFormat.format(now)
@@ -358,11 +367,11 @@ class LoanViewModel @Inject constructor(
                 
                 val nextPaymentDate = if (newStatus == "PAID") null else {
                     try {
-                        val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US)
+                        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
                         val date = sdf.parse(loan.startDate)
-                        val calendar = java.util.Calendar.getInstance()
+                        val calendar = Calendar.getInstance()
                         calendar.time = date!!
-                        calendar.add(java.util.Calendar.MONTH, newPaidInstallments + 1)
+                        calendar.add(Calendar.MONTH, newPaidInstallments + 1)
                         sdf.format(calendar.time)
                     } catch (e: Exception) {
                         null
@@ -383,7 +392,7 @@ class LoanViewModel @Inject constructor(
                 loadUserScoring()
                 fetchLoans()
                 
-                _paymentState.value = LoanApplyUiState.Success(LoanApplyResponse(true, "Payment successful", null))
+                _paymentState.value = LoanApplyUiState.Success(LoanApplyResponse(success = true, message = "Payment successful", loan = null))
             } catch (e: Exception) {
                 _paymentState.value = LoanApplyUiState.Error("Payment failed due to a database error: ${e.message}")
             }
@@ -392,13 +401,13 @@ class LoanViewModel @Inject constructor(
 
     private fun calculateNextPaymentLabel(startDate: String, paidInstallments: Int): String {
         return try {
-            val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US)
+            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
             val date = sdf.parse(startDate) ?: return "Pending fee"
-            val calendar = java.util.Calendar.getInstance()
+            val calendar = Calendar.getInstance()
             calendar.time = date
-            calendar.add(java.util.Calendar.MONTH, paidInstallments + 1)
+            calendar.add(Calendar.MONTH, paidInstallments + 1)
 
-            val monthFormat = java.text.SimpleDateFormat("MMMM", java.util.Locale.US)
+            val monthFormat = SimpleDateFormat("MMMM", Locale.US)
             val monthName = monthFormat.format(calendar.time)
             "Fee of ${monthName.replaceFirstChar { it.uppercase() }}"
         } catch (e: Exception) {

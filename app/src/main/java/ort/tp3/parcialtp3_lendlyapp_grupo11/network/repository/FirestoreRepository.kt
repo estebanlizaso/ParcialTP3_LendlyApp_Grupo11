@@ -2,6 +2,7 @@ package ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
+import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.UserScoring
 
 /**
@@ -76,7 +77,7 @@ class FirestoreRepository {
     /**
      * Guarda un nuevo préstamo en la sub-colección 'loans' del usuario.
      */
-    suspend fun saveLoan(uid: String, loan: ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto) {
+    suspend fun saveLoan(uid: String, loan: LoanDto) {
         try {
             db.collection("users").document(uid)
                 .collection("loans")
@@ -90,7 +91,7 @@ class FirestoreRepository {
     /**
      * Obtiene todos los préstamos del usuario desde Firestore.
      */
-    suspend fun getUserLoans(uid: String): List<ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto> {
+    suspend fun getUserLoans(uid: String): List<LoanDto> {
         return try {
             val snapshot = db.collection("users").document(uid)
                 .collection("loans")
@@ -98,7 +99,7 @@ class FirestoreRepository {
                 .await()
             
             snapshot.documents.mapNotNull { doc ->
-                ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto(
+                LoanDto(
                     id = doc.id,
                     lender = doc.getString("lender") ?: "",
                     lenderLogo = doc.getString("lenderLogo") ?: "",
@@ -126,7 +127,7 @@ class FirestoreRepository {
     /**
      * Actualiza un préstamo existente en Firestore.
      */
-    suspend fun updateLoan(uid: String, loan: ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto) {
+    suspend fun updateLoan(uid: String, loan: LoanDto) {
         try {
             if (loan.id.isEmpty()) return
             
