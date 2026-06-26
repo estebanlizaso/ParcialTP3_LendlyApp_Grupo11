@@ -22,14 +22,15 @@ fun LoanSummary(
     amount: String,
     onApplyClick: () -> Unit,
     modifier: Modifier = Modifier,
-    processingFeePercentage: Double = 7.5,
+    lenderName: String = "Rayland Partners",
+    processingFeePercentage: Double = ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanBusinessRules.PROCESSING_FEE_PERCENTAGE,
     isLoading: Boolean = false,
     errorMessage: String? = null
 ) {
 
-    val amountValue = amount.toDoubleOrNull() ?: 0.0
+    val amountValue = amount.replace(",", "").toDoubleOrNull() ?: 0.0
     val processingFeeValue = amountValue * (processingFeePercentage / 100.0)
-    val totalToReceive = amountValue - processingFeeValue
+    val totalToReceive = amountValue
 
     Column(
         modifier = modifier
@@ -78,7 +79,7 @@ fun LoanSummary(
                 value = String.format(Locale.US, "₱ %.2f", totalToReceive),
                 isBold = true
             )
-            SummaryRow(stringResource(R.string.loan_apply_lender), "null")
+            SummaryRow(stringResource(R.string.loan_apply_lender), lenderName)
             
             Text(
                 text = stringResource(R.string.loan_what_is_this),

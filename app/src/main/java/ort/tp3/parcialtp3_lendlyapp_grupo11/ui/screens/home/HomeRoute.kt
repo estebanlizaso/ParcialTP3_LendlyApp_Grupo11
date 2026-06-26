@@ -7,11 +7,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 fun HomeRoute(
     onCashInClick: () -> Unit,
     onNotificationClick: () -> Unit,
+    onSeeAllLoansClick: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     HomeScreen(
         uiState = viewModel.uiState,
         onCashInClick = onCashInClick,
-        onNotificationClick = onNotificationClick
+        onNotificationClick = onNotificationClick,
+        onSeeAllLoansClick = onSeeAllLoansClick
     )
 }

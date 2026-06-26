@@ -54,6 +54,15 @@ class LoanViewModel @Inject constructor(
     private val _appliedAmount = MutableStateFlow<String>("")
     val appliedAmount: StateFlow<String> = _appliedAmount.asStateFlow()
 
+    private val _selectedLenderName = MutableStateFlow<String>("")
+    val selectedLenderName: StateFlow<String> = _selectedLenderName.asStateFlow()
+
+    private val _appliedDateTime = MutableStateFlow<String>("")
+    val appliedDateTime: StateFlow<String> = _appliedDateTime.asStateFlow()
+
+    private val _appliedTransactionNumber = MutableStateFlow<String>("")
+    val appliedTransactionNumber: StateFlow<String> = _appliedTransactionNumber.asStateFlow()
+
     private val _avatarUrl = MutableStateFlow<String>("")
     val avatarUrl: StateFlow<String> = _avatarUrl.asStateFlow()
 
@@ -157,12 +166,31 @@ class LoanViewModel @Inject constructor(
 
     fun applyLoan(amount: Double, loanOption: LoanOptionData, purpose: String) {
         viewModelScope.launch {
-            _appliedAmount.value = amount.toString()
+            val lenderConfig = ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanBusinessRules.lendersByPurpose[purpose]
+            val lenderName = lenderConfig?.name ?: "Rayland Partners"
+            
+            // Configuramos la zona horaria de Buenos Aires
+            val now = java.util.Date()
+            val argTimeZone = java.util.TimeZone.getTimeZone("America/Argentina/Buenos_Aires")
+            
+            val dateTimeFormat = java.text.SimpleDateFormat("MMM dd, yyyy h:mm a", java.util.Locale.US)
+            dateTimeFormat.timeZone = argTimeZone
+            val formattedDate = dateTimeFormat.format(now)
+            
+            // Generamos un número de transacción aleatorio de 12 dígitos
+            val transactionNumber = (1..12).map { (0..9).random() }.joinToString("", prefix = "#")
+            
+            // Formateamos el monto para que se vea con comas y 2 decimales en la pantalla de éxito
+            _appliedAmount.value = String.format(java.util.Locale.US, "%,.2f", amount)
             _selectedLoanOption.value = loanOption
+            _selectedLenderName.value = lenderName
+            _appliedDateTime.value = formattedDate
+            _appliedTransactionNumber.value = transactionNumber
+            
             _applyState.value = LoanApplyUiState.Loading
             repository.applyLoan(LoanApplyRequest(amount, loanOption.title, purpose))
-                .onSuccess {
-                    if (it.success) {
+                .onSuccess { response ->
+                    if (response.success) {
                         // Al ser exitoso el préstamo en la API, actualizamos el saldo en Firestore y Room
                         viewModelScope.launch {
                             val uid = sessionManager.getToken()
@@ -180,10 +208,13 @@ class LoanViewModel @Inject constructor(
                                 val interestRate = loanOption.config?.interestRate ?: 2.99
                                 val installmentAmount = (amount * (1 + interestRate / 100)) / totalMonths
                                 
+                                val startDateFormat = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US)
+                                startDateFormat.timeZone = argTimeZone
+                                
                                 val newLoan = ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto(
-                                    id = "", // Firestore genera el ID
-                                    lender = "Apple Inc.",
-                                    lenderLogo = "https://logo.clearbit.com/apple.com",
+                                    id = response.loan?.id ?: "", 
+                                    lender = lenderName, // Usamos el nombre calculado al inicio
+                                    lenderLogo = lenderConfig?.logo ?: "https://favicon.im/apple.com?larger=true",
                                     amount = amount,
                                     amountDue = amount * (1 + interestRate / 100),
                                     installmentAmount = installmentAmount,
@@ -191,19 +222,20 @@ class LoanViewModel @Inject constructor(
                                     interestRate = interestRate,
                                     purpose = purpose,
                                     status = "ACTIVE",
-                                    nextPaymentDate = "2024-08-15",
-                                    nextPaymentLabel = "Next payment in August",
-                                    startDate = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US).format(java.util.Date()),
+                                    nextPaymentDate = null,
+                                    nextPaymentLabel = "Next payment pending",
+                                    startDate = startDateFormat.format(now),
                                     endDate = "2025-01-15",
                                     paidInstallments = 0,
-                                    totalInstallments = totalMonths
+                                    totalInstallments = totalMonths,
+                                    transactionNumber = transactionNumber
                                 )
                                 firestoreRepository.saveLoan(uid, newLoan)
                             }
-                            _applyState.value = LoanApplyUiState.Success(it)
+                            _applyState.value = LoanApplyUiState.Success(response)
                         }
                     } else {
-                        _applyState.value = LoanApplyUiState.Error(it.message)
+                        _applyState.value = LoanApplyUiState.Error(response.message)
                     }
                 }
                 .onFailure {

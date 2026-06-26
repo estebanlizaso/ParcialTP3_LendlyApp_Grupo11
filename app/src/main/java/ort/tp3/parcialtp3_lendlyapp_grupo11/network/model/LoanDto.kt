@@ -22,7 +22,8 @@ data class LoanDto(
     val startDate: String,
     val endDate: String,
     val paidInstallments: Int,
-    val totalInstallments: Int
+    val totalInstallments: Int,
+    val transactionNumber: String
 )
 
 data class LoansSummaryDto(

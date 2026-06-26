@@ -15,6 +15,9 @@ fun LoanSuccessScreen(
 ) {
     val selectedOption by viewModel.selectedLoanOption.collectAsState()
     val appliedAmount by viewModel.appliedAmount.collectAsState()
+    val selectedLenderName by viewModel.selectedLenderName.collectAsState()
+    val appliedDateTime by viewModel.appliedDateTime.collectAsState()
+    val appliedTransactionNumber by viewModel.appliedTransactionNumber.collectAsState()
 
     TransactionPage(
         onClose = onDone,
@@ -23,7 +26,7 @@ fun LoanSuccessScreen(
             AppTransaction(
                 amount = appliedAmount,
                 statusText = stringResource(id = R.string.loan_success_added_to_account),
-                originText = stringResource(id = R.string.loan_success_origin),
+                originText = "From $selectedLenderName",
                 typeLabel = stringResource(id = R.string.loan_success_type_label)
             )
         },
@@ -45,11 +48,11 @@ fun LoanSuccessScreen(
                     ),
                     TransactionDetail(
                         stringResource(id = R.string.loan_success_date_time),
-                        stringResource(id = R.string.loan_success_date_time_value)
+                        appliedDateTime
                     ),
                     TransactionDetail(
                         stringResource(id = R.string.loan_success_transaction_number),
-                        stringResource(id = R.string.loan_success_transaction_number_value),
+                        appliedTransactionNumber.ifEmpty { stringResource(id = R.string.loan_success_transaction_number_value) },
                         isBold = true
                     )
                 ),

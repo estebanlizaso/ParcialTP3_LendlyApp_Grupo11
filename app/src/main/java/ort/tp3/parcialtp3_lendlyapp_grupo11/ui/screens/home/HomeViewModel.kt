@@ -103,8 +103,16 @@ class HomeViewModel @Inject constructor(
     private fun loadHomeData() {
         viewModelScope.launch {
             try {
-                val userResponse = repository.getUser()
-                val loansResponse = repository.getLoans()
+                val uid = sessionManager.getToken()
+                if (uid == null) {
+                    uiState = uiState.copy(isLoading = false, error = "Session not found")
+                    return@launch
+                }
+
+                // Cargamos préstamos desde Firestore
+                val loans = firestoreRepository.getUserLoans(uid)
+                
+                // Cargamos logos de marcas para complementar
                 val productsResponse = repository.getProducts()
                 val brandLogos = productsResponse.brands.associate { brand ->
                     brand.name.lowercase() to brand.logo
@@ -112,8 +120,10 @@ class HomeViewModel @Inject constructor(
 
                 uiState = uiState.copy(
                     isLoading = false,
-                    loans = loansResponse.loans
+                    loans = loans
                         .filter { it.status == "ACTIVE" }
+                        // Ordenamos por fecha de inicio descendente (asumiendo formato yyyy-MM-dd)
+                        .sortedByDescending { it.startDate }
                         .map { loan ->
                             val brandLogo = brandLogos.entries
                                 .firstOrNull { (brandName, _) ->

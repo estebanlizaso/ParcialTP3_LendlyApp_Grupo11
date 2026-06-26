@@ -109,7 +109,8 @@ class FirestoreRepository {
                     startDate = doc.getString("startDate") ?: "",
                     endDate = doc.getString("endDate") ?: "",
                     paidInstallments = doc.getLong("paidInstallments")?.toInt() ?: 0,
-                    totalInstallments = doc.getLong("totalInstallments")?.toInt() ?: 0
+                    totalInstallments = doc.getLong("totalInstallments")?.toInt() ?: 0,
+                    transactionNumber = doc.getString("transactionNumber") ?: ""
                 )
             }
         } catch (e: Exception) {

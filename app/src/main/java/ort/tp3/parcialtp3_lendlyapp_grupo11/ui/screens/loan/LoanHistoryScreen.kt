@@ -1,7 +1,7 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,17 +13,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Locale
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto
@@ -164,12 +167,20 @@ fun ActiveLoanItem(loan: LoanDto) {
                 .background(Color(0xFFF9F9F9), CircleShape),
             contentAlignment = Alignment.Center
         ) {
+            var isError by remember { mutableStateOf(false) }
+            
             AsyncImage(
                 model = loan.lenderLogo,
                 contentDescription = null,
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier
+                    .size(24.dp)
+                    .then(
+                        if (isError) Modifier.border(0.5.dp, Color.Red, CircleShape) else Modifier
+                    ),
                 contentScale = ContentScale.Fit,
-                error = painterResource(id = R.drawable.brand_apple) // Fallback
+                onState = { state ->
+                    isError = state is coil.compose.AsyncImagePainter.State.Error
+                }
             )
         }
         
@@ -196,8 +207,11 @@ fun ActiveLoanItem(loan: LoanDto) {
         }
         
         Column(horizontalAlignment = Alignment.End) {
+            val nextPaymentLabel = remember(loan.startDate, loan.paidInstallments) {
+                calculateNextPaymentLabel(loan.startDate, loan.paidInstallments)
+            }
             Text(
-                text = "Fees of february",
+                text = nextPaymentLabel,
                 style = TextStyle(
                     fontFamily = interFonts,
                     fontSize = 12.sp,
@@ -281,5 +295,23 @@ fun RecentLoanItem(loan: LoanDto) {
                 )
             )
         }
+    }
+}
+
+private fun calculateNextPaymentLabel(startDate: String, paidInstallments: Int): String {
+    return try {
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        val date = sdf.parse(startDate) ?: return "Cuota pendiente"
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        // La cuota 1 se paga al mes siguiente de la fecha de inicio
+        calendar.add(Calendar.MONTH, paidInstallments + 1)
+
+        val localeSpanish = Locale("es", "AR")
+        val monthFormat = SimpleDateFormat("MMMM", localeSpanish)
+        val monthName = monthFormat.format(calendar.time)
+        "Cuota de ${monthName.replaceFirstChar { it.uppercase() }}"
+    } catch (e: Exception) {
+        "Cuota pendiente"
     }
 }
