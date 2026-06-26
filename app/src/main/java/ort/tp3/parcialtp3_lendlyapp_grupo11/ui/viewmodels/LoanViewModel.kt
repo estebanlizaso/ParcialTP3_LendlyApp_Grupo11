@@ -69,6 +69,12 @@ class LoanViewModel @Inject constructor(
     private val _userScoring = MutableStateFlow<ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.UserScoring?>(null)
     val userScoring: StateFlow<ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.UserScoring?> = _userScoring.asStateFlow()
 
+    private val _selectedLoanForPayment = MutableStateFlow<ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto?>(null)
+    val selectedLoanForPayment: StateFlow<ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto?> = _selectedLoanForPayment.asStateFlow()
+
+    private val _paymentState = MutableStateFlow<LoanApplyUiState>(LoanApplyUiState.Idle)
+    val paymentState: StateFlow<LoanApplyUiState> = _paymentState.asStateFlow()
+
     init {
         observeUser()
         loadUserScoring()
@@ -210,7 +216,16 @@ class LoanViewModel @Inject constructor(
                                 
                                 val startDateFormat = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US)
                                 startDateFormat.timeZone = argTimeZone
+                                val startDateStr = startDateFormat.format(now)
                                 
+                                val nextPaymentLabel = calculateNextPaymentLabel(startDateStr, 0)
+                                
+                                // Calcular nextPaymentDate (1 mes después de startDate)
+                                val calendar = java.util.Calendar.getInstance(argTimeZone)
+                                calendar.time = now
+                                calendar.add(java.util.Calendar.MONTH, 1)
+                                val nextPaymentDateStr = startDateFormat.format(calendar.time)
+
                                 val newLoan = ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto(
                                     id = response.loan?.id ?: "", 
                                     lender = lenderName, // Usamos el nombre calculado al inicio
@@ -222,9 +237,9 @@ class LoanViewModel @Inject constructor(
                                     interestRate = interestRate,
                                     purpose = purpose,
                                     status = "ACTIVE",
-                                    nextPaymentDate = null,
-                                    nextPaymentLabel = "Next payment pending",
-                                    startDate = startDateFormat.format(now),
+                                    nextPaymentDate = nextPaymentDateStr,
+                                    nextPaymentLabel = nextPaymentLabel,
+                                    startDate = startDateStr,
                                     endDate = "2025-01-15",
                                     paidInstallments = 0,
                                     totalInstallments = totalMonths,
@@ -246,5 +261,97 @@ class LoanViewModel @Inject constructor(
     
     fun resetApplyState() {
         _applyState.value = LoanApplyUiState.Idle
+    }
+
+    fun selectLoanForPayment(loan: ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto) {
+        _selectedLoanForPayment.value = loan
+        
+        // Preparar detalles de la transacción
+        val now = java.util.Date()
+        val argTimeZone = java.util.TimeZone.getTimeZone("America/Argentina/Buenos_Aires")
+        val dateTimeFormat = java.text.SimpleDateFormat("MMM dd, yyyy h:mm a", java.util.Locale.US)
+        dateTimeFormat.timeZone = argTimeZone
+        
+        _appliedDateTime.value = dateTimeFormat.format(now)
+        _appliedTransactionNumber.value = (1..12).map { (0..9).random() }.joinToString("", prefix = "#")
+        _paymentState.value = LoanApplyUiState.Idle
+    }
+
+    fun confirmPayment() {
+        val loan = _selectedLoanForPayment.value ?: return
+        val uid = sessionManager.getToken() ?: return
+        
+        viewModelScope.launch {
+            _paymentState.value = LoanApplyUiState.Loading
+            
+            val scoring = firestoreRepository.getUserScoring(uid)
+            if (scoring == null) {
+                _paymentState.value = LoanApplyUiState.Error("User balance not found")
+                return@launch
+            }
+            
+            if (scoring.availableBalance < loan.installmentAmount) {
+                _paymentState.value = LoanApplyUiState.Error("Insufficient balance")
+                return@launch
+            }
+            
+            // 1. Actualizar balance
+            val newBalance = scoring.availableBalance - loan.installmentAmount
+            firestoreRepository.updateBalance(uid, newBalance)
+            userDao.updateAccountBalance(uid, newBalance)
+            
+            // 2. Actualizar préstamo
+            val newPaidInstallments = loan.paidInstallments + 1
+            val newStatus = if (newPaidInstallments >= loan.totalInstallments) "PAID" else "ACTIVE"
+            
+            val nextPaymentLabel = if (newStatus == "PAID") null else {
+                calculateNextPaymentLabel(loan.startDate, newPaidInstallments)
+            }
+            
+            val nextPaymentDate = if (newStatus == "PAID") null else {
+                try {
+                    val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US)
+                    val date = sdf.parse(loan.startDate)
+                    val calendar = java.util.Calendar.getInstance()
+                    calendar.time = date!!
+                    calendar.add(java.util.Calendar.MONTH, newPaidInstallments + 1)
+                    sdf.format(calendar.time)
+                } catch (e: Exception) {
+                    null
+                }
+            }
+            
+            val updatedLoan = loan.copy(
+                paidInstallments = newPaidInstallments,
+                status = newStatus,
+                nextPaymentDate = nextPaymentDate,
+                nextPaymentLabel = nextPaymentLabel,
+                transactionNumber = _appliedTransactionNumber.value
+            )
+            
+            firestoreRepository.updateLoan(uid, updatedLoan)
+            
+            // 3. Recargar scoring local y préstamos
+            loadUserScoring()
+            fetchLoans()
+            
+            _paymentState.value = LoanApplyUiState.Success(LoanApplyResponse(true, "Payment successful", null))
+        }
+    }
+
+    private fun calculateNextPaymentLabel(startDate: String, paidInstallments: Int): String {
+        return try {
+            val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US)
+            val date = sdf.parse(startDate) ?: return "Pending fee"
+            val calendar = java.util.Calendar.getInstance()
+            calendar.time = date
+            calendar.add(java.util.Calendar.MONTH, paidInstallments + 1)
+
+            val monthFormat = java.text.SimpleDateFormat("MMMM", java.util.Locale.US)
+            val monthName = monthFormat.format(calendar.time)
+            "Fee of ${monthName.replaceFirstChar { it.uppercase() }}"
+        } catch (e: Exception) {
+            "Pending fee"
+        }
     }
 }

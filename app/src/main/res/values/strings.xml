@@ -86,6 +86,14 @@
     <string name="loan_success_go_to_help_center">Go to Help Center</string>
     <string name="loan_success_done">Done</string>
 
+    <!-- Loan Payment Confirmation Screen -->
+    <string name="loan_payment_debited_from_account">Will be debited from account</string>
+    <string name="loan_payment_type_label">Installment Payment</string>
+    <string name="loan_payment_details_title">Payment Details</string>
+    <string name="loan_payment_installment_number">Installment</string>
+    <string name="loan_payment_confirm_button">Confirm Payment</string>
 
-
+    <!-- Loan History Screen Headers -->
+    <string name="loan_history_pending_payments">Pending payments</string>
+    <string name="loan_history_paid_loans">Paid Loans</string>
 </resources>

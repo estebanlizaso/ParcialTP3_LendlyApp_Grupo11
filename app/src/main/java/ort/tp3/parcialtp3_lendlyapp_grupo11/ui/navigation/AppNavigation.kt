@@ -31,6 +31,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home.HomeRoute
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home.NotificationScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan.LoanApplyScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan.LoanHistoryScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan.LoanPaymentSuccessScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan.LoanScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan.LoanSuccessScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.CreatePasswordPage
@@ -260,7 +261,20 @@ fun AppNavigation(
             composable(AppRoute.LOAN_HISTORY) {
                 LoanHistoryScreen(
                     viewModel = loanViewModel,
-                    onBack = { navController.popBackStack() }
+                    onBack = { navController.popBackStack() },
+                    onLoanClick = { loan ->
+                        loanViewModel.selectLoanForPayment(loan)
+                        navController.navigate(AppRoute.LOAN_PAYMENT_SUCCESS)
+                    }
+                )
+            }
+            composable(AppRoute.LOAN_PAYMENT_SUCCESS) {
+                LoanPaymentSuccessScreen(
+                    viewModel = loanViewModel,
+                    onClose = { navController.popBackStack() },
+                    onSuccess = {
+                        navController.popBackStack()
+                    }
                 )
             }
 

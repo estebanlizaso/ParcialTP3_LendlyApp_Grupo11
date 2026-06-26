@@ -2,6 +2,7 @@ package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -20,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -39,7 +41,8 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.LoanViewModel
 @Composable
 fun LoanHistoryScreen(
     viewModel: LoanViewModel,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onLoanClick: (LoanDto) -> Unit
 ) {
     val uiState by viewModel.loansState.collectAsState()
 
@@ -97,10 +100,10 @@ fun LoanHistoryScreen(
                         ) {
                         // Present Section
                         item {
-                            SectionHeader(title = "Present")
+                            SectionHeader(title = stringResource(id = R.string.loan_history_pending_payments))
                         }
                         items(activeLoans) { loan ->
-                            ActiveLoanItem(loan)
+                            ActiveLoanItem(loan, onClick = { onLoanClick(loan) })
                             HorizontalDivider(
                                 modifier = Modifier.padding(horizontal = 16.dp),
                                 thickness = 0.5.dp,
@@ -111,7 +114,7 @@ fun LoanHistoryScreen(
                         // Recent Loans Section
                         item {
                             Spacer(Modifier.height(32.dp))
-                            SectionHeader(title = "Recent Loans")
+                            SectionHeader(title = stringResource(id = R.string.loan_history_paid_loans))
                         }
                         items(historyLoans) { loan ->
                             RecentLoanItem(loan)
@@ -153,10 +156,11 @@ fun SectionHeader(title: String) {
 }
 
 @Composable
-fun ActiveLoanItem(loan: LoanDto) {
+fun ActiveLoanItem(loan: LoanDto, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable(onClick = onClick)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -207,8 +211,8 @@ fun ActiveLoanItem(loan: LoanDto) {
         }
         
         Column(horizontalAlignment = Alignment.End) {
-            val nextPaymentLabel = remember(loan.startDate, loan.paidInstallments) {
-                calculateNextPaymentLabel(loan.startDate, loan.paidInstallments)
+            val nextPaymentLabel = remember(loan.nextPaymentLabel, loan.startDate, loan.paidInstallments) {
+                loan.nextPaymentLabel ?: calculateNextPaymentLabel(loan.startDate, loan.paidInstallments)
             }
             Text(
                 text = nextPaymentLabel,
@@ -307,11 +311,10 @@ private fun calculateNextPaymentLabel(startDate: String, paidInstallments: Int):
         // La cuota 1 se paga al mes siguiente de la fecha de inicio
         calendar.add(Calendar.MONTH, paidInstallments + 1)
 
-        val localeSpanish = Locale("es", "AR")
-        val monthFormat = SimpleDateFormat("MMMM", localeSpanish)
+        val monthFormat = SimpleDateFormat("MMMM", Locale.US)
         val monthName = monthFormat.format(calendar.time)
-        "Cuota de ${monthName.replaceFirstChar { it.uppercase() }}"
+        "Fee of ${monthName.replaceFirstChar { it.uppercase() }}"
     } catch (e: Exception) {
-        "Cuota pendiente"
+        "Pending fee"
     }
 }

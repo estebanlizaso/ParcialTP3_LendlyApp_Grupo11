@@ -117,4 +117,21 @@ class FirestoreRepository {
             emptyList()
         }
     }
+
+    /**
+     * Actualiza un préstamo existente en Firestore.
+     */
+    suspend fun updateLoan(uid: String, loan: ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto) {
+        try {
+            if (loan.id.isEmpty()) return
+            
+            db.collection("users").document(uid)
+                .collection("loans")
+                .document(loan.id)
+                .set(loan)
+                .await()
+        } catch (e: Exception) {
+            // Manejo de error
+        }
+    }
 }
