@@ -27,6 +27,7 @@ class HomeViewModel @Inject constructor(
     private val shopRepository: ShopRepository,
     private val userDao: UserDao,
     private val sessionManager: SessionManager,
+    private val firestoreRepository: ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.FirestoreRepository,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
@@ -57,6 +58,17 @@ class HomeViewModel @Inject constructor(
                     }
                 } catch (e: Exception) {
                     // Ignore sync errors
+                }
+
+                // Sincronización desde Firestore al iniciar
+                try {
+                    val scoring = firestoreRepository.getUserScoring(uid)
+                    scoring?.let {
+                        userDao.updateAccountBalance(uid, it.availableBalance)
+                        userDao.updateCreditScore(uid, it.creditScore)
+                    }
+                } catch (e: Exception) {
+                    // Error de red o Firestore
                 }
 
                 userDao.getUserById(uid).collectLatest { user ->

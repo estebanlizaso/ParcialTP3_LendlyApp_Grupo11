@@ -35,8 +35,16 @@ fun LoanScreen(
 ) {
     val avatarUrl by viewModel.avatarUrl.collectAsState()
     val applyState by viewModel.applyState.collectAsState()
+    // Observamos el scoring de Firestore de forma reactiva
+    val userScoring by viewModel.userScoring.collectAsState()
+    
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+
+    // Formateamos el monto máximo dinámicamente según lo configurado en Firestore
+    val maxAmountText = userScoring?.let { 
+        "₱%,.2f".format(java.util.Locale.US, it.loanLimit)
+    } ?: stringResource(R.string.loan_borrow_amount)
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -67,7 +75,7 @@ fun LoanScreen(
             // Loan Limit Card
             InfoContainer(
                 borrowLabel = stringResource(R.string.loan_borrow_up_to),
-                borrowAmount = stringResource(R.string.loan_borrow_amount),
+                borrowAmount = maxAmountText, // Ahora es dinámico desde Firestore
                 evaluationLabel = stringResource(R.string.loan_subject_to_evaluation),
                 detailsTitle = stringResource(R.string.loan_details_title),
                 whatIsThisLabel = stringResource(R.string.loan_what_is_this),
@@ -161,8 +169,15 @@ fun LoanScreen(
         androidx.compose.runtime.LaunchedEffect(applyState) {
             when (applyState) {
                 is LoanApplyUiState.ValidationSuccess -> {
-                    viewModel.resetApplyState()
-                    onNavigateToApply()
+                    if (userScoring?.eligible == true) {
+                        viewModel.resetApplyState()
+                        onNavigateToApply()
+                    } else {
+                        scope.launch {
+                            snackbarHostState.showSnackbar("You are not eligible for a loan")
+                        }
+                        viewModel.resetApplyState()
+                    }
                 }
                 is LoanApplyUiState.Error -> {
                     val message = (applyState as LoanApplyUiState.Error).message

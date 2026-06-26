@@ -69,6 +69,7 @@ dependencies {
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
     
     // Image Loading
     implementation(libs.coil.compose)
