@@ -84,13 +84,18 @@ class LoanViewModel @Inject constructor(
         val uid = sessionManager.getToken()
         if (uid != null) {
             viewModelScope.launch {
-                val scoring = firestoreRepository.getUserScoring(uid)
-                _userScoring.value = scoring
-                
-                // Sincronizamos Firestore -> Room para que el resto de la app vea el balance actualizado
-                scoring?.let {
-                    userDao.updateAccountBalance(uid, it.availableBalance)
-                    userDao.updateCreditScore(uid, it.creditScore)
+                try {
+                    val scoring = firestoreRepository.getUserScoring(uid)
+                    _userScoring.value = scoring
+                    
+                    // Sincronizamos Firestore -> Room para que el resto de la app vea el balance actualizado
+                    scoring?.let {
+                        userDao.updateAccountBalance(uid, it.availableBalance)
+                        userDao.updateCreditScore(uid, it.creditScore)
+                    }
+                } catch (e: Exception) {
+                    // Si falla la carga inicial de scoring, notificamos a través del estado de préstamos
+                    _loansState.value = LoanUiState.Error("Failed to load user data: ${e.message}")
                 }
             }
         }
@@ -115,20 +120,24 @@ class LoanViewModel @Inject constructor(
             
             val uid = sessionManager.getToken()
             if (uid != null) {
-                // Obtenemos los préstamos reales desde Firestore
-                val loans = firestoreRepository.getUserLoans(uid)
-                
-                // Construimos una respuesta compatible con el estado anterior
-                val response = LoansResponse(
-                    success = true,
-                    loans = loans,
-                    summary = ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoansSummaryDto(
-                        totalActive = loans.count { it.status.equals("ACTIVE", ignoreCase = true) },
-                        totalPaid = loans.count { it.status.equals("PAID", ignoreCase = true) },
-                        totalAmountDue = loans.sumOf { it.amountDue }
+                try {
+                    // Obtenemos los préstamos reales desde Firestore
+                    val loans = firestoreRepository.getUserLoans(uid)
+                    
+                    // Construimos una respuesta compatible con el estado anterior
+                    val response = LoansResponse(
+                        success = true,
+                        loans = loans,
+                        summary = ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoansSummaryDto(
+                            totalActive = loans.count { it.status.equals("ACTIVE", ignoreCase = true) },
+                            totalPaid = loans.count { it.status.equals("PAID", ignoreCase = true) },
+                            totalAmountDue = loans.sumOf { it.amountDue }
+                        )
                     )
-                )
-                _loansState.value = LoanUiState.Success(response)
+                    _loansState.value = LoanUiState.Success(response)
+                } catch (e: Exception) {
+                    _loansState.value = LoanUiState.Error("Failed to fetch loans: ${e.message}")
+                }
             } else {
                 _loansState.value = LoanUiState.Error("Session not found")
             }
@@ -144,8 +153,13 @@ class LoanViewModel @Inject constructor(
             
             // Si no tenemos los datos en memoria, intentamos cargarlos de nuevo (Re-intento)
             if (scoring == null && uid != null) {
-                scoring = firestoreRepository.getUserScoring(uid)
-                _userScoring.value = scoring
+                try {
+                    scoring = firestoreRepository.getUserScoring(uid)
+                    _userScoring.value = scoring
+                } catch (e: Exception) {
+                    _applyState.value = LoanApplyUiState.Error("Failed to sync scoring data: ${e.message}")
+                    return@launch
+                }
             }
             
             // Si después del re-intento sigue siendo null, mostramos el error
@@ -162,9 +176,14 @@ class LoanViewModel @Inject constructor(
 
             // Validación de cantidad de préstamos activos (máximo 5)
             if (uid != null) {
-                val activeLoans = firestoreRepository.getUserLoans(uid).count { it.status.equals("ACTIVE", ignoreCase = true) }
-                if (activeLoans >= 5) {
-                    _applyState.value = LoanApplyUiState.Error("You have reached the limit of 5 active loans. Please pay one to apply for a new one.")
+                try {
+                    val activeLoans = firestoreRepository.getUserLoans(uid).count { it.status.equals("ACTIVE", ignoreCase = true) }
+                    if (activeLoans >= 5) {
+                        _applyState.value = LoanApplyUiState.Error("You have reached the limit of 5 active loans. Please pay one to apply for a new one.")
+                        return@launch
+                    }
+                } catch (e: Exception) {
+                    _applyState.value = LoanApplyUiState.Error("Failed to verify active loans: ${e.message}")
                     return@launch
                 }
             }
@@ -208,77 +227,82 @@ class LoanViewModel @Inject constructor(
                     if (response.success) {
                         // Al ser exitoso el préstamo en la API, actualizamos el saldo en Firestore y Room
                         viewModelScope.launch {
-                            val uid = sessionManager.getToken()
-                            if (uid != null) {
-                                val user = userDao.getUserById(uid).firstOrNull()
-                                val currentBalance = user?.accountBalance ?: 0.0
-                                val newBalance = currentBalance + amount
-                                
-                                // Actualizamos ambas fuentes de verdad
-                                val scoring = _userScoring.value
-                                if (scoring != null) {
-                                    val updatedScoring = scoring.copy(
-                                        availableBalance = newBalance,
-                                        loanLimit = 15000.0 * (scoring.creditScore.toDouble() / 100.0)
+                            try {
+                                val uid = sessionManager.getToken()
+                                if (uid != null) {
+                                    val user = userDao.getUserById(uid).firstOrNull()
+                                    val currentBalance = user?.accountBalance ?: 0.0
+                                    val newBalance = currentBalance + amount
+                                    
+                                    // Actualizamos ambas fuentes de verdad
+                                    val scoring = _userScoring.value
+                                    if (scoring != null) {
+                                        val updatedScoring = scoring.copy(
+                                            availableBalance = newBalance,
+                                            loanLimit = 15000.0 * (scoring.creditScore.toDouble() / 100.0)
+                                        )
+                                        firestoreRepository.updateScoring(uid, updatedScoring)
+                                    } else {
+                                        firestoreRepository.updateBalance(uid, newBalance)
+                                    }
+                                    userDao.updateAccountBalance(uid, newBalance)
+
+                                    // Guardamos el nuevo préstamo en la sub-colección de Firestore
+                                    val totalMonths = loanOption.config?.months ?: 6
+                                    val interestRate = loanOption.config?.interestRate ?: 2.99
+                                    val installmentAmount = (amount * (1 + interestRate / 100)) / totalMonths
+                                    
+                                    val startDateFormat = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US)
+                                    startDateFormat.timeZone = argTimeZone
+                                    val startDateStr = startDateFormat.format(now)
+                                    
+                                    val nextPaymentLabel = calculateNextPaymentLabel(startDateStr, 0)
+                                    
+                                    // Calcular nextPaymentDate (1 mes después de startDate)
+                                    val calendar = java.util.Calendar.getInstance(argTimeZone)
+                                    calendar.time = now
+                                    calendar.add(java.util.Calendar.MONTH, 1)
+                                    val nextPaymentDateStr = startDateFormat.format(calendar.time)
+
+                                    val newLoan = ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto(
+                                        id = response.loan?.id ?: "", 
+                                        lender = lenderName, // Usamos el nombre calculado al inicio
+                                        lenderLogo = lenderConfig?.logo ?: "https://favicon.im/apple.com?larger=true",
+                                        amount = amount,
+                                        amountDue = amount * (1 + interestRate / 100),
+                                        installmentAmount = installmentAmount,
+                                        installmentPlan = loanOption.title,
+                                        interestRate = interestRate,
+                                        purpose = purpose,
+                                        status = "ACTIVE",
+                                        nextPaymentDate = nextPaymentDateStr,
+                                        nextPaymentLabel = nextPaymentLabel,
+                                        startDate = startDateStr,
+                                        endDate = "2025-01-15",
+                                        paidInstallments = 0,
+                                        totalInstallments = totalMonths,
+                                        transactionNumber = transactionNumber
                                     )
-                                    firestoreRepository.updateScoring(uid, updatedScoring)
-                                } else {
-                                    firestoreRepository.updateBalance(uid, newBalance)
+                                    firestoreRepository.saveLoan(uid, newLoan)
                                 }
-                                userDao.updateAccountBalance(uid, newBalance)
-
-                                // Guardamos el nuevo préstamo en la sub-colección de Firestore
-                                val totalMonths = loanOption.config?.months ?: 6
-                                val interestRate = loanOption.config?.interestRate ?: 2.99
-                                val installmentAmount = (amount * (1 + interestRate / 100)) / totalMonths
-                                
-                                val startDateFormat = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US)
-                                startDateFormat.timeZone = argTimeZone
-                                val startDateStr = startDateFormat.format(now)
-                                
-                                val nextPaymentLabel = calculateNextPaymentLabel(startDateStr, 0)
-                                
-                                // Calcular nextPaymentDate (1 mes después de startDate)
-                                val calendar = java.util.Calendar.getInstance(argTimeZone)
-                                calendar.time = now
-                                calendar.add(java.util.Calendar.MONTH, 1)
-                                val nextPaymentDateStr = startDateFormat.format(calendar.time)
-
-                                val newLoan = ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto(
-                                    id = response.loan?.id ?: "", 
-                                    lender = lenderName, // Usamos el nombre calculado al inicio
-                                    lenderLogo = lenderConfig?.logo ?: "https://favicon.im/apple.com?larger=true",
-                                    amount = amount,
-                                    amountDue = amount * (1 + interestRate / 100),
-                                    installmentAmount = installmentAmount,
-                                    installmentPlan = loanOption.title,
-                                    interestRate = interestRate,
-                                    purpose = purpose,
-                                    status = "ACTIVE",
-                                    nextPaymentDate = nextPaymentDateStr,
-                                    nextPaymentLabel = nextPaymentLabel,
-                                    startDate = startDateStr,
-                                    endDate = "2025-01-15",
-                                    paidInstallments = 0,
-                                    totalInstallments = totalMonths,
-                                    transactionNumber = transactionNumber
-                                )
-                                firestoreRepository.saveLoan(uid, newLoan)
+                                _applyState.value = LoanApplyUiState.Success(response)
+                            } catch (e: Exception) {
+                                _applyState.value = LoanApplyUiState.Error("Loan approved but failed to sync with database: ${e.message}")
                             }
-                            _applyState.value = LoanApplyUiState.Success(response)
                         }
                     } else {
                         _applyState.value = LoanApplyUiState.Error(response.message)
                     }
                 }
                 .onFailure {
-                    _applyState.value = LoanApplyUiState.Error(it.message ?: "Unknown error")
+                    _applyState.value = LoanApplyUiState.Error(it.message ?: "Unknown error during application")
                 }
         }
     }
     
     fun resetApplyState() {
         _applyState.value = LoanApplyUiState.Idle
+        _paymentState.value = LoanApplyUiState.Idle
     }
 
     fun selectLoanForPayment(loan: ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto) {
@@ -302,66 +326,67 @@ class LoanViewModel @Inject constructor(
         viewModelScope.launch {
             _paymentState.value = LoanApplyUiState.Loading
             
-            val scoring = firestoreRepository.getUserScoring(uid)
-            if (scoring == null) {
-                _paymentState.value = LoanApplyUiState.Error("User balance not found")
-                return@launch
-            }
-            
-            if (scoring.availableBalance < loan.installmentAmount) {
-                _paymentState.value = LoanApplyUiState.Error("Insufficient balance")
-                return@launch
-            }
-            
-            // 1. Actualizar balance
-            val newBalance = scoring.availableBalance - loan.installmentAmount
-            
-            // Recalcular scoring y límite (en caso de que el score cambie en el futuro, 
-            // por ahora mantenemos la lógica de límite = 15000 * (score/100))
-            val updatedScoring = scoring.copy(
-                availableBalance = newBalance,
-                loanLimit = 15000.0 * (scoring.creditScore.toDouble() / 100.0)
-            )
-            
-            firestoreRepository.updateScoring(uid, updatedScoring)
-            userDao.updateAccountBalance(uid, newBalance)
-            
-            // 2. Actualizar préstamo
-            val newPaidInstallments = loan.paidInstallments + 1
-            val newStatus = if (newPaidInstallments >= loan.totalInstallments) "PAID" else "ACTIVE"
-            
-            val nextPaymentLabel = if (newStatus == "PAID") null else {
-                calculateNextPaymentLabel(loan.startDate, newPaidInstallments)
-            }
-            
-            val nextPaymentDate = if (newStatus == "PAID") null else {
-                try {
-                    val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US)
-                    val date = sdf.parse(loan.startDate)
-                    val calendar = java.util.Calendar.getInstance()
-                    calendar.time = date!!
-                    calendar.add(java.util.Calendar.MONTH, newPaidInstallments + 1)
-                    sdf.format(calendar.time)
-                } catch (e: Exception) {
-                    null
+            try {
+                val scoring = firestoreRepository.getUserScoring(uid)
+                if (scoring == null) {
+                    _paymentState.value = LoanApplyUiState.Error("User scoring data not found. Check your connection.")
+                    return@launch
                 }
+                
+                if (scoring.availableBalance < loan.installmentAmount) {
+                    _paymentState.value = LoanApplyUiState.Error("Insufficient balance to pay this installment")
+                    return@launch
+                }
+                
+                // 1. Actualizar balance y scoring
+                val newBalance = scoring.availableBalance - loan.installmentAmount
+                val updatedScoring = scoring.copy(
+                    availableBalance = newBalance,
+                    loanLimit = 15000.0 * (scoring.creditScore.toDouble() / 100.0)
+                )
+                
+                firestoreRepository.updateScoring(uid, updatedScoring)
+                userDao.updateAccountBalance(uid, newBalance)
+                
+                // 2. Actualizar préstamo
+                val newPaidInstallments = loan.paidInstallments + 1
+                val newStatus = if (newPaidInstallments >= loan.totalInstallments) "PAID" else "ACTIVE"
+                
+                val nextPaymentLabel = if (newStatus == "PAID") null else {
+                    calculateNextPaymentLabel(loan.startDate, newPaidInstallments)
+                }
+                
+                val nextPaymentDate = if (newStatus == "PAID") null else {
+                    try {
+                        val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US)
+                        val date = sdf.parse(loan.startDate)
+                        val calendar = java.util.Calendar.getInstance()
+                        calendar.time = date!!
+                        calendar.add(java.util.Calendar.MONTH, newPaidInstallments + 1)
+                        sdf.format(calendar.time)
+                    } catch (e: Exception) {
+                        null
+                    }
+                }
+                
+                val updatedLoan = loan.copy(
+                    paidInstallments = newPaidInstallments,
+                    status = newStatus,
+                    nextPaymentDate = nextPaymentDate,
+                    nextPaymentLabel = nextPaymentLabel,
+                    transactionNumber = _appliedTransactionNumber.value
+                )
+                
+                firestoreRepository.updateLoan(uid, updatedLoan)
+                
+                // 3. Recargar scoring local y préstamos
+                loadUserScoring()
+                fetchLoans()
+                
+                _paymentState.value = LoanApplyUiState.Success(LoanApplyResponse(true, "Payment successful", null))
+            } catch (e: Exception) {
+                _paymentState.value = LoanApplyUiState.Error("Payment failed due to a database error: ${e.message}")
             }
-            
-            val updatedLoan = loan.copy(
-                paidInstallments = newPaidInstallments,
-                status = newStatus,
-                nextPaymentDate = nextPaymentDate,
-                nextPaymentLabel = nextPaymentLabel,
-                transactionNumber = _appliedTransactionNumber.value
-            )
-            
-            firestoreRepository.updateLoan(uid, updatedLoan)
-            
-            // 3. Recargar scoring local y préstamos
-            loadUserScoring()
-            fetchLoans()
-            
-            _paymentState.value = LoanApplyUiState.Success(LoanApplyResponse(true, "Payment successful", null))
         }
     }
 

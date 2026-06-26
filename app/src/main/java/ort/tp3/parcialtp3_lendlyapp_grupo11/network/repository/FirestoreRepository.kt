@@ -30,7 +30,7 @@ class FirestoreRepository {
                 null
             }
         } catch (e: Exception) {
-            null
+            throw e
         }
     }
 
@@ -54,7 +54,7 @@ class FirestoreRepository {
             )
             db.collection("users").document(uid).set(initialScoring).await()
         } catch (e: Exception) {
-            // En producción aquí se debería loguear el error
+            throw e
         }
     }
 
@@ -69,7 +69,7 @@ class FirestoreRepository {
                 .update("availableBalance", newBalance)
                 .await()
         } catch (e: Exception) {
-            // Manejo de error
+            throw e
         }
     }
 
@@ -83,7 +83,7 @@ class FirestoreRepository {
                 .add(loan)
                 .await()
         } catch (e: Exception) {
-            // Manejo de error
+            throw e
         }
     }
 
@@ -119,7 +119,7 @@ class FirestoreRepository {
                 )
             }
         } catch (e: Exception) {
-            emptyList()
+            throw e
         }
     }
 
@@ -136,7 +136,7 @@ class FirestoreRepository {
                 .set(loan)
                 .await()
         } catch (e: Exception) {
-            // Manejo de error
+            throw e
         }
     }
 
@@ -147,7 +147,7 @@ class FirestoreRepository {
         try {
             db.collection("users").document(uid).set(scoring).await()
         } catch (e: Exception) {
-            // Manejo de error
+            throw e
         }
     }
 }
