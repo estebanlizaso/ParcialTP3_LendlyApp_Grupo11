@@ -4,13 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun TransactionDetailRoute(
     transactionId: String,
     onBackClick: () -> Unit,
-    viewModel: TransactionDetailViewModel = viewModel()
+    viewModel: TransactionDetailViewModel = hiltViewModel()
 ) {
     LaunchedEffect(transactionId) {
         viewModel.loadTransaction(transactionId)

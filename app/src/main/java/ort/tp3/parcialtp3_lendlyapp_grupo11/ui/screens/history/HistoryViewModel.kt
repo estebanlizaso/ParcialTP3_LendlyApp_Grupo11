@@ -2,9 +2,11 @@ package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.history
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
+import javax.inject.Inject
 import kotlin.math.abs
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,8 +16,9 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.TransactionDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.HomeRepository
 
-class HistoryViewModel(
-    private val repository: HomeRepository = HomeRepository()
+@HiltViewModel
+class HistoryViewModel @Inject constructor(
+    private val repository: HomeRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HistoryUiState())

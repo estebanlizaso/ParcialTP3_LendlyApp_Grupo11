@@ -71,11 +71,11 @@ fun HistoryScreen(
             modifier = Modifier
                 .weight(1f)
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp)
         ) {
             Spacer(modifier = Modifier.height(24.dp))
             HomeTopBar(
                 avatarUrl = uiState.avatarUrl,
+                modifier = Modifier.padding(horizontal = 24.dp),
                 onNotificationClick = onNotificationClick
             )
 
@@ -85,32 +85,41 @@ fun HistoryScreen(
                 color = BlackFont,
                 fontSize = 30.sp,
                 fontWeight = FontWeight.SemiBold,
-                fontFamily = interFonts
+                fontFamily = interFonts,
+                modifier = Modifier.padding(horizontal = 24.dp)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
-            AppSearchBar(
-                value = searchQuery,
-                onValueChange = { searchQuery = it }
-            )
+            Box(modifier = Modifier.padding(horizontal = 24.dp)) {
+                AppSearchBar(
+                    value = searchQuery,
+                    onValueChange = { searchQuery = it }
+                )
+            }
 
             Spacer(modifier = Modifier.height(18.dp))
             HistoryFilterRow(
                 filters = uiState.filters,
                 selectedFilter = selectedFilter,
-                onFilterClick = { selectedFilter = it }
+                onFilterClick = { selectedFilter = it },
+                modifier = Modifier.padding(horizontal = 24.dp)
             )
 
             Spacer(modifier = Modifier.height(18.dp))
-            HorizontalDivider(color = Color(0xFFE6E6E6))
+            HorizontalDivider(color = Color(0xFFE6E6E6), modifier = Modifier.padding(horizontal = 24.dp))
 
-            HistorySectionTitle(title = "Today")
-            HorizontalDivider(color = Color(0xFFE6E6E6))
+            Box(modifier = Modifier.padding(horizontal = 24.dp)) {
+                HistorySectionTitle(title = "Today")
+            }
+            HorizontalDivider(color = Color(0xFFE6E6E6), modifier = Modifier.padding(horizontal = 24.dp))
 
             HistoryStatusMessage(uiState = uiState)
 
             if (!uiState.isLoading && uiState.error == null) {
-                Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
+                Column(
+                    modifier = Modifier.padding(horizontal = 24.dp),
+                    verticalArrangement = Arrangement.spacedBy(14.dp)
+                ) {
                     filteredTransactions.forEach { transaction ->
                         HistoryTransactionItem(
                             transaction = transaction,
@@ -121,11 +130,16 @@ fun HistoryScreen(
             }
 
             Spacer(modifier = Modifier.height(30.dp))
-            HistorySectionTitle(title = "Recent Loans")
-            HorizontalDivider(color = Color(0xFFE6E6E6))
+            Box(modifier = Modifier.padding(horizontal = 24.dp)) {
+                HistorySectionTitle(title = "Recent Loans")
+            }
+            HorizontalDivider(color = Color(0xFFE6E6E6), modifier = Modifier.padding(horizontal = 24.dp))
 
             if (!uiState.isLoading && uiState.error == null) {
-                Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                Column(
+                    modifier = Modifier.padding(horizontal = 24.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
                     filteredLoans.forEach { loan ->
                         RecentLoanHistoryItem(loan = loan)
                     }
@@ -152,7 +166,7 @@ private fun HistoryStatusMessage(uiState: HistoryUiState) {
             fontSize = 15.sp,
             fontWeight = FontWeight.SemiBold,
             fontFamily = interFonts,
-            modifier = Modifier.padding(top = 18.dp)
+            modifier = Modifier.padding(horizontal = 24.dp, vertical = 18.dp)
         )
     }
 }
@@ -161,10 +175,11 @@ private fun HistoryStatusMessage(uiState: HistoryUiState) {
 private fun HistoryFilterRow(
     filters: List<HistoryFilterUi>,
     selectedFilter: HistoryFilterUi,
-    onFilterClick: (HistoryFilterUi) -> Unit
+    onFilterClick: (HistoryFilterUi) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .horizontalScroll(rememberScrollState()),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
