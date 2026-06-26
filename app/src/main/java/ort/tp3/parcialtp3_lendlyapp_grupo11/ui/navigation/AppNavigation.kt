@@ -343,6 +343,7 @@ fun AppNavigation(
             composable(AppRoute.CASH_IN_AMOUNT) {
                 CashInAmountScreen(
                     sourceName = cashInViewModel.selectedSource,
+                    viewModel = cashInViewModel,
                     onBackClick = { navController.popBackStack() },
                     onNextClick = { navController.navigate(AppRoute.CASH_IN_SUCCESS) }
                 )

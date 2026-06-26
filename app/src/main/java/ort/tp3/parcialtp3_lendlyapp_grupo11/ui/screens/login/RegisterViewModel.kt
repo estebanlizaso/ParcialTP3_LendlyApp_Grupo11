@@ -30,6 +30,7 @@ data class RegisterUiState(
 class RegisterViewModel @Inject constructor(
     private val sessionManager: SessionManager,
     private val userDao: UserDao,
+    private val firestoreRepository: ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.FirestoreRepository,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
@@ -126,16 +127,16 @@ class RegisterViewModel @Inject constructor(
             else -> null
         }
 
-        val isValid = firstNameError == null && 
-                      lastNameError == null && 
-                      dayError == null && 
-                      monthError == null && 
-                      yearError == null && 
-                      addressError == null && 
+        val isValid = firstNameError == null &&
+                      lastNameError == null &&
+                      dayError == null &&
+                      monthError == null &&
+                      yearError == null &&
+                      addressError == null &&
                       emailError == null &&
-                      cityError == null && 
-                      postalCodeError == null && 
-                      countryCodeError == null && 
+                      cityError == null &&
+                      postalCodeError == null &&
+                      countryCodeError == null &&
                       phoneError == null
 
         return isValid
@@ -163,10 +164,10 @@ class RegisterViewModel @Inject constructor(
     fun register() {
         // Clear password error
         passwordError = null
-        
+
         // Final password validation before sending
-        val isPasswordValid = password.length >= 9 && 
-                             password.any { it.isLetter() } && 
+        val isPasswordValid = password.length >= 9 &&
+                             password.any { it.isLetter() } &&
                              password.any { it.isDigit() }
 
         if (!isPasswordValid) {
@@ -188,6 +189,11 @@ class RegisterViewModel @Inject constructor(
 
                             if (existingUser == null) {
                                 val initialData = getInitialUserData(context)
+                                val initialBalance = initialData["accountBalance"] as? Double ?: 25000.0
+
+                                // Crear scoring y balance inicial en Firestore
+                                firestoreRepository.createInitialScoring(uid, initialBalance)
+
                                 userDao.insertUser(
                                     UserEntity(
                                         uid = uid,
@@ -195,7 +201,7 @@ class RegisterViewModel @Inject constructor(
                                         fullName = "$firstName $lastName",
                                     avatar = initialData["avatar"] as? String ?: "https://i.pravatar.cc/150?img=3",
                                     creditScore = (initialData["creditScore"] as? Double)?.toInt() ?: 720,
-                                        accountBalance = initialData["accountBalance"] as? Double ?: 25000.0,
+                                        accountBalance = initialBalance,
                                         birthDate = "$year-$month-$day",
                                         address = "$address, $city",
                                         phone = "+$countryCode-$phone"

@@ -31,14 +31,28 @@ fun LoanApplyScreen(
     onBack: () -> Unit,
     onSuccess: () -> Unit
 ) {
-    var amount by remember { mutableStateOf("2,000.00") }
-    val plans = listOf(
-        LoanOptionData("6 Months", "2.99% Interest", "₱ 982.12/mo"),
-        LoanOptionData("12 Months", "1.99% Interest", "₱ 491.06/mo")
-    )
-    var selectedPlan by remember { mutableStateOf(plans[0]) }
+    // Inicializamos solo con el número para que el visualTransformation del InputField no duplique el ".00"
+    var amount by remember { mutableStateOf("2000") }
+
+    // Mapeamos las reglas de negocio centralizadas a opciones de la UI
+    // El cálculo del pago mensual es dinámico según el monto ingresado
+    val amountValue = amount.replace(",", "").toDoubleOrNull() ?: 0.0
+    val plans = ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanBusinessRules.defaultPlans.map { config ->
+        val monthlyFee = if (amountValue > 0) (amountValue * (1 + config.interestRate / 100)) / config.months else 0.0
+        LoanOptionData(
+            title = config.label,
+            subtitle = "${config.interestRate}% Interest",
+            rightValue = "₱ ${String.format(java.util.Locale.US, "%,.2f", monthlyFee)}/mo",
+            config = config
+        )
+    }
+
+    var selectedPlan by remember(plans) { mutableStateOf(plans[0]) }
     var selectedPurpose by remember { mutableStateOf("Educational") }
-    
+
+    // Observamos el scoring de Firestore
+    val userScoring by viewModel.userScoring.collectAsState()
+
     val applyState by viewModel.applyState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -109,12 +123,26 @@ fun LoanApplyScreen(
                     stepTag = stringResource(R.string.loan_apply_step_1),
                     description = stringResource(R.string.loan_apply_enter_amount)
                 ) {
-                    AmountInputField(
-                        value = amount,
-                        onValueChange = { amount = it }
-                    )
+                    val amountValue = amount.replace(",", "").toDoubleOrNull() ?: 0.0
+                    val isOverLimit = userScoring?.let { amountValue > it.loanLimit } ?: false
+
+                    Column {
+                        AmountInputField(
+                            value = amount,
+                            onValueChange = { amount = it },
+                            isError = isOverLimit // Pintamos el borde de rojo si se excede
+                        )
+                        if (isOverLimit) {
+                            Text(
+                                text = "Exceeds your limit of ₱${String.format(java.util.Locale.US, "%,.2f", userScoring?.loanLimit ?: 0.0)}",
+                                color = Color.Red,
+                                fontSize = 12.sp,
+                                modifier = Modifier.padding(top = 4.dp)
+                            )
+                        }
+                    }
                 }
-                
+
                 HorizontalDivider(Modifier.padding(bottom = 16.dp))
 
                 StepBox(
@@ -152,16 +180,13 @@ fun LoanApplyScreen(
             LoanSummary(
                 amount = amount,
                 onApplyClick = {
-                    viewModel.applyLoan(
-                        amount.replace(",", "").toDouble(),
-                        selectedPlan,
-                        selectedPurpose
-                    )
                     val amountValue = amount.replace(",", "").toDoubleOrNull() ?: 0.0
+                    // Solo disparamos la validación.
+                    // Si es exitosa, el LaunchedEffect se encargará de llamar a applyLoan.
                     viewModel.validateLoanRequest(amountValue)
                 },
                 isLoading = applyState is LoanApplyUiState.Loading,
-                errorMessage = null // Ya no lo mostramos aquí, usamos snackbar
+                errorMessage = null
             )
         }
     }

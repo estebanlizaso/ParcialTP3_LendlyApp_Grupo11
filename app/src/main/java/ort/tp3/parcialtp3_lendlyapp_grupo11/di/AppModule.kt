@@ -18,4 +18,10 @@ object AppModule {
     fun provideSessionManager(@ApplicationContext context: Context): SessionManager {
         return SessionManager(context)
     }
+
+    @Provides
+    @Singleton
+    fun provideFirestoreRepository(): ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.FirestoreRepository {
+        return ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.FirestoreRepository()
+    }
 }
