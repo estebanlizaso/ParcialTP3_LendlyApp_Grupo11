@@ -236,7 +236,8 @@ fun AppNavigation(
                 LoanScreen(
                     viewModel = loanViewModel,
                     onNavigateToApply = { navController.navigate(AppRoute.LOAN_APPLY) },
-                    onNotificationClick = { navController.navigate(AppRoute.NOTIFICATIONS) }
+                    onNotificationClick = { navController.navigate(AppRoute.NOTIFICATIONS) },
+                    onSeeAllLoansClick = { navController.navigate(AppRoute.LOAN_HISTORY) }
                 )
             }
             composable(AppRoute.LOAN_APPLY) {

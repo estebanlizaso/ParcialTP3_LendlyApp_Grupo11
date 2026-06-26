@@ -29,7 +29,7 @@
 
     <!-- Loan Details Metrics -->
     <string name="loan_payable_in">Payable in</string>
-    <string name="loan_payable_value">6 - 12</string>
+    <string name="loan_payable_value">6 – 12</string>
     <string name="loan_months">months</string>
     <string name="loan_interest_rate">Interest Rate</string>
     <string name="loan_interest_value">1.99%</string>
