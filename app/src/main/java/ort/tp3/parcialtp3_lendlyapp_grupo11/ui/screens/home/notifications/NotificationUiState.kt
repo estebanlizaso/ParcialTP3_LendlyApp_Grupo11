@@ -38,7 +38,9 @@ data class NotificationDayItemUi(
     val title: String,
     val subtitle: String,
     val amount: String?,
-    val type: NotificationDayItemType
+    val type: NotificationDayItemType,
+    val logoResId: Int? = null,
+    val logoUrl: String? = null
 )
 
 enum class NotificationDayItemType {

@@ -12,11 +12,14 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import ort.tp3.parcialtp3_lendlyapp_grupo11.SessionManager
 import ort.tp3.parcialtp3_lendlyapp_grupo11.data.local.dao.UserDao
+import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.FirestoreTransaction
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanApplyRequest
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanApplyResponse
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoansResponse
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.LoanRepository
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.loan.LoanOptionData
+import java.text.SimpleDateFormat
+import java.util.Date
 import javax.inject.Inject
 
 sealed class LoanUiState {
@@ -180,6 +183,9 @@ class LoanViewModel @Inject constructor(
                                 val interestRate = loanOption.config?.interestRate ?: 2.99
                                 val installmentAmount = (amount * (1 + interestRate / 100)) / totalMonths
 
+                                val now = Date()
+                                val startDate = formatDateKey(now)
+
                                 val newLoan = ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto(
                                     id = "", // Firestore genera el ID
                                     lender = "Apple Inc.",
@@ -193,12 +199,30 @@ class LoanViewModel @Inject constructor(
                                     status = "ACTIVE",
                                     nextPaymentDate = "2024-08-15",
                                     nextPaymentLabel = "Next payment in August",
-                                    startDate = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US).format(java.util.Date()),
+                                    startDate = startDate,
                                     endDate = "2025-01-15",
                                     paidInstallments = 0,
                                     totalInstallments = totalMonths
                                 )
-                                firestoreRepository.saveLoan(uid, newLoan)
+                                val loanId = firestoreRepository.saveLoan(uid, newLoan)
+
+                                if (loanId != null) {
+                                    firestoreRepository.saveTransaction(
+                                        uid = uid,
+                                        transaction = FirestoreTransaction(
+                                            type = "LOAN_DISBURSEMENT",
+                                            title = "Loan approved",
+                                            description = "$purpose - ${newLoan.lender}",
+                                            amount = amount,
+                                            currency = "PHP",
+                                            status = "COMPLETED",
+                                            date = formatTransactionDate(now),
+                                            dateKey = startDate,
+                                            loanId = loanId,
+                                            referenceNumber = generateReferenceNumber(now)
+                                        )
+                                    )
+                                }
                             }
                             _applyState.value = LoanApplyUiState.Success(it)
                         }
@@ -214,5 +238,23 @@ class LoanViewModel @Inject constructor(
 
     fun resetApplyState() {
         _applyState.value = LoanApplyUiState.Idle
+    }
+
+    private fun formatTransactionDate(date: Date): String {
+        return utcFormatter("yyyy-MM-dd'T'HH:mm:ss'Z'").format(date)
+    }
+
+    private fun formatDateKey(date: Date): String {
+        return utcFormatter("yyyy-MM-dd").format(date)
+    }
+
+    private fun generateReferenceNumber(date: Date): String {
+        return "#${date.time}"
+    }
+
+    private fun utcFormatter(pattern: String): SimpleDateFormat {
+        return SimpleDateFormat(pattern, Locale.US).apply {
+            timeZone = java.util.TimeZone.getTimeZone("UTC")
+        }
     }
 }

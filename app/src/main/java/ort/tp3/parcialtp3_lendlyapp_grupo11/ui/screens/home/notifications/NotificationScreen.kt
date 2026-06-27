@@ -33,6 +33,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.icons.CalendarIcon
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home.notifications.components.NotificationCalendarCard
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home.notifications.components.NotificationDayDialog
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home.notifications.components.NotificationSourceIcon
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.GrayText
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.Green
@@ -211,20 +212,33 @@ private fun NotificationItem(
     unread: Boolean,
     onClick: () -> Unit
 ) {
+    val hasLogo = item.logoResId != null || !item.logoUrl.isNullOrBlank()
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() }
     ) {
-        Box(
-            modifier = Modifier
-                .padding(top = 5.dp)
-                .size(6.dp)
-                .clip(CircleShape)
-                .background(if (unread) Green else Color(0xFFE9E4E4))
-        )
+        if (hasLogo) {
+            NotificationSourceIcon(
+                logoResId = item.logoResId,
+                logoUrl = item.logoUrl,
+                type = item.type,
+                contentDescription = item.subtitle.ifBlank { item.title },
+                badgeSize = 36.dp,
+                iconSize = 16.dp
+            )
+        } else {
+            Box(
+                modifier = Modifier
+                    .padding(top = 5.dp)
+                    .size(6.dp)
+                    .clip(CircleShape)
+                    .background(if (unread) Green else Color(0xFFE9E4E4))
+            )
+        }
 
-        Spacer(modifier = Modifier.width(14.dp))
+        Spacer(modifier = Modifier.width(if (hasLogo) 12.dp else 14.dp))
         Column(modifier = Modifier.weight(1f)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(

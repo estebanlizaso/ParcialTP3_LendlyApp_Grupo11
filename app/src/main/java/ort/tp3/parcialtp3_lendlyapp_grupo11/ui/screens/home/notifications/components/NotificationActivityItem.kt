@@ -15,8 +15,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.TransactionIconBadge
-import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.TransactionIconType
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home.notifications.NotificationDayItemType
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home.notifications.NotificationDayItemUi
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
@@ -34,11 +32,13 @@ fun NotificationActivityItem(
             .padding(vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        TransactionIconBadge(
-            type = item.type.toTransactionIconType(),
+        NotificationSourceIcon(
+            logoResId = item.logoResId,
+            logoUrl = item.logoUrl,
+            type = item.type,
+            contentDescription = item.subtitle.ifBlank { item.title },
             badgeSize = 40.dp,
-            iconSize = 18.dp,
-            highlighted = item.type == NotificationDayItemType.ADDED_BALANCE
+            iconSize = 18.dp
         )
 
         Spacer(modifier = Modifier.width(14.dp))
@@ -99,11 +99,3 @@ private val NotificationDayItemType.label: String
         NotificationDayItemType.PAYMENT -> "Transaction"
         NotificationDayItemType.LOAN_DUE_DATE -> "Loan due date"
     }
-
-private fun NotificationDayItemType.toTransactionIconType(): TransactionIconType {
-    return when (this) {
-        NotificationDayItemType.ADDED_BALANCE -> TransactionIconType.ADD
-        NotificationDayItemType.PAYMENT,
-        NotificationDayItemType.LOAN_DUE_DATE -> TransactionIconType.PAYMENT
-    }
-}

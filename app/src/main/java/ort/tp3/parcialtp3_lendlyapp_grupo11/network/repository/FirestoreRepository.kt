@@ -1,7 +1,9 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository
 
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
+import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.FirestoreTransaction
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.UserScoring
 
 /**
@@ -70,15 +72,18 @@ class FirestoreRepository {
 
     /**
      * Guarda un nuevo préstamo en la sub-colección 'loans' del usuario.
+     * @return ID generado por Firestore, o null si no se pudo guardar.
      */
-    suspend fun saveLoan(uid: String, loan: ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto) {
-        try {
-            db.collection("users").document(uid)
+    suspend fun saveLoan(uid: String, loan: ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto): String? {
+        return try {
+            val document = db.collection("users").document(uid)
                 .collection("loans")
                 .add(loan)
                 .await()
+
+            document.id
         } catch (e: Exception) {
-            // Manejo de error
+            null
         }
     }
 
@@ -115,5 +120,97 @@ class FirestoreRepository {
         } catch (e: Exception) {
             emptyList()
         }
+    }
+
+    /**
+     * Guarda una transacción en la sub-colección 'transactions' del usuario.
+     * @return ID generado por Firestore, o null si no se pudo guardar.
+     */
+    suspend fun saveTransaction(uid: String, transaction: FirestoreTransaction): String? {
+        return try {
+            val transactionData = hashMapOf(
+                "type" to transaction.type,
+                "title" to transaction.title,
+                "description" to transaction.description,
+                "amount" to transaction.amount,
+                "currency" to transaction.currency,
+                "status" to transaction.status,
+                "date" to transaction.date,
+                "dateKey" to transaction.dateKey,
+                "loanId" to transaction.loanId,
+                "sourceName" to transaction.sourceName,
+                "sourceKey" to transaction.sourceKey,
+                "sourceLogoUrl" to transaction.sourceLogoUrl,
+                "referenceNumber" to transaction.referenceNumber
+            )
+
+            val document = db.collection("users").document(uid)
+                .collection("transactions")
+                .add(transactionData)
+                .await()
+
+            document.id
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    /**
+     * Obtiene todas las transacciones del usuario desde Firestore.
+     */
+    suspend fun getUserTransactions(uid: String): List<FirestoreTransaction> {
+        return try {
+            val snapshot = db.collection("users").document(uid)
+                .collection("transactions")
+                .get()
+                .await()
+
+            snapshot.documents
+                .map { it.toFirestoreTransaction() }
+                .sortedByDescending { it.date }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    /**
+     * Obtiene las transacciones de un usuario para un día específico.
+     * @param dateKey Fecha en formato yyyy-MM-dd.
+     */
+    suspend fun getUserTransactionsByDate(uid: String, dateKey: String): List<FirestoreTransaction> {
+        return try {
+            val snapshot = db.collection("users").document(uid)
+                .collection("transactions")
+                .whereEqualTo("dateKey", dateKey)
+                .get()
+                .await()
+
+            snapshot.documents
+                .map { it.toFirestoreTransaction() }
+                .sortedByDescending { it.date }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    private fun DocumentSnapshot.toFirestoreTransaction(): FirestoreTransaction {
+        val date = getString("date") ?: ""
+
+        return FirestoreTransaction(
+            id = id,
+            type = getString("type") ?: "",
+            title = getString("title") ?: "",
+            description = getString("description") ?: "",
+            amount = getDouble("amount") ?: getLong("amount")?.toDouble() ?: 0.0,
+            currency = getString("currency") ?: "PHP",
+            status = getString("status") ?: "COMPLETED",
+            date = date,
+            dateKey = getString("dateKey") ?: date.take(10),
+            loanId = getString("loanId"),
+            sourceName = getString("sourceName") ?: "",
+            sourceKey = getString("sourceKey") ?: "",
+            sourceLogoUrl = getString("sourceLogoUrl"),
+            referenceNumber = getString("referenceNumber") ?: ""
+        )
     }
 }

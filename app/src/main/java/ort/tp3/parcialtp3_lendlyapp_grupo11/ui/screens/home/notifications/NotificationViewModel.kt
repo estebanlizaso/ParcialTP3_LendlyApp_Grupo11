@@ -10,13 +10,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import ort.tp3.parcialtp3_lendlyapp_grupo11.SessionManager
+import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.FirestoreTransaction
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto
-import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.TransactionDto
+import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.FirestoreRepository
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.HomeRepository
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.utils.CashInSourceCatalog
 
 @HiltViewModel
 class NotificationViewModel @Inject constructor(
-    private val repository: HomeRepository
+    private val repository: HomeRepository,
+    private val firestoreRepository: FirestoreRepository,
+    private val sessionManager: SessionManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(NotificationUiState())
@@ -76,7 +81,16 @@ class NotificationViewModel @Inject constructor(
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
 
             try {
-                val transactions = repository.getTransactions().transactions.mapNotNull { transaction ->
+                val uid = sessionManager.getToken()
+                if (uid == null) {
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        error = "Session not found"
+                    )
+                    return@launch
+                }
+
+                val transactions = firestoreRepository.getUserTransactions(uid).mapNotNull { transaction ->
                     transaction.toNotificationItem()
                 }
                 val loanDueDates = repository.getLoans().loans.mapNotNull { loan ->
@@ -102,18 +116,21 @@ class NotificationViewModel @Inject constructor(
         }
     }
 
-    private fun TransactionDto.toNotificationItem(): NotificationDayItemUi? {
-        val dateKey = NotificationDateUtils.transactionDateKey(date) ?: return null
+    private fun FirestoreTransaction.toNotificationItem(): NotificationDayItemUi? {
+        val dateKey = this.dateKey.ifBlank { NotificationDateUtils.transactionDateKey(date).orEmpty() }
+        if (dateKey.isBlank()) return null
 
         return NotificationDayItemUi(
             id = id,
             dateKey = dateKey,
             dateLabel = NotificationDateUtils.shortDateLabel(dateKey),
-            timeLabel = NotificationDateUtils.transactionTimeLabel(date),
+            timeLabel = if (date.isBlank()) "Transaction" else NotificationDateUtils.transactionTimeLabel(date),
             title = titleForType(),
             subtitle = merchantFromTitle().ifBlank { description.ifBlank { title } },
             amount = formatMoney(amount, currency),
-            type = type.toNotificationType(amount)
+            type = type.toNotificationType(amount),
+            logoResId = CashInSourceCatalog.logoResId(sourceKey),
+            logoUrl = sourceLogoUrl
         )
     }
 
@@ -132,7 +149,7 @@ class NotificationViewModel @Inject constructor(
         )
     }
 
-    private fun TransactionDto.titleForType(): String {
+    private fun FirestoreTransaction.titleForType(): String {
         return when (type) {
             "LOAN_PAYMENT" -> "Paid this month"
             "CASH_IN" -> "Added balance"
@@ -141,7 +158,7 @@ class NotificationViewModel @Inject constructor(
         }
     }
 
-    private fun TransactionDto.merchantFromTitle(): String {
+    private fun FirestoreTransaction.merchantFromTitle(): String {
         return title.substringAfter("\u2014", "").trim()
     }
 
