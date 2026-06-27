@@ -35,14 +35,25 @@ class HomeViewModel @Inject constructor(
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     init {
+        observeUnreadNotifications()
         observeRecommendedProducts()
         observeUser()
         loadHomeData()
     }
 
+    private fun observeUnreadNotifications() {
+        viewModelScope.launch {
+            sessionManager.unreadNotificationCount.collectLatest { count ->
+                _uiState.value = _uiState.value.copy(notificationBadgeCount = count)
+            }
+        }
+    }
+
     private fun observeUser() {
         val uid = sessionManager.getToken()
         if (uid != null) {
+            sessionManager.refreshUnreadNotificationCount(uid)
+
             viewModelScope.launch {
                 syncLocalUser(uid)
 

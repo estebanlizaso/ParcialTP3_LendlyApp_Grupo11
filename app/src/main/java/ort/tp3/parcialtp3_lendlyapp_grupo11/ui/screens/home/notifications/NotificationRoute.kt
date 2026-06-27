@@ -21,6 +21,7 @@ fun NotificationRoute(
         onNextMonthClick = viewModel::onNextMonthClick,
         onDateClick = viewModel::onDateSelected,
         onNotificationClick = viewModel::onNotificationSelected,
+        onNotificationDismiss = viewModel::onNotificationDismissed,
         onDismissDayDialog = viewModel::onDismissDayDialog
     )
 }

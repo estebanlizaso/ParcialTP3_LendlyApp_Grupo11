@@ -6,6 +6,7 @@ data class HomeUiState(
     val balance: String = "₱0.00",
     val loans: List<HomeLoanUi> = emptyList(),
     val products: List<HomeProductUi> = emptyList(),
+    val notificationBadgeCount: Int = 0,
     val error: String? = null
 )
 

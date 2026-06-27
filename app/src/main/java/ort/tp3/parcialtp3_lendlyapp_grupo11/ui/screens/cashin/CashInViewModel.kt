@@ -47,7 +47,7 @@ class CashInViewModel @Inject constructor(
                 // 3. Guardar la transacción para notificaciones por fecha
                 val now = Date()
                 val sourceKey = CashInSourceCatalog.keyFromName(selectedSource)
-                firestoreRepository.saveTransaction(
+                val transactionId = firestoreRepository.saveTransaction(
                     uid = uid,
                     transaction = FirestoreTransaction(
                         type = "CASH_IN",
@@ -63,6 +63,9 @@ class CashInViewModel @Inject constructor(
                         referenceNumber = generateReferenceNumber(now)
                     )
                 )
+                transactionId?.let { id ->
+                    sessionManager.addUnreadNotificationId(uid, id)
+                }
 
                 // 4. Actualizar en Room (Local) para feedback instantáneo
                 userDao.updateAccountBalance(uid, newBalance)

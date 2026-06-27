@@ -28,6 +28,7 @@ class NotificationViewModel @Inject constructor(
     val uiState: StateFlow<NotificationUiState> = _uiState.asStateFlow()
 
     private var itemsByDate: Map<String, List<NotificationDayItemUi>> = emptyMap()
+    private var userId: String? = null
 
     init {
         loadNotifications()
@@ -69,6 +70,22 @@ class NotificationViewModel @Inject constructor(
         )
     }
 
+    fun onNotificationDismissed(item: NotificationDayItemUi) {
+        userId?.let { uid ->
+            sessionManager.archiveNotificationId(uid, item.id)
+        }
+
+        val updatedItems = _uiState.value.notifications.filterNot { it.id == item.id }
+
+        itemsByDate = updatedItems.groupBy { it.dateKey }
+
+        _uiState.value = _uiState.value.copy(
+            notifications = updatedItems,
+            markedDateKeys = itemsByDate.keys,
+            selectedDayItems = _uiState.value.selectedDate?.let { itemsByDate[it.dateKey].orEmpty() }.orEmpty()
+        )
+    }
+
     fun onDismissDayDialog() {
         _uiState.value = _uiState.value.copy(
             selectedDate = null,
@@ -89,6 +106,8 @@ class NotificationViewModel @Inject constructor(
                     )
                     return@launch
                 }
+                userId = uid
+                sessionManager.clearUnreadNotificationIds(uid)
 
                 val transactions = firestoreRepository.getUserTransactions(uid).mapNotNull { transaction ->
                     transaction.toNotificationItem()
@@ -99,12 +118,13 @@ class NotificationViewModel @Inject constructor(
                 val items = (transactions + loanDueDates).sortedWith(
                     compareBy<NotificationDayItemUi> { it.dateKey }.thenBy { it.timeLabel }
                 )
+                val visibleItems = items.filterNot { it.id in sessionManager.getArchivedNotificationIds(uid) }
 
-                itemsByDate = items.groupBy { it.dateKey }
+                itemsByDate = visibleItems.groupBy { it.dateKey }
 
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    notifications = items,
+                    notifications = visibleItems,
                     markedDateKeys = itemsByDate.keys
                 )
             } catch (e: Exception) {

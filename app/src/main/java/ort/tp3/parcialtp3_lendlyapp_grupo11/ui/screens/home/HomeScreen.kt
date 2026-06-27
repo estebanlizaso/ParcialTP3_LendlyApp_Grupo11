@@ -46,6 +46,7 @@ fun HomeScreen(
         HomeTopBar(
             avatarUrl = uiState.avatarUrl,
             modifier = Modifier.padding(horizontal = 24.dp),
+            notificationBadgeCount = uiState.notificationBadgeCount,
             onNotificationClick = onNotificationClick
         )
 

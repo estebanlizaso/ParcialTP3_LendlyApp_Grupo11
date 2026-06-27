@@ -16,8 +16,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,6 +55,7 @@ fun NotificationScreen(
     onNextMonthClick: () -> Unit,
     onDateClick: (CalendarDayUi) -> Unit,
     onNotificationClick: (NotificationDayItemUi) -> Unit,
+    onNotificationDismiss: (NotificationDayItemUi) -> Unit,
     onDismissDayDialog: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -98,14 +104,16 @@ fun NotificationScreen(
                         NotificationGroup(
                             title = "Today",
                             items = todayItems,
-                            onNotificationClick = onNotificationClick
+                            onNotificationClick = onNotificationClick,
+                            onNotificationDismiss = onNotificationDismiss
                         )
 
                         Spacer(modifier = Modifier.height(26.dp))
                         NotificationGroup(
                             title = "Activity",
                             items = otherItems,
-                            onNotificationClick = onNotificationClick
+                            onNotificationClick = onNotificationClick,
+                            onNotificationDismiss = onNotificationDismiss
                         )
                     }
                 }
@@ -179,18 +187,22 @@ private fun EmptyNotificationsMessage() {
 private fun NotificationGroup(
     title: String,
     items: List<NotificationDayItemUi>,
-    onNotificationClick: (NotificationDayItemUi) -> Unit
+    onNotificationClick: (NotificationDayItemUi) -> Unit,
+    onNotificationDismiss: (NotificationDayItemUi) -> Unit
 ) {
     if (items.isEmpty()) return
 
     Column(verticalArrangement = Arrangement.spacedBy(18.dp)) {
         NotificationSection(title = title)
         items.forEach { item ->
-            NotificationItem(
-                item = item,
-                unread = item.type == NotificationDayItemType.LOAN_DUE_DATE,
-                onClick = { onNotificationClick(item) }
-            )
+            key(item.id) {
+                NotificationItem(
+                    item = item,
+                    unread = item.type == NotificationDayItemType.LOAN_DUE_DATE,
+                    onClick = { onNotificationClick(item) },
+                    onDismiss = { onNotificationDismiss(item) }
+                )
+            }
         }
     }
 }
@@ -208,6 +220,37 @@ private fun NotificationSection(title: String) {
 
 @Composable
 private fun NotificationItem(
+    item: NotificationDayItemUi,
+    unread: Boolean,
+    onClick: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    val dismissState = rememberSwipeToDismissBoxState(
+        positionalThreshold = { totalDistance -> totalDistance * 0.78f }
+    )
+
+    LaunchedEffect(dismissState.currentValue) {
+        if (dismissState.currentValue == SwipeToDismissBoxValue.StartToEnd) {
+            onDismiss()
+        }
+    }
+
+    SwipeToDismissBox(
+        state = dismissState,
+        backgroundContent = {},
+        enableDismissFromStartToEnd = true,
+        enableDismissFromEndToStart = false
+    ) {
+        NotificationItemContent(
+            item = item,
+            unread = unread,
+            onClick = onClick
+        )
+    }
+}
+
+@Composable
+private fun NotificationItemContent(
     item: NotificationDayItemUi,
     unread: Boolean,
     onClick: () -> Unit
@@ -305,6 +348,7 @@ fun NotificationScreenPreview() {
             onNextMonthClick = {},
             onDateClick = {},
             onNotificationClick = {},
+            onNotificationDismiss = {},
             onDismissDayDialog = {}
         )
     }
