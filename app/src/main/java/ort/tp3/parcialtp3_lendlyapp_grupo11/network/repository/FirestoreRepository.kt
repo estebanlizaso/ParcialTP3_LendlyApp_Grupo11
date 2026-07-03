@@ -1,6 +1,7 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.tasks.await
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.UserScoring
@@ -53,7 +54,9 @@ class FirestoreRepository {
                 availableBalance = initialBalance,
                 eligible = true
             )
-            db.collection("users").document(uid).set(initialScoring).await()
+            db.collection("users").document(uid)
+                .set(initialScoring, SetOptions.merge())
+                .await()
         } catch (e: Exception) {
             throw e
         }
@@ -142,11 +145,13 @@ class FirestoreRepository {
     }
 
     /**
-     * Actualiza el scoring de un usuario en Firestore.
+     * Actualiza el scoring de un usuario en Firestore de forma no destructiva.
      */
     suspend fun updateScoring(uid: String, scoring: UserScoring) {
         try {
-            db.collection("users").document(uid).set(scoring).await()
+            db.collection("users").document(uid)
+                .set(scoring, SetOptions.merge())
+                .await()
         } catch (e: Exception) {
             throw e
         }
