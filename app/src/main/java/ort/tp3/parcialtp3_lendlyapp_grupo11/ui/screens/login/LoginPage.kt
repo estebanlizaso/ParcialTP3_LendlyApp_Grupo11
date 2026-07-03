@@ -34,6 +34,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.login.AppTextField
 fun LoginPage(
     modifier: Modifier = Modifier,
     onLoginSuccess: () -> Unit,
+    onNavigateToRegister: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     // estado de la UI
@@ -42,8 +43,6 @@ fun LoginPage(
     var emailValue by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
-
-    val interBold = FontFamily(Font(R.font.interbold, FontWeight.Bold))
     val interRegular = FontFamily(Font(R.font.interregular, FontWeight.Normal))
     val interSemiBold = FontFamily(Font(R.font.intersemibold, FontWeight.SemiBold))
 
@@ -162,8 +161,31 @@ fun LoginPage(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp)
-                .navigationBarsPadding() // separar de los botones de android
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Don't have an account? ",
+                color = Color(0xFF6B7280),
+                fontFamily = interRegular,
+                fontSize = 14.sp
+            )
+            Text(
+                text = "Sign up",
+                color = Color(0xFF4C662B),
+                fontFamily = interSemiBold,
+                fontSize = 14.sp,
+                modifier = Modifier.clickable { onNavigateToRegister() }
+            )
+        }
+        
+        Spacer(modifier = Modifier.navigationBarsPadding())
     }
 }
 
@@ -171,6 +193,7 @@ fun LoginPage(
 @Composable
 fun LoginPagePreview() {
     LoginPage(
-        onLoginSuccess = { }
+        onLoginSuccess = { },
+        onNavigateToRegister = { }
     )
 }

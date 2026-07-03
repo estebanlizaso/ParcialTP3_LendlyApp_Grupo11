@@ -154,6 +154,9 @@ fun AppNavigation(
                         navController.navigate(AppRoute.HOME) {
                             popUpTo(AppRoute.LOGIN) { inclusive = true }
                         }
+                    },
+                    onNavigateToRegister = {
+                        navController.navigate(AppRoute.VERIFY_PHONE_NUMBER)
                     }
                 )
             }
