@@ -36,7 +36,8 @@ fun AppTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     textColor: Color = Color.Black,
     labelColor: Color = Color(0xFF454745),
-    unfocusedBorderColor: Color = Color(0xFF6A6C6A)
+    unfocusedBorderColor: Color = Color(0xFF6A6C6A),
+    enabled: Boolean = true
 ) {
     val interMedium = FontFamily(Font(R.font.inter_medium, FontWeight.Medium))
     val interRegular = FontFamily(Font(R.font.interregular, FontWeight.Normal))
@@ -52,13 +53,14 @@ fun AppTextField(
         }
         
         if (labelText != null) {
+            val labelAlpha = if (enabled) 1.0f else 0.6f
             Text(
                 text = labelText,
                 fontFamily = interMedium,
                 fontSize = 14.sp,
                 lineHeight = 20.sp,
                 letterSpacing = 0.1.sp,
-                color = labelColor,
+                color = labelColor.copy(alpha = labelAlpha),
                 modifier = Modifier.padding(bottom = 8.dp)
             )
         }
@@ -67,12 +69,13 @@ fun AppTextField(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth(),
+            enabled = enabled,
             isError = errorMessage != null,
             shape = RoundedCornerShape(12.dp),
             textStyle = TextStyle(
                 fontFamily = interRegular,
                 fontSize = 16.sp,
-                color = textColor
+                color = if (enabled) textColor else textColor.copy(alpha = 0.6f)
             ),
             visualTransformation = visualTransformation,
             prefix = prefix,
@@ -81,7 +84,10 @@ fun AppTextField(
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color(0xFF4ADE80),
                 unfocusedBorderColor = unfocusedBorderColor,
-                errorBorderColor = Color.Red
+                errorBorderColor = Color.Red,
+                disabledBorderColor = unfocusedBorderColor.copy(alpha = 0.5f),
+                disabledTextColor = textColor.copy(alpha = 0.6f),
+                disabledContainerColor = Color(0xFFF9F9F9)
             )
         )
     }

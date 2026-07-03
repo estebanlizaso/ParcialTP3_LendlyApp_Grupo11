@@ -166,7 +166,8 @@ fun ProfileDetailPage(
                         errorMessage = emailError,
                         labelColor = darkLabelColor,
                         textColor = inputTextGray,
-                        unfocusedBorderColor = darkBorder
+                        unfocusedBorderColor = darkBorder,
+                        enabled = false
                     )
 
                     Spacer(modifier = Modifier.height(24.dp))
