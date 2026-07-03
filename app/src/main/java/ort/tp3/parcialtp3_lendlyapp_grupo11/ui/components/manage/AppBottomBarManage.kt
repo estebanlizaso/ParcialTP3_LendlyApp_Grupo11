@@ -13,7 +13,8 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppButton
 @Composable
 fun AppBottomBar(
     buttonText: String = "Next",
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    isLoading: Boolean = false
 ) {
     Column(
         modifier = Modifier
@@ -31,7 +32,8 @@ fun AppBottomBar(
         AppButton(
             text = buttonText,
             modifier = Modifier.fillMaxWidth(),
-            onClick = onClick
+            onClick = onClick,
+            isLoading = isLoading
         )
     }
 }
