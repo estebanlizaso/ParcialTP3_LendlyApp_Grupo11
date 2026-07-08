@@ -2,8 +2,10 @@ package ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository
 
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.tasks.await
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.FirestoreTransaction
+import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.UserScoring
 
 /**
@@ -32,7 +34,7 @@ class FirestoreRepository {
                 null
             }
         } catch (e: Exception) {
-            null
+            throw e
         }
     }
 
@@ -43,15 +45,22 @@ class FirestoreRepository {
      */
     suspend fun createInitialScoring(uid: String, initialBalance: Double) {
         try {
+            // Generar credit score aleatorio entre 100 y 850, múltiplo de 10
+            val randomScore = (10..85).random() * 10
+            // Calcular límite: 15000 * (score / 100)
+            val calculatedLimit = 15000.0 * (randomScore.toDouble() / 100.0)
+
             val initialScoring = UserScoring(
-                creditScore = 500,
-                loanLimit = 15000.0,
+                creditScore = randomScore,
+                loanLimit = calculatedLimit,
                 availableBalance = initialBalance,
                 eligible = true
             )
-            db.collection("users").document(uid).set(initialScoring).await()
+            db.collection("users").document(uid)
+                .set(initialScoring, SetOptions.merge())
+                .await()
         } catch (e: Exception) {
-            // En producción aquí se debería loguear el error
+            throw e
         }
     }
 
@@ -66,7 +75,7 @@ class FirestoreRepository {
                 .update("availableBalance", newBalance)
                 .await()
         } catch (e: Exception) {
-            // Manejo de error
+            throw e
         }
     }
 
@@ -74,6 +83,9 @@ class FirestoreRepository {
      * Guarda un nuevo préstamo en la sub-colección 'loans' del usuario.
      * @return ID generado por Firestore, o null si no se pudo guardar.
      */
+    suspend fun saveLoan(uid: String, loan: LoanDto) {
+        try {
+            db.collection("users").document(uid)
     suspend fun saveLoan(uid: String, loan: ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto): String? {
         return try {
             val document = db.collection("users").document(uid)
@@ -83,6 +95,7 @@ class FirestoreRepository {
 
             document.id
         } catch (e: Exception) {
+            throw e
             null
         }
     }
@@ -90,7 +103,7 @@ class FirestoreRepository {
     /**
      * Obtiene todos los préstamos del usuario desde Firestore.
      */
-    suspend fun getUserLoans(uid: String): List<ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto> {
+    suspend fun getUserLoans(uid: String): List<LoanDto> {
         return try {
             val snapshot = db.collection("users").document(uid)
                 .collection("loans")
@@ -98,7 +111,7 @@ class FirestoreRepository {
                 .await()
 
             snapshot.documents.mapNotNull { doc ->
-                ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto(
+                LoanDto(
                     id = doc.id,
                     lender = doc.getString("lender") ?: "",
                     lenderLogo = doc.getString("lenderLogo") ?: "",
@@ -114,11 +127,42 @@ class FirestoreRepository {
                     startDate = doc.getString("startDate") ?: "",
                     endDate = doc.getString("endDate") ?: "",
                     paidInstallments = doc.getLong("paidInstallments")?.toInt() ?: 0,
-                    totalInstallments = doc.getLong("totalInstallments")?.toInt() ?: 0
+                    totalInstallments = doc.getLong("totalInstallments")?.toInt() ?: 0,
+                    transactionNumber = doc.getString("transactionNumber") ?: ""
                 )
             }
         } catch (e: Exception) {
-            emptyList()
+            throw e
+        }
+    }
+
+    /**
+     * Actualiza un préstamo existente en Firestore.
+     */
+    suspend fun updateLoan(uid: String, loan: LoanDto) {
+        try {
+            if (loan.id.isEmpty()) return
+
+            db.collection("users").document(uid)
+                .collection("loans")
+                .document(loan.id)
+                .set(loan)
+                .await()
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    /**
+     * Actualiza el scoring de un usuario en Firestore de forma no destructiva.
+     */
+    suspend fun updateScoring(uid: String, scoring: UserScoring) {
+        try {
+            db.collection("users").document(uid)
+                .set(scoring, SetOptions.merge())
+                .await()
+        } catch (e: Exception) {
+            throw e
         }
     }
 

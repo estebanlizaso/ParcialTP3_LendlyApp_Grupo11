@@ -7,13 +7,15 @@ import androidx.lifecycle.ViewModel
 import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.AuthRepository
+import kotlinx.coroutines.tasks.await
 import ort.tp3.parcialtp3_lendlyapp_grupo11.SessionManager
 import ort.tp3.parcialtp3_lendlyapp_grupo11.data.local.dao.UserDao
 import ort.tp3.parcialtp3_lendlyapp_grupo11.data.local.entity.UserEntity
@@ -31,7 +33,8 @@ class RegisterViewModel @Inject constructor(
     private val sessionManager: SessionManager,
     private val userDao: UserDao,
     private val firestoreRepository: ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.FirestoreRepository,
-    @ApplicationContext private val context: Context
+    private val firestore: FirebaseFirestore,
+    @param:ApplicationContext private val context: Context
 ) : ViewModel() {
 
     var uiState by mutableStateOf(RegisterUiState())
@@ -193,15 +196,41 @@ class RegisterViewModel @Inject constructor(
 
                                 // Crear scoring y balance inicial en Firestore
                                 firestoreRepository.createInitialScoring(uid, initialBalance)
+                                
+                                // Obtener el scoring recién creado de Firestore para sincronizar Room
+                                val scoring = firestoreRepository.getUserScoring(uid)
+
+                                // Guardar datos personales en Firestore (Merge)
+                                val profileData = hashMapOf(
+                                    "firstName" to firstName,
+                                    "lastName" to lastName,
+                                    "email" to email,
+                                    "birthDay" to day,
+                                    "birthMonth" to month,
+                                    "birthYear" to year,
+                                    "address" to address,
+                                    "city" to city,
+                                    "postalCode" to postalCode,
+                                    "countryCode" to countryCode,
+                                    "phoneNumber" to phone
+                                )
+                                
+                                try {
+                                    firestore.collection("users").document(uid)
+                                        .set(profileData, SetOptions.merge())
+                                        .await()
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
 
                                 userDao.insertUser(
                                     UserEntity(
                                         uid = uid,
                                         email = email,
                                         fullName = "$firstName $lastName",
-                                    avatar = initialData["avatar"] as? String ?: "https://i.pravatar.cc/150?img=3",
-                                    creditScore = (initialData["creditScore"] as? Double)?.toInt() ?: 720,
-                                        accountBalance = initialBalance,
+                                        avatar = initialData["avatar"] as? String ?: "https://i.pravatar.cc/150?img=3",
+                                        creditScore = scoring?.creditScore ?: 500,
+                                        accountBalance = scoring?.availableBalance ?: initialBalance,
                                         birthDate = "$year-$month-$day",
                                         address = "$address, $city",
                                         phone = "+$countryCode-$phone"
@@ -217,7 +246,6 @@ class RegisterViewModel @Inject constructor(
                     val message = when (val exception = task.exception) {
                         is com.google.firebase.auth.FirebaseAuthUserCollisionException -> "This email is already in use"
                         is com.google.firebase.auth.FirebaseAuthInvalidCredentialsException -> "The email address is badly formatted"
-                        is com.google.firebase.auth.FirebaseAuthWeakPasswordException -> "The password is too weak"
                         else -> exception?.localizedMessage ?: "Registration failed"
                     }
                     uiState = RegisterUiState(errorMessage = message)
@@ -238,6 +266,7 @@ class RegisterViewModel @Inject constructor(
             reader.close()
             data
         } catch (e: Exception) {
+            e.printStackTrace()
             emptyMap()
         }
     }

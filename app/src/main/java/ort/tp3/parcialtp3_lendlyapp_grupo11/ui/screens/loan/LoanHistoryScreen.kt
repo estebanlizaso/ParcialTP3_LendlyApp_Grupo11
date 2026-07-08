@@ -2,6 +2,8 @@ package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,30 +15,37 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Locale
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.AppTopBar
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.icons.CalendarIcon
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.*
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.utils.ImageHelper
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.LoanUiState
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.LoanViewModel
 
 @Composable
 fun LoanHistoryScreen(
     viewModel: LoanViewModel,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onLoanClick: (LoanDto) -> Unit
 ) {
     val uiState by viewModel.loansState.collectAsState()
 
@@ -94,10 +103,10 @@ fun LoanHistoryScreen(
                         ) {
                         // Present Section
                         item {
-                            SectionHeader(title = "Present")
+                            SectionHeader(title = stringResource(id = R.string.loan_history_pending_payments))
                         }
                         items(activeLoans) { loan ->
-                            ActiveLoanItem(loan)
+                            ActiveLoanItem(loan, onClick = { onLoanClick(loan) })
                             HorizontalDivider(
                                 modifier = Modifier.padding(horizontal = 16.dp),
                                 thickness = 0.5.dp,
@@ -108,7 +117,7 @@ fun LoanHistoryScreen(
                         // Recent Loans Section
                         item {
                             Spacer(Modifier.height(32.dp))
-                            SectionHeader(title = "Recent Loans")
+                            SectionHeader(title = stringResource(id = R.string.loan_history_paid_loans))
                         }
                         items(historyLoans) { loan ->
                             RecentLoanItem(loan)
@@ -150,10 +159,11 @@ fun SectionHeader(title: String) {
 }
 
 @Composable
-fun ActiveLoanItem(loan: LoanDto) {
+fun ActiveLoanItem(loan: LoanDto, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable(onClick = onClick)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -164,13 +174,31 @@ fun ActiveLoanItem(loan: LoanDto) {
                 .background(Color(0xFFF9F9F9), CircleShape),
             contentAlignment = Alignment.Center
         ) {
-            AsyncImage(
-                model = loan.lenderLogo,
-                contentDescription = null,
-                modifier = Modifier.size(24.dp),
-                contentScale = ContentScale.Fit,
-                error = painterResource(id = R.drawable.brand_apple) // Fallback
-            )
+            var isError by remember { mutableStateOf(false) }
+            val localLogo = remember(loan.lender) { ImageHelper.getLocalBrandLogo(loan.lender) }
+
+            if (isError && localLogo != null) {
+                Image(
+                    painter = painterResource(id = localLogo),
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp),
+                    contentScale = ContentScale.Fit
+                )
+            } else {
+                AsyncImage(
+                    model = loan.lenderLogo,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .then(
+                            if (isError && localLogo == null) Modifier.border(0.5.dp, Color.Red, CircleShape) else Modifier
+                        ),
+                    contentScale = ContentScale.Fit,
+                    onState = { state ->
+                        isError = state is coil.compose.AsyncImagePainter.State.Error
+                    }
+                )
+            }
         }
         
         Spacer(Modifier.width(16.dp))
@@ -196,8 +224,11 @@ fun ActiveLoanItem(loan: LoanDto) {
         }
         
         Column(horizontalAlignment = Alignment.End) {
+            val nextPaymentLabel = remember(loan.nextPaymentLabel, loan.startDate, loan.paidInstallments) {
+                loan.nextPaymentLabel ?: calculateNextPaymentLabel(loan.startDate, loan.paidInstallments)
+            }
             Text(
-                text = "Fees of february",
+                text = nextPaymentLabel,
                 style = TextStyle(
                     fontFamily = interFonts,
                     fontSize = 12.sp,
@@ -281,5 +312,22 @@ fun RecentLoanItem(loan: LoanDto) {
                 )
             )
         }
+    }
+}
+
+private fun calculateNextPaymentLabel(startDate: String, paidInstallments: Int): String {
+    return try {
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        val date = sdf.parse(startDate) ?: return "Cuota pendiente"
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        // La cuota 1 se paga al mes siguiente de la fecha de inicio
+        calendar.add(Calendar.MONTH, paidInstallments + 1)
+
+        val monthFormat = SimpleDateFormat("MMMM", Locale.US)
+        val monthName = monthFormat.format(calendar.time)
+        "Fee of ${monthName.replaceFirstChar { it.uppercase() }}"
+    } catch (e: Exception) {
+        "Pending fee"
     }
 }

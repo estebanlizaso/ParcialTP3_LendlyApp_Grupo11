@@ -50,6 +50,8 @@ fun LoanApplyScreen(
     var selectedPlan by remember(plans) { mutableStateOf(plans[0]) }
     var selectedPurpose by remember { mutableStateOf("Educational") }
 
+    var selectedPurpose by remember { mutableStateOf("Shopping") }
+
     // Observamos el scoring de Firestore
     val userScoring by viewModel.userScoring.collectAsState()
 
@@ -167,7 +169,7 @@ fun LoanApplyScreen(
                     description = stringResource(R.string.loan_apply_select_purpose)
                 ) {
                     AppDropdownSelector(
-                        options = listOf("Educational", "Business", "Personal", "Medical"),
+                        options = listOf("Shopping", "Electronics", "Sports", "Educational", "Personal", "Business", "Medical"),
                         selectedOption = selectedPurpose,
                         onOptionSelected = { selectedPurpose = it }
                     )
@@ -176,9 +178,12 @@ fun LoanApplyScreen(
 
             Spacer(Modifier.height(20.dp))
 
+            val lenderConfig = ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanBusinessRules.lendersByPurpose[selectedPurpose]
+
             // Summary
             LoanSummary(
                 amount = amount,
+                lenderName = lenderConfig?.name ?: "Rayland Partners",
                 onApplyClick = {
                     val amountValue = amount.replace(",", "").toDoubleOrNull() ?: 0.0
                     // Solo disparamos la validación.

@@ -8,11 +8,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,11 +69,20 @@ fun LoanListItem(
                     modifier = Modifier.size(28.dp)
                 )
             } else {
+                var isError by remember { mutableStateOf(false) }
+
                 AsyncImage(
                     model = logoUrl,
                     contentDescription = "$brandName logo",
                     contentScale = ContentScale.Fit,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier
+                        .size(24.dp)
+                        .then(
+                            if (isError) Modifier.border(0.5.dp, Color.Red, CircleShape) else Modifier
+                        ),
+                    onState = { state ->
+                        isError = state is coil.compose.AsyncImagePainter.State.Error
+                    }
                 )
             }
         }

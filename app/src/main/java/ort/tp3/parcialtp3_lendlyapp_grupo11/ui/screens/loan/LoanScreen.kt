@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.stringResource
 import kotlinx.coroutines.launch
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.LoanUiState
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.*
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.loan.HIWCard
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.loan.InfoContainer
@@ -31,15 +32,21 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.viewmodels.LoanApplyUiState
 fun LoanScreen(
     viewModel: LoanViewModel,
     onNavigateToApply: () -> Unit,
-    onNotificationClick: () -> Unit = {}
+    onNotificationClick: () -> Unit = {},
+    onSeeAllLoansClick: () -> Unit = {}
 ) {
     val avatarUrl by viewModel.avatarUrl.collectAsState()
     val applyState by viewModel.applyState.collectAsState()
+    val uiState by viewModel.loansState.collectAsState()
     // Observamos el scoring de Firestore de forma reactiva
     val userScoring by viewModel.userScoring.collectAsState()
 
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+
+    androidx.compose.runtime.LaunchedEffect(Unit) {
+        viewModel.fetchLoans()
+    }
 
     // Formateamos el monto máximo dinámicamente según lo configurado en Firestore
     val maxAmountText = userScoring?.let {
@@ -99,6 +106,36 @@ fun LoanScreen(
                 ),
                 modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 16.dp)
             )
+
+            // Unpaid Loans Section (copied logic from HomeScreen)
+            if (uiState is LoanUiState.Success) {
+                val activeLoans = (uiState as LoanUiState.Success).data.loans
+                    .filter { it.status.equals("ACTIVE", ignoreCase = true) }
+                
+                if (activeLoans.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(24.dp))
+                    SectionHeader(
+                        title = stringResource(id = R.string.loan_history_pending_payments),
+                        modifier = Modifier.padding(horizontal = 24.dp),
+                        onActionClick = onSeeAllLoansClick
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Column(
+                        modifier = Modifier.padding(horizontal = 24.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        activeLoans.take(2).forEach { loan ->
+                            LoanListItem(
+                                brandName = loan.lender,
+                                logoUrl = loan.lenderLogo,
+                                amount = "₱%,.0f".format(java.util.Locale.US, loan.installmentAmount),
+                                feeLabel = loan.nextPaymentLabel ?: "Next payment pending"
+                            )
+                        }
+                    }
+                }
+            }
 
             // How it works section
             Column(modifier = Modifier.padding(horizontal = 24.dp, vertical = 24.dp)) {

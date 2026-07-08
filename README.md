@@ -59,11 +59,11 @@ Para garantizar la calidad y coherencia del código generado, las consultas a la
 
 - [x] **Incorporar Hilt y Dagger:** Integrado satisfactoriamente para la inyección de dependencias en el proyecto.
 - [ ] **Completar pantallas pendientes:**
-- [ ] Loan Detail (`loan_detail/{loanId}`)
+- [X] Loan Detail (`loan_detail/{loanId}`)
 - [ ] Conectar History al endpoint `GET /transactions`
-- [ ] Exponer Loan List desde el tab de Loans
+- [X] Exponer Loan List desde el tab de Loans
 - [x] **Interceptor de OkHttp:** Implementado en el `SessionManager` para propagar token y `userId`, eliminando datos hardcodeados.
 - [x] **Firebase Authentication:** Configurado para el login y la persistencia de sesión.
 - [x] **Persistencia con Room:** Implementada para el manejo local de productos, marcas y categorías.
 - [ ] **Optimización de Notificaciones:** Pendiente mejorar la pantalla con filtros por fechas históricas.
-- [ ] **Reglas de Negocio/Scoring:*
+- [X] **Reglas de Negocio/Scoring:*

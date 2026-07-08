@@ -26,6 +26,7 @@ fun TransactionPage(
     onInfoClick: () -> Unit = {},
     onMoreClick: () -> Unit = {},
     onDoneClick: () -> Unit,
+    doneButtonText: String = stringResource(id = R.string.loan_success_done),
     transactionContent: @Composable ColumnScope.() -> Unit,
     detailsContent: @Composable ColumnScope.() -> Unit
 ) {
@@ -78,7 +79,7 @@ fun TransactionPage(
 
             Box(modifier = Modifier.padding(16.dp)) {
                 AppButton(
-                    text = stringResource(id = R.string.loan_success_done),
+                    text = doneButtonText,
                     onClick = onDoneClick,
                     modifier = Modifier.fillMaxWidth()
                 )

@@ -15,7 +15,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.components.BottomNavBar
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.navigation.AppRoute
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.cashin.CashInAmountScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.cashin.CashInOptionsScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.cashin.CashInSuccessScreen
@@ -27,6 +30,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.history.TransactionDetail
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home.HomeRoute
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan.LoanApplyScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan.LoanHistoryScreen
+import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan.LoanPaymentSuccessScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan.LoanScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.loan.LoanSuccessScreen
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.login.CreatePasswordPage
@@ -91,10 +95,16 @@ fun AppNavigation(
                             }
                             if (route != currentRoute) {
                                 navController.navigate(route) {
-                                    popUpTo(AppRoute.HOME) {
+                                    // Pop up to the start destination of the graph to
+                                    // avoid building up a large stack of destinations
+                                    // on the back stack as users select items
+                                    popUpTo(navController.graph.findStartDestination().id) {
                                         saveState = true
                                     }
+                                    // Avoid multiple copies of the same destination when
+                                    // reselecting the same item
                                     launchSingleTop = true
+                                    // Restore state when reselecting a previously selected item
                                     restoreState = true
                                 }
                             }
@@ -144,6 +154,9 @@ fun AppNavigation(
                         navController.navigate(AppRoute.HOME) {
                             popUpTo(AppRoute.LOGIN) { inclusive = true }
                         }
+                    },
+                    onNavigateToRegister = {
+                        navController.navigate(AppRoute.VERIFY_PHONE_NUMBER)
                     }
                 )
             }
@@ -217,7 +230,8 @@ fun AppNavigation(
             composable(AppRoute.HOME) {
                 HomeRoute(
                     onCashInClick = { navController.navigate(AppRoute.CASH_IN_OPTIONS) },
-                    onNotificationClick = { navController.navigate(AppRoute.NOTIFICATIONS) }
+                    onNotificationClick = { navController.navigate(AppRoute.NOTIFICATIONS) },
+                    onSeeAllLoansClick = { navController.navigate(AppRoute.LOAN_HISTORY) }
                 )
             }
 
@@ -225,7 +239,8 @@ fun AppNavigation(
                 LoanScreen(
                     viewModel = loanViewModel,
                     onNavigateToApply = { navController.navigate(AppRoute.LOAN_APPLY) },
-                    onNotificationClick = { navController.navigate(AppRoute.NOTIFICATIONS) }
+                    onNotificationClick = { navController.navigate(AppRoute.NOTIFICATIONS) },
+                    onSeeAllLoansClick = { navController.navigate(AppRoute.LOAN_HISTORY) }
                 )
             }
             composable(AppRoute.LOAN_APPLY) {
@@ -238,16 +253,31 @@ fun AppNavigation(
             composable(AppRoute.LOAN_SUCCESS) {
                 LoanSuccessScreen(
                     viewModel = loanViewModel,
-                    onDone = { navController.navigate(AppRoute.LOAN_HISTORY) }
+                    onDone = {
+                        navController.navigate(AppRoute.LOAN_HISTORY) {
+                            // Eliminamos las pantallas de solicitud (Apply y Success) de la pila
+                            // de forma que al volver desde el historial, lleguemos a la raíz de Loan.
+                            popUpTo(AppRoute.LOAN) { inclusive = false }
+                        }
+                    }
                 )
             }
             composable(AppRoute.LOAN_HISTORY) {
                 LoanHistoryScreen(
                     viewModel = loanViewModel,
-                    onBack = {
-                        navController.navigate(AppRoute.LOAN) {
-                            popUpTo(AppRoute.LOAN) { inclusive = true }
-                        }
+                    onBack = { navController.popBackStack() },
+                    onLoanClick = { loan ->
+                        loanViewModel.selectLoanForPayment(loan)
+                        navController.navigate(AppRoute.LOAN_PAYMENT_SUCCESS)
+                    }
+                )
+            }
+            composable(AppRoute.LOAN_PAYMENT_SUCCESS) {
+                LoanPaymentSuccessScreen(
+                    viewModel = loanViewModel,
+                    onClose = { navController.popBackStack() },
+                    onSuccess = {
+                        navController.popBackStack()
                     }
                 )
             }

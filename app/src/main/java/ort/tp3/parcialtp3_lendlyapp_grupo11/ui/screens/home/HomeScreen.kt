@@ -34,7 +34,8 @@ fun HomeScreen(
     uiState: HomeUiState,
     modifier: Modifier = Modifier,
     onCashInClick: () -> Unit = {},
-    onNotificationClick: () -> Unit = {}
+    onNotificationClick: () -> Unit = {},
+    onSeeAllLoansClick: () -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -92,7 +93,8 @@ fun HomeScreen(
         Spacer(modifier = Modifier.height(24.dp))
         SectionHeader(
             title = "Unpaid Loans",
-            modifier = Modifier.padding(horizontal = 24.dp)
+            modifier = Modifier.padding(horizontal = 24.dp),
+            onActionClick = onSeeAllLoansClick
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -100,7 +102,7 @@ fun HomeScreen(
             modifier = Modifier.padding(horizontal = 24.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            uiState.loans.forEach { loan ->
+            uiState.loans.take(2).forEach { loan ->
                 LoanListItem(
                     brandName = loan.lender,
                     logoUrl = loan.logoUrl,
