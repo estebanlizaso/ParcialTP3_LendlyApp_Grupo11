@@ -48,8 +48,6 @@ fun LoanApplyScreen(
     }
 
     var selectedPlan by remember(plans) { mutableStateOf(plans[0]) }
-    var selectedPurpose by remember { mutableStateOf("Educational") }
-
     var selectedPurpose by remember { mutableStateOf("Shopping") }
 
     // Observamos el scoring de Firestore

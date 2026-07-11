@@ -7,6 +7,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -94,28 +96,25 @@ private fun NotificationBellButton(
             ),
         contentAlignment = Alignment.Center
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_notification_bell),
-            contentDescription = "Notifications",
-            modifier = Modifier.size(24.dp)
-        )
-
-        if (badgeCount > 0) {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .size(16.dp)
-                    .clip(CircleShape)
-                    .background(Color(0xFFE53935)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = if (badgeCount > 9) "9+" else badgeCount.toString(),
-                    color = Color.White,
-                    fontSize = 9.sp,
-                    fontWeight = FontWeight.Bold
-                )
+        BadgedBox(
+            badge = {
+                if (badgeCount > 0) {
+                    Badge(containerColor = Color(0xFFE53935)) {
+                        Text(
+                            text = if (badgeCount > 9) "9+" else badgeCount.toString(),
+                            color = Color.White,
+                            fontSize = 9.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
             }
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_notification_bell),
+                contentDescription = "Notifications",
+                modifier = Modifier.size(24.dp)
+            )
         }
     }
 }

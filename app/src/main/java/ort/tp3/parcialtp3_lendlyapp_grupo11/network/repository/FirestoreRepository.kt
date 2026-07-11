@@ -8,6 +8,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.FirestoreTransaction
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.UserScoring
 
+
 /**
  * Repositorio para manejar la comunicación con Cloud Firestore.
  */
@@ -83,10 +84,7 @@ class FirestoreRepository {
      * Guarda un nuevo préstamo en la sub-colección 'loans' del usuario.
      * @return ID generado por Firestore, o null si no se pudo guardar.
      */
-    suspend fun saveLoan(uid: String, loan: LoanDto) {
-        try {
-            db.collection("users").document(uid)
-    suspend fun saveLoan(uid: String, loan: ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanDto): String? {
+    suspend fun saveLoan(uid: String, loan: LoanDto): String? {
         return try {
             val document = db.collection("users").document(uid)
                 .collection("loans")
@@ -95,7 +93,6 @@ class FirestoreRepository {
 
             document.id
         } catch (e: Exception) {
-            throw e
             null
         }
     }

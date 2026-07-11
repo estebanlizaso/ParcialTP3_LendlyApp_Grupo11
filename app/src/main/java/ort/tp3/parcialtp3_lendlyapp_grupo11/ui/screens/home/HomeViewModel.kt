@@ -119,7 +119,7 @@ class HomeViewModel @Inject constructor(
             try {
                 val uid = sessionManager.getToken()
                 if (uid == null) {
-                    uiState = uiState.copy(isLoading = false, error = "Session not found")
+                    _uiState.value = _uiState.value.copy(isLoading = false, error = "Session not found")
                     return@launch
                 }
 
@@ -134,9 +134,7 @@ class HomeViewModel @Inject constructor(
 
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    balance = formatMoney(userResponse.user.availableBalance),
-                    avatarUrl = userResponse.user.avatar,
-                    loans = loansResponse.loans
+                    loans = loans
                         .filter { it.status == "ACTIVE" }
                         // Ordenamos por fecha de inicio descendente (asumiendo formato yyyy-MM-dd)
                         .sortedByDescending { it.startDate }

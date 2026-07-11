@@ -289,16 +289,9 @@ class ManageViewModel @Inject constructor(
         viewModelScope.launch {
             // Sincronizamos con el JSON siempre para que se vea el score correcto del usuario actual
             try {
-                val inputStream = context.assets.open("initial_users.json")
-                val reader = InputStreamReader(inputStream)
-                val users: List<UserEntity> = Gson().fromJson(reader, object : TypeToken<List<UserEntity>>() {}.type)
-                reader.close()
-
-                val currentUserData = users.find { it.uid == uid }
-                if (currentUserData != null) {
-                    userDao.updateCreditScore(uid, currentUserData.creditScore)
-                    userDao.updateAvatar(uid, currentUserData.avatar)
-                reader.use { _ ->
+                context.assets.open("initial_users.json").use { inputStream ->
+                    val reader = InputStreamReader(inputStream)
+                    val users: List<UserEntity> = Gson().fromJson(reader, object : TypeToken<List<UserEntity>>() {}.type)
                     val currentUserData = users.find { it.uid == uid }
                     if (currentUserData != null) {
                         userDao.updateCreditScore(uid, currentUserData.creditScore)
