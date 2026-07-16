@@ -55,3 +55,15 @@ Para garantizar la calidad y coherencia del código generado, las consultas a la
 ```[Code]
 [TIPO] Descripción breve
 ```
+### Mejoras sugeridas por el profesor
+
+- [x] **Incorporar Hilt y Dagger:** Integrado satisfactoriamente para la inyección de dependencias en el proyecto.
+- [ ] **Completar pantallas pendientes:**
+- [X] Loan Detail (`loan_detail/{loanId}`)
+- [ ] Conectar History al endpoint `GET /transactions`
+- [X] Exponer Loan List desde el tab de Loans
+- [x] **Interceptor de OkHttp:** Implementado en el `SessionManager` para propagar token y `userId`, eliminando datos hardcodeados.
+- [x] **Firebase Authentication:** Configurado para el login y la persistencia de sesión.
+- [x] **Persistencia con Room:** Implementada para el manejo local de productos, marcas y categorías.
+- [ ] **Optimización de Notificaciones:** Pendiente mejorar la pantalla con filtros por fechas históricas.
+- [X] **Reglas de Negocio/Scoring:*

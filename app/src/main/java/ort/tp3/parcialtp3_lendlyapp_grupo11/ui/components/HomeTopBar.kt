@@ -7,6 +7,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -14,12 +16,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import ort.tp3.parcialtp3_lendlyapp_grupo11.R
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.BlackFont
@@ -29,6 +34,7 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.LightGreenText
 fun HomeTopBar(
     avatarUrl: String,
     modifier: Modifier = Modifier,
+    notificationBadgeCount: Int = 0,
     onNotificationClick: () -> Unit = {}
 ) {
     Box(
@@ -41,7 +47,10 @@ fun HomeTopBar(
         ) {
             UserAvatar(avatarUrl = avatarUrl)
             Spacer(modifier = Modifier.weight(1f))
-            NotificationBellButton(onClick = onNotificationClick)
+            NotificationBellButton(
+                badgeCount = notificationBadgeCount,
+                onClick = onNotificationClick
+            )
         }
         
         Image(
@@ -73,7 +82,10 @@ private fun UserAvatar(avatarUrl: String) {
 }
 
 @Composable
-private fun NotificationBellButton(onClick: () -> Unit) {
+private fun NotificationBellButton(
+    badgeCount: Int,
+    onClick: () -> Unit
+) {
     Box(
         modifier = Modifier
             .size(32.dp)
@@ -84,10 +96,25 @@ private fun NotificationBellButton(onClick: () -> Unit) {
             ),
         contentAlignment = Alignment.Center
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_notification_bell),
-            contentDescription = "Notifications",
-            modifier = Modifier.size(24.dp)
-        )
+        BadgedBox(
+            badge = {
+                if (badgeCount > 0) {
+                    Badge(containerColor = Color(0xFFE53935)) {
+                        Text(
+                            text = if (badgeCount > 9) "9+" else badgeCount.toString(),
+                            color = Color.White,
+                            fontSize = 9.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_notification_bell),
+                contentDescription = "Notifications",
+                modifier = Modifier.size(24.dp)
+            )
+        }
     }
 }

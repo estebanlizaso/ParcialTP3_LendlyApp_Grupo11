@@ -20,6 +20,7 @@ object AppRoute {
     const val LOAN_APPLY = "loan_apply"
     const val LOAN_SUCCESS = "loan_success"
     const val LOAN_HISTORY = "loan_history"
+    const val LOAN_PAYMENT_SUCCESS = "loan_payment_success"
     
     const val SHOP = "shop"
     const val SHOP_SEARCH = "shop_search"

@@ -33,10 +33,13 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.interFonts
 @Composable
 fun CashInAmountScreen(
     sourceName: String,
+    viewModel: CashInViewModel, // Quitamos el valor por defecto para usar la instancia compartida de AppNavigation
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
     onNextClick: () -> Unit = {}
 ) {
+    val amountToCashIn = 2500.0 // Valor hardcodeado según el diseño actual
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -90,9 +93,12 @@ fun CashInAmountScreen(
 
         Spacer(modifier = Modifier.weight(1f))
         AppButton(
-            text = "Next",
+            text = if (viewModel.isLoading) "Processing..." else "Next",
             modifier = Modifier.fillMaxWidth(),
-            onClick = onNextClick
+            enabled = !viewModel.isLoading,
+            onClick = {
+                viewModel.performCashIn(amountToCashIn, onNextClick)
+            }
         )
         Spacer(modifier = Modifier.height(16.dp))
     }
@@ -101,7 +107,8 @@ fun CashInAmountScreen(
 @Preview(showBackground = true)
 @Composable
 fun CashInAmountScreenPreview() {
+    // Preview no funcionará fácilmente con ViewModel inyectado, pero lo dejamos como referencia
     ParcialTP3_LendlyApp_Grupo11Theme {
-        CashInAmountScreen(sourceName = "BPI")
+        // CashInAmountScreen(sourceName = "BPI", viewModel = ...)
     }
 }

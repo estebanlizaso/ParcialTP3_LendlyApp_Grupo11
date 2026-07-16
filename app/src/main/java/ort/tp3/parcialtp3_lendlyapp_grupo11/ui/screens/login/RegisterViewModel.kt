@@ -4,13 +4,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.RegisterRequestDto
-import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.AuthRepository
+import kotlinx.coroutines.tasks.await
 import ort.tp3.parcialtp3_lendlyapp_grupo11.SessionManager
-import retrofit2.HttpException
-import java.io.IOException
+import ort.tp3.parcialtp3_lendlyapp_grupo11.data.local.dao.UserDao
+import ort.tp3.parcialtp3_lendlyapp_grupo11.data.local.entity.UserEntity
+import java.io.InputStreamReader
+import javax.inject.Inject
 
 data class RegisterUiState(
     val isLoading: Boolean = false,
@@ -18,9 +28,13 @@ data class RegisterUiState(
     val errorMessage: String? = null
 )
 
-class RegisterViewModel(
-    private val repository: AuthRepository = AuthRepository(),
-    private val sessionManager: SessionManager
+@HiltViewModel
+class RegisterViewModel @Inject constructor(
+    private val sessionManager: SessionManager,
+    private val userDao: UserDao,
+    private val firestoreRepository: ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.FirestoreRepository,
+    private val firestore: FirebaseFirestore,
+    @param:ApplicationContext private val context: Context
 ) : ViewModel() {
 
     var uiState by mutableStateOf(RegisterUiState())
@@ -33,9 +47,10 @@ class RegisterViewModel(
     var month by mutableStateOf("")
     var year by mutableStateOf("")
     var address by mutableStateOf("")
+    var email by mutableStateOf("")
     var city by mutableStateOf("")
     var postalCode by mutableStateOf("")
-    var countryCode by mutableStateOf("63") 
+    var countryCode by mutableStateOf("")
     var phone by mutableStateOf("")
     var password by mutableStateOf("")
 
@@ -46,6 +61,7 @@ class RegisterViewModel(
     var monthError by mutableStateOf<String?>(null)
     var yearError by mutableStateOf<String?>(null)
     var addressError by mutableStateOf<String?>(null)
+    var emailError by mutableStateOf<String?>(null)
     var cityError by mutableStateOf<String?>(null)
     var postalCodeError by mutableStateOf<String?>(null)
     var countryCodeError by mutableStateOf<String?>(null)
@@ -60,6 +76,7 @@ class RegisterViewModel(
         monthError = null
         yearError = null
         addressError = null
+        emailError = null
         cityError = null
         postalCodeError = null
         countryCodeError = null
@@ -68,6 +85,13 @@ class RegisterViewModel(
         firstNameError = if (firstName.isBlank()) "Required field" else null
         lastNameError = if (lastName.isBlank()) "Required field" else null
         addressError = if (address.isBlank()) "Required field" else null
+
+        emailError = when {
+            email.isBlank() -> "Required field"
+            !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> "Invalid email format"
+            else -> null
+        }
+
         cityError = if (city.isBlank()) "Required field" else null
 
         dayError = when {
@@ -106,27 +130,47 @@ class RegisterViewModel(
             else -> null
         }
 
-        val isValid = firstNameError == null && 
-                      lastNameError == null && 
-                      dayError == null && 
-                      monthError == null && 
-                      yearError == null && 
-                      addressError == null && 
-                      cityError == null && 
-                      postalCodeError == null && 
-                      countryCodeError == null && 
+        val isValid = firstNameError == null &&
+                      lastNameError == null &&
+                      dayError == null &&
+                      monthError == null &&
+                      yearError == null &&
+                      addressError == null &&
+                      emailError == null &&
+                      cityError == null &&
+                      postalCodeError == null &&
+                      countryCodeError == null &&
                       phoneError == null
 
         return isValid
     }
 
+    fun validatePhoneNumber(): Boolean {
+        countryCodeError = when {
+            countryCode.isBlank() -> "Required"
+            !countryCode.all { it.isDigit() } -> "Only numbers"
+            countryCode.length > 3 -> "Max 3 digits"
+            else -> null
+        }
+
+        phoneError = when {
+            phone.isBlank() -> "Required"
+            !phone.all { it.isDigit() } -> "Only numbers"
+            phone.length > 8 -> "Max 8 digits"
+            phone.length < 7 -> "Min 7 digits"
+            else -> null
+        }
+
+        return countryCodeError == null && phoneError == null
+    }
+
     fun register() {
         // Clear password error
         passwordError = null
-        
+
         // Final password validation before sending
-        val isPasswordValid = password.length >= 9 && 
-                             password.any { it.isLetter() } && 
+        val isPasswordValid = password.length >= 9 &&
+                             password.any { it.isLetter() } &&
                              password.any { it.isDigit() }
 
         if (!isPasswordValid) {
@@ -134,49 +178,96 @@ class RegisterViewModel(
             return
         }
 
-        val fullPhoneNumber = "+$countryCode$phone"
-        val dateOfBirth = "$year-$month-$day"
-
         uiState = RegisterUiState(isLoading = true)
 
-        viewModelScope.launch {
-            try {
-                val request = RegisterRequestDto(
-                    firstName = firstName,
-                    lastName = lastName,
-                    dateOfBirth = dateOfBirth,
-                    address = address,
-                    city = city,
-                    postalCode = postalCode,
-                    phone = fullPhoneNumber,
-                    password = password
-                )
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val uid = task.result?.user?.uid
+                    if (uid != null) {
+                        sessionManager.saveToken(uid)
+                        viewModelScope.launch {
+                            // En registro, si por casualidad el UID ya existe en Room (sembrado), lo respetamos
+                            val existingUser = userDao.getUserById(uid).firstOrNull()
 
-                val response = repository.register(request)
+                            if (existingUser == null) {
+                                val initialData = getInitialUserData(context)
+                                val initialBalance = initialData["accountBalance"] as? Double ?: 25000.0
 
-                if (response.success) {
-                    sessionManager.saveToken(response.token)
-                    uiState = RegisterUiState(isSuccess = true)
+                                // Crear scoring y balance inicial en Firestore
+                                firestoreRepository.createInitialScoring(uid, initialBalance)
+                                
+                                // Obtener el scoring recién creado de Firestore para sincronizar Room
+                                val scoring = firestoreRepository.getUserScoring(uid)
+
+                                // Guardar datos personales en Firestore (Merge)
+                                val profileData = hashMapOf(
+                                    "firstName" to firstName,
+                                    "lastName" to lastName,
+                                    "email" to email,
+                                    "birthDay" to day,
+                                    "birthMonth" to month,
+                                    "birthYear" to year,
+                                    "address" to address,
+                                    "city" to city,
+                                    "postalCode" to postalCode,
+                                    "countryCode" to countryCode,
+                                    "phoneNumber" to phone
+                                )
+                                
+                                try {
+                                    firestore.collection("users").document(uid)
+                                        .set(profileData, SetOptions.merge())
+                                        .await()
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
+
+                                userDao.insertUser(
+                                    UserEntity(
+                                        uid = uid,
+                                        email = email,
+                                        fullName = "$firstName $lastName",
+                                        avatar = initialData["avatar"] as? String ?: "https://i.pravatar.cc/150?img=3",
+                                        creditScore = scoring?.creditScore ?: 500,
+                                        accountBalance = scoring?.availableBalance ?: initialBalance,
+                                        birthDate = "$year-$month-$day",
+                                        address = "$address, $city",
+                                        phone = "+$countryCode-$phone"
+                                    )
+                                )
+                            }
+                            uiState = RegisterUiState(isSuccess = true)
+                        }
+                    } else {
+                        uiState = RegisterUiState(errorMessage = "Registration failed")
+                    }
                 } else {
-                    uiState = RegisterUiState(errorMessage = "Registration failed, please try again")
+                    val message = when (val exception = task.exception) {
+                        is com.google.firebase.auth.FirebaseAuthUserCollisionException -> "This email is already in use"
+                        is com.google.firebase.auth.FirebaseAuthInvalidCredentialsException -> "The email address is badly formatted"
+                        else -> exception?.localizedMessage ?: "Registration failed"
+                    }
+                    uiState = RegisterUiState(errorMessage = message)
                 }
-            } catch (e: HttpException) {
-                val message = when (e.code()) {
-                    400 -> "Invalid registration data"
-                    409 -> "User already exists"
-                    500 -> "Server error, please try again later"
-                    else -> "Unexpected error: ${e.code()}"
-                }
-                uiState = RegisterUiState(errorMessage = message)
-            } catch (e: IOException) {
-                uiState = RegisterUiState(errorMessage = "No internet connection")
-            } catch (e: Exception) {
-                uiState = RegisterUiState(errorMessage = e.localizedMessage ?: "Unknown error")
             }
-        }
     }
 
     fun resetState() {
         uiState = RegisterUiState()
+    }
+
+    private fun getInitialUserData(context: Context): Map<String, Any> {
+        return try {
+            val inputStream = context.assets.open("user_initial_data.json")
+            val reader = InputStreamReader(inputStream)
+            val type = object : TypeToken<Map<String, Any>>() {}.type
+            val data: Map<String, Any> = Gson().fromJson(reader, type)
+            reader.close()
+            data
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyMap()
+        }
     }
 }

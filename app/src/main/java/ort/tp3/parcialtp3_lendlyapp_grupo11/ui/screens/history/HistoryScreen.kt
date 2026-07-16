@@ -71,11 +71,11 @@ fun HistoryScreen(
             modifier = Modifier
                 .weight(1f)
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp)
         ) {
             Spacer(modifier = Modifier.height(24.dp))
             HomeTopBar(
                 avatarUrl = uiState.avatarUrl,
+                modifier = Modifier.padding(horizontal = 24.dp),
                 onNotificationClick = onNotificationClick
             )
 
@@ -85,44 +85,64 @@ fun HistoryScreen(
                 color = BlackFont,
                 fontSize = 30.sp,
                 fontWeight = FontWeight.SemiBold,
-                fontFamily = interFonts
+                fontFamily = interFonts,
+                modifier = Modifier.padding(horizontal = 24.dp)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
-            AppSearchBar(
-                value = searchQuery,
-                onValueChange = { searchQuery = it }
-            )
+            Box(modifier = Modifier.padding(horizontal = 24.dp)) {
+                AppSearchBar(
+                    value = searchQuery,
+                    onValueChange = { searchQuery = it }
+                )
+            }
 
             Spacer(modifier = Modifier.height(18.dp))
             HistoryFilterRow(
                 filters = uiState.filters,
                 selectedFilter = selectedFilter,
-                onFilterClick = { selectedFilter = it }
+                onFilterClick = { selectedFilter = it },
+                modifier = Modifier.padding(horizontal = 24.dp)
             )
 
             Spacer(modifier = Modifier.height(18.dp))
-            HorizontalDivider(color = Color(0xFFE6E6E6))
+            HorizontalDivider(color = Color(0xFFE6E6E6), modifier = Modifier.padding(horizontal = 24.dp))
 
-            HistorySectionTitle(title = "Today")
-            HorizontalDivider(color = Color(0xFFE6E6E6))
+            Box(modifier = Modifier.padding(horizontal = 24.dp)) {
+                HistorySectionTitle(title = "Today")
+            }
+            HorizontalDivider(color = Color(0xFFE6E6E6), modifier = Modifier.padding(horizontal = 24.dp))
 
-            Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
-                filteredTransactions.forEach { transaction ->
-                    HistoryTransactionItem(
-                        transaction = transaction,
-                        onClick = { onTransactionClick(transaction.id) }
-                    )
+            HistoryStatusMessage(uiState = uiState)
+
+            if (!uiState.isLoading && uiState.error == null) {
+                Column(
+                    modifier = Modifier.padding(horizontal = 24.dp),
+                    verticalArrangement = Arrangement.spacedBy(14.dp)
+                ) {
+                    filteredTransactions.forEach { transaction ->
+                        HistoryTransactionItem(
+                            transaction = transaction,
+                            onClick = { onTransactionClick(transaction.id) }
+                        )
+                    }
                 }
             }
 
             Spacer(modifier = Modifier.height(30.dp))
-            HistorySectionTitle(title = "Recent Loans")
-            HorizontalDivider(color = Color(0xFFE6E6E6))
+            Box(modifier = Modifier.padding(horizontal = 24.dp)) {
+                HistorySectionTitle(title = "Recent Loans")
+            }
+            HorizontalDivider(color = Color(0xFFE6E6E6), modifier = Modifier.padding(horizontal = 24.dp))
 
-            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                filteredLoans.forEach { loan ->
-                    RecentLoanHistoryItem(loan = loan)
+            if (!uiState.isLoading && uiState.error == null) {
+                Column(
+                    modifier = Modifier.padding(horizontal = 24.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    filteredLoans.forEach { loan ->
+                        RecentLoanHistoryItem(loan = loan)
+                    }
                 }
             }
 
@@ -132,13 +152,34 @@ fun HistoryScreen(
 }
 
 @Composable
+private fun HistoryStatusMessage(uiState: HistoryUiState) {
+    val message = when {
+        uiState.isLoading -> "Loading history..."
+        uiState.error != null -> uiState.error
+        else -> null
+    }
+
+    message?.let {
+        Text(
+            text = it,
+            color = if (uiState.error != null) Color.Red else GrayText,
+            fontSize = 15.sp,
+            fontWeight = FontWeight.SemiBold,
+            fontFamily = interFonts,
+            modifier = Modifier.padding(horizontal = 24.dp, vertical = 18.dp)
+        )
+    }
+}
+
+@Composable
 private fun HistoryFilterRow(
     filters: List<HistoryFilterUi>,
     selectedFilter: HistoryFilterUi,
-    onFilterClick: (HistoryFilterUi) -> Unit
+    onFilterClick: (HistoryFilterUi) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .horizontalScroll(rememberScrollState()),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -370,6 +411,6 @@ private fun HistoryIcon(
 @Composable
 fun HistoryScreenPreview() {
     ParcialTP3_LendlyApp_Grupo11Theme {
-        HistoryScreen(uiState = sampleHistoryUiState())
+        HistoryScreen(uiState = HistoryUiState())
     }
 }

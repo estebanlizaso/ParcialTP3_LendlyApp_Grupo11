@@ -1,0 +1,156 @@
+{
+  "brands": [
+    {
+      "id": "1",
+      "name": "Apple",
+      "logo": "brand_apple"
+    },
+    {
+      "id": "2",
+      "name": "Samsung",
+      "logo": "brand_samsung"
+    },
+    {
+      "id": "3",
+      "name": "Sony",
+      "logo": "brand_sony"
+    }
+  ],
+  "categories": [
+    {
+      "id": "1",
+      "name": "Celulares",
+      "icon": "smartphone",
+      "productCount": 15
+    },
+    {
+      "id": "2",
+      "name": "Laptops",
+      "icon": "laptop",
+      "productCount": 8
+    },
+    {
+      "id": "3",
+      "name": "Audio",
+      "icon": "headset",
+      "productCount": 12
+    }
+  ],
+  "products": [
+    {
+      "id": "p1",
+      "name": "iPhone 17 Pro",
+      "brand": "Apple",
+      "category": "Celulares",
+      "price": 999.99,
+      "currency": "USD",
+      "image": "apple_iphone_17_pro_max",
+      "monthlyInstallment": 83.33,
+      "installmentMonths": 12,
+      "interestRate": 0.0,
+      "isFeatured": true,
+      "isAvailable": true,
+      "rating": 4.8,
+      "reviewCount": 120,
+      "description": "El último iPhone con titanio.",
+      "isRecommended": true,
+      "isBestSeller": true
+    },
+    {
+      "id": "p2",
+      "name": "Galaxy S24 Ultra",
+      "brand": "Samsung",
+      "category": "Celulares",
+      "price": 1199.99,
+      "currency": "USD",
+      "image": "samsung_galaxy_s_24",
+      "monthlyInstallment": 99.99,
+      "installmentMonths": 12,
+      "interestRate": 0.0,
+      "isFeatured": true,
+      "isAvailable": true,
+      "rating": 4.7,
+      "reviewCount": 85,
+      "description": "Potencia y cámara increíble.",
+      "isRecommended": true,
+      "isBestSeller = false": false
+    },
+    {
+      "id": "p3",
+      "name": "Sony WH-1000XM5",
+      "brand": "Sony",
+      "category": "Audio",
+      "price": 399.99,
+      "currency": "USD",
+      "image": "sony_mx_1000",
+      "monthlyInstallment": 33.33,
+      "installmentMonths = 12": 12,
+      "interestRate": 0.0,
+      "isFeatured": true,
+      "isAvailable": true,
+      "rating": 4.9,
+      "reviewCount": 200,
+      "description": "Cancelación de ruido líder en la industria.",
+      "isRecommended": true,
+      "isBestSeller": false
+    },
+    {
+      "id": "p4",
+      "name": "MacBook Air M3",
+      "brand": "Apple",
+      "category": "Laptops",
+      "price": 1099.00,
+      "currency": "USD",
+      "image": "apple_macbook_air_m3",
+      "monthlyInstallment": 91.58,
+      "installmentMonths": 12,
+      "interestRate": 0.0,
+      "isFeatured": true,
+      "isAvailable": true,
+      "rating": 4.9,
+      "reviewCount": 150,
+      "description": "Potencia increíble en un diseño ultra delgado.",
+      "isRecommended": false,
+      "isBestSeller": true
+    },
+    {
+      "id": "p5",
+      "name": "Galaxy Watch 6",
+      "brand": "Samsung",
+      "category": "Celulares",
+      "price": 299.99,
+      "currency": "USD",
+      "image": "galaxy_watch_6",
+      "monthlyInstallment": 25.00,
+      "installmentMonths": 12,
+      "interestRate": 0.0,
+      "isFeatured": false,
+      "isAvailable": true,
+      "rating": 4.5,
+      "reviewCount": 60,
+      "description": "El compañero perfecto para tu salud.",
+      "isRecommended": true,
+      "isBestSeller": false
+    },
+    {
+      "id": "p6",
+      "name": "AirPods Pro 2",
+      "brand": "Apple",
+      "category": "Audio",
+      "price": 249.00,
+      "currency": "USD",
+      "image": "apple_airpods_pro_2",
+      "monthlyInstallment": 20.75,
+      "installmentMonths": 12,
+      "interestRate": 0.0,
+      "isFeatured": true,
+      "isAvailable": true,
+      "rating": 4.8,
+      "reviewCount": 350,
+      "description": "Audio adaptativo y cancelación de ruido mejorada.",
+      "isRecommended": true,
+      "isBestSeller": true
+    }
+
+  ]
+}

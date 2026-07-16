@@ -1,0 +1,46 @@
+[
+  {
+    "uid": "nRZeVLY4lqgAzx8gCR3pntp2WUR2",
+    "email": "john.doe@lendly.com",
+    "fullName": "John Doe",
+    "avatar": "https://i.pravatar.cc/150?img=3",
+    "creditScore": 720,
+    "accountBalance": 25000.0,
+    "birthDate": "1990-01-01",
+    "address": "456 Mabini St., Quezon City",
+    "phone": "63-9123456789"
+  },
+  {
+    "uid": "NbFekQH2CfaOR4s46BVJtj0X8i02",
+    "email": "jane.smith@lendly.com",
+    "fullName": "Jane Smith",
+    "avatar": "https://i.pravatar.cc/150?img=3",
+    "creditScore": 400,
+    "accountBalance": 12000.0,
+    "birthDate": "1992-05-15",
+    "address": "123 Rizal Ave, Makati",
+    "phone": "63-9987654321"
+  },
+  {
+    "uid": "pIlUpCD1JYcDK1EJjVFzSqAacWD3",
+    "email": "robert.brown@lendly.com",
+    "fullName": "Robert Brown",
+    "avatar": "https://i.pravatar.cc/150?img=3",
+    "creditScore": 850,
+    "accountBalance": 50000.0,
+    "birthDate": "1985-11-20",
+    "address": "789 Pine Rd, Pasig",
+    "phone": "63-9111222333"
+  },
+  {
+    "uid": "gn3WfQibmmS0kj7kz5Uu7NYzDgN2",
+    "email": "emily.white@lendly.com",
+    "fullName": "Emily White",
+    "avatar": "https://i.pravatar.cc/150?img=3",
+    "creditScore": 900,
+    "accountBalance": 30000.0,
+    "birthDate": "1995-03-15",
+    "address": "321 Elm St, Taguig",
+    "phone": "63-9444555666"
+  }
+]

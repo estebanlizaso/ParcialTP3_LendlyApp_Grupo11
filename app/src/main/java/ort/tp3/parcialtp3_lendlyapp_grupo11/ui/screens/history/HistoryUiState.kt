@@ -1,6 +1,8 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.history
 
 data class HistoryUiState(
+    val isLoading: Boolean = true,
+    val error: String? = null,
     val avatarUrl: String = "",
     val filters: List<HistoryFilterUi> = HistoryFilterUi.entries,
     val todayTransactions: List<HistoryTransactionUi> = emptyList(),
@@ -35,71 +37,3 @@ data class RecentLoanHistoryUi(
     val merchant: String,
     val status: String
 )
-
-fun sampleHistoryUiState(): HistoryUiState {
-    return HistoryUiState(
-        avatarUrl = "https://i.pravatar.cc/150?img=3",
-        todayTransactions = listOf(
-            HistoryTransactionUi(
-                id = "TXN-2026-0061",
-                time = "9:07 AM",
-                title = "Paid this month",
-                merchant = "Apple Inc.",
-                amount = "1,2555 PHP",
-                type = HistoryTransactionType.PAID_BILL
-            ),
-            HistoryTransactionUi(
-                id = "TXN-2026-0088",
-                time = "9:07 AM",
-                title = "Paid this month",
-                merchant = "Apple Inc.",
-                amount = "1,2555 PHP",
-                type = HistoryTransactionType.PAID_BILL
-            ),
-            HistoryTransactionUi(
-                id = "TXN-2026-0061",
-                time = "9:07 AM",
-                title = "Paid this month",
-                merchant = "Apple Inc.",
-                amount = "1,2555 PHP",
-                type = HistoryTransactionType.PAID_BILL
-            ),
-            HistoryTransactionUi(
-                id = "TXN-2026-0075",
-                time = "9:07 AM",
-                title = "Added",
-                merchant = "",
-                amount = "1,200 PHP",
-                type = HistoryTransactionType.ADDED_BALANCE
-            ),
-            HistoryTransactionUi(
-                id = "TXN-2026-0044",
-                time = "9:07 AM",
-                title = "Paid this month",
-                merchant = "",
-                amount = "1,200 PHP",
-                type = HistoryTransactionType.ADDED_BALANCE
-            )
-        ),
-        recentLoans = listOf(
-            RecentLoanHistoryUi(
-                date = "02/08/2024",
-                productName = "iPhone 15 Pro Max",
-                merchant = "Apple Inc.",
-                status = "Paid"
-            ),
-            RecentLoanHistoryUi(
-                date = "02/08/2024",
-                productName = "iPhone 15 Pro Max",
-                merchant = "Apple Inc.",
-                status = "Paid"
-            ),
-            RecentLoanHistoryUi(
-                date = "02/08/2024",
-                productName = "iPhone 15 Pro Max",
-                merchant = "Apple Inc.",
-                status = "Paid"
-            )
-        )
-    )
-}

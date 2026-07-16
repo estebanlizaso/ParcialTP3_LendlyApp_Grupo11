@@ -1,0 +1,9 @@
+{
+  "fullName": "John Doe",
+  "avatar": "https://i.pravatar.cc/150?u=lendly_user",
+  "creditScore": 400,
+  "accountBalance": 25000.0,
+  "birthDate": "1990-01-01",
+  "address": "456 Mabini St., Quezon City",
+  "phone": "63-9123456789"
+}

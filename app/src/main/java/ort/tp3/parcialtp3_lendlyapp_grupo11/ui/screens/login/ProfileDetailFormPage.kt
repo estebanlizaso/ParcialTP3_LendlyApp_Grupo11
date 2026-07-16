@@ -99,6 +99,18 @@ fun ProfileDetailFormPage(
 
             Spacer(modifier = Modifier.height(24.dp))
 
+            AppTextField(
+                value = viewModel.email,
+                onValueChange = { viewModel.email = it },
+                labelText = "Email",
+                errorMessage = viewModel.emailError,
+                labelColor = darkLabelColor,
+                textColor = inputTextGray,
+                unfocusedBorderColor = darkBorder
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
             Text(
                 text = "Date of birth",
                 fontFamily = interMedium,

@@ -14,10 +14,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.*
 
+import ort.tp3.parcialtp3_lendlyapp_grupo11.network.model.LoanProductConfig
+
 data class LoanOptionData(
     val title: String,
     val subtitle: String,
-    val rightValue: String
+    val rightValue: String,
+    val config: LoanProductConfig? = null // Referencia a la configuración de negocio
 )
 
 @Composable

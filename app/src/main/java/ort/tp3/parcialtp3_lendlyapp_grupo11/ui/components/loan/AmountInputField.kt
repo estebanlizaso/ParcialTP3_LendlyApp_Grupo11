@@ -22,7 +22,8 @@ import ort.tp3.parcialtp3_lendlyapp_grupo11.ui.theme.montserratFonts
 fun AmountInputField(
     value: String,
     onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isError: Boolean = false
 ) {
     val focusManager = LocalFocusManager.current
     var textFieldValueState by remember {
@@ -73,12 +74,14 @@ fun AmountInputField(
             onDone = { focusManager.clearFocus() }
         ),
         visualTransformation = CurrencyAmountTransformation(),
+        isError = isError,
         colors = TextFieldDefaults.colors(
             focusedContainerColor = Color.Transparent,
             unfocusedContainerColor = Color.Transparent,
             disabledContainerColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = if (isError) Color.Red else Color.Transparent,
+            unfocusedIndicatorColor = if (isError) Color.Red else Color.Transparent,
+            errorIndicatorColor = Color.Red
         ),
         singleLine = true
     )

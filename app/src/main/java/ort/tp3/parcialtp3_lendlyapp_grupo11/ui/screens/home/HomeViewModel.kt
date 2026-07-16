@@ -1,60 +1,143 @@
 package ort.tp3.parcialtp3_lendlyapp_grupo11.ui.screens.home
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import java.io.InputStreamReader
 import java.util.Locale
+import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ort.tp3.parcialtp3_lendlyapp_grupo11.SessionManager
+import ort.tp3.parcialtp3_lendlyapp_grupo11.data.local.dao.UserDao
+import ort.tp3.parcialtp3_lendlyapp_grupo11.data.local.entity.UserEntity
 import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.HomeRepository
+import ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.ShopRepository
 
-class HomeViewModel(
-    private val repository: HomeRepository = HomeRepository()
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val repository: HomeRepository,
+    private val shopRepository: ShopRepository,
+    private val userDao: UserDao,
+    private val sessionManager: SessionManager,
+    private val firestoreRepository: ort.tp3.parcialtp3_lendlyapp_grupo11.network.repository.FirestoreRepository,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
-    var uiState by mutableStateOf(HomeUiState())
-        private set
+    private val _uiState = MutableStateFlow(HomeUiState())
+    val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     init {
-        loadHome()
+        observeUnreadNotifications()
+        observeRecommendedProducts()
+        observeUser()
+        loadHomeData()
     }
 
-    private fun loadHome() {
+    private fun observeUnreadNotifications() {
+        viewModelScope.launch {
+            sessionManager.unreadNotificationCount.collectLatest { count ->
+                _uiState.value = _uiState.value.copy(notificationBadgeCount = count)
+            }
+        }
+    }
+
+    private fun observeUser() {
+        val uid = sessionManager.getToken()
+        if (uid != null) {
+            sessionManager.refreshUnreadNotificationCount(uid)
+
+            viewModelScope.launch {
+                syncLocalUser(uid)
+
+                // Sincronización desde Firestore al iniciar
+                try {
+                    val scoring = firestoreRepository.getUserScoring(uid)
+                    scoring?.let {
+                        userDao.updateAccountBalance(uid, it.availableBalance)
+                        userDao.updateCreditScore(uid, it.creditScore)
+                    }
+                } catch (e: Exception) {
+                    // Error de red o Firestore
+                }
+
+                userDao.getUserById(uid).collectLatest { user ->
+                    user?.let {
+                        _uiState.value = _uiState.value.copy(
+                            balance = formatMoney(it.accountBalance),
+                            avatarUrl = it.avatar
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun syncLocalUser(uid: String) {
+        try {
+            val inputStream = context.assets.open("initial_users.json")
+            val reader = InputStreamReader(inputStream)
+            val users: List<UserEntity> = Gson().fromJson(reader, object : TypeToken<List<UserEntity>>() {}.type)
+            reader.close()
+
+            val currentUserData = users.find { it.uid == uid }
+            if (currentUserData != null) {
+                userDao.updateCreditScore(uid, currentUserData.creditScore)
+                userDao.updateAvatar(uid, currentUserData.avatar)
+            }
+        } catch (e: Exception) {
+            // Local seed sync is best effort; API data still loads below.
+        }
+    }
+
+    private fun observeRecommendedProducts() {
+        viewModelScope.launch {
+            shopRepository.recommended.collectLatest { products ->
+                _uiState.value = _uiState.value.copy(
+                    products = products.map { product ->
+                        HomeProductUi(
+                            name = product.name,
+                            imageUrl = product.image,
+                            monthlyInstallment = formatMoney(product.monthlyInstallment),
+                            months = "${product.installmentMonths} mo"
+                        )
+                    }
+                )
+            }
+        }
+    }
+
+    private fun loadHomeData() {
         viewModelScope.launch {
             try {
-                val userResponse = repository.getUser()
-                val loansResponse = repository.getLoans()
+                val uid = sessionManager.getToken()
+                if (uid == null) {
+                    _uiState.value = _uiState.value.copy(isLoading = false, error = "Session not found")
+                    return@launch
+                }
+
+                // Cargamos préstamos desde Firestore
+                val loans = firestoreRepository.getUserLoans(uid)
+
+                // Cargamos logos de marcas para complementar
                 val productsResponse = repository.getProducts()
                 val brandLogos = productsResponse.brands.associate { brand ->
                     brand.name.lowercase() to brand.logo
                 }
-                val featuredProducts = productsResponse.featured.map { product ->
-                    HomeProductUi(
-                        name = product.name,
-                        imageUrl = product.image,
-                        monthlyInstallment = formatMoney(product.monthlyInstallment),
-                        months = "${product.installmentMonths} mo"
-                    )
-                }.toMutableList()
 
-                val phoneProduct = featuredProducts.firstOrNull { product ->
-                    product.name.contains("iphone", ignoreCase = true) || product.name.contains("phone", ignoreCase = true)
-                } ?: HomeProductUi("iPhone 12 Pro", "", formatMoney(1200.0), "24 mo")
-                val headphonesProduct = featuredProducts.firstOrNull { product ->
-                    product.name.contains("airpods", ignoreCase = true) || product.name.contains("headphones", ignoreCase = true)
-                } ?: HomeProductUi("AirPods Pro", "", formatMoney(1200.0), "24 mo")
-                val shoesProduct = featuredProducts.firstOrNull { product ->
-                    product.name.contains("nike", ignoreCase = true) || product.name.contains("shoe", ignoreCase = true) || product.name.contains("sneaker", ignoreCase = true)
-                } ?: HomeProductUi("Nike Air Max", "", formatMoney(1200.0), "24 mo")
-                val recommendedProducts = listOf(phoneProduct, headphonesProduct, shoesProduct)
-
-                uiState = HomeUiState(
+                _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    avatarUrl = userResponse.user.avatar,
-                    balance = formatMoney(userResponse.user.availableBalance),
-                    loans = loansResponse.loans
+                    loans = loans
                         .filter { it.status == "ACTIVE" }
+                        // Ordenamos por fecha de inicio descendente (asumiendo formato yyyy-MM-dd)
+                        .sortedByDescending { it.startDate }
                         .map { loan ->
                             val brandLogo = brandLogos.entries
                                 .firstOrNull { (brandName, _) ->
@@ -68,11 +151,10 @@ class HomeViewModel(
                                 amountDue = formatMoney(loan.amountDue),
                                 feeLabel = loan.nextPaymentLabel.orEmpty()
                             )
-                        },
-                    products = recommendedProducts
+                        }
                 )
             } catch (e: Exception) {
-                uiState = HomeUiState(
+                _uiState.value = _uiState.value.copy(
                     isLoading = false,
                     error = "No se pudo cargar el Home"
                 )
